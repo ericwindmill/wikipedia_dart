@@ -1,0 +1,16 @@
+name: wikipedia_api
+description: Models for Wikipedia data
+version: 0.0.1
+# repository: https://github.com/my_org/my_repo
+resolution: workspace
+environment:
+  sdk: ^3.7.0-209.1.beta
+
+# Add regular dependencies here.
+dependencies:
+  http: ^1.2.2
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0
