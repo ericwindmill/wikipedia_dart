@@ -1,7 +1,8 @@
-name: wikipedia_cli
-description: A sample command-line application with basic argument parsing.
+name: command_line_client
+description: A sample command-line application that fetches articles from Wikipedia.
 version: 0.0.1
 resolution: workspace
+publish_to: none
 
 environment:
   sdk: ^3.7.0-209.1.beta

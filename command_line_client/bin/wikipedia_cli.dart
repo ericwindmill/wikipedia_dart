@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:args/args.dart';
 
 import 'parser.dart';
-import 'strings.dart';
 import 'app.dart';
 
 void main(List<String> arguments) async {
