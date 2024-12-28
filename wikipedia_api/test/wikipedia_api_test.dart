@@ -1,11 +1,12 @@
 @TestOn('vm')
+library;
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:wikipedia_api/src/util.dart';
 import 'package:wikipedia_api/src/wikipedia_api_client.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 import 'package:test/test.dart';
-import 'package:http/http.dart' as http;
 
 final dartLangSummaryJson = './assets/dart_lang_summary.json';
 final terryItoInnerJson = './assets/terry_ito_inner.json';
