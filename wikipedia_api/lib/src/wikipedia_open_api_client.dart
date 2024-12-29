@@ -84,4 +84,9 @@ class WikipediaApiClient {
       client.close();
     }
   }
+
+  final wikimediaExample =
+      'https://en.wikipedia.org/w/api.php?action=query&format=json&titles=cat&prop=extracts&explaintext';
+  final searchExample =
+      'https://en.wikipedia.org/w/api.php?action=opensearch&search=dart';
 }

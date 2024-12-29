@@ -9,6 +9,7 @@ class Summary {
     required this.extractHtml,
     this.thumbnail,
     this.originalImage,
+    this.url,
     required this.lang,
     required this.dir,
     this.description,
@@ -27,6 +28,9 @@ class Summary {
   String extractHtml;
 
   Thumbnail? thumbnail;
+
+  /// Url to the article on Wikipedia
+  String? url;
 
   ///
   OriginalImage? originalImage;
@@ -56,6 +60,10 @@ class Summary {
         'extract_html': String extractHtml,
         'lang': String lang,
         'dir': String dir,
+        'content_urls': {
+          'desktop': {'page': String url},
+          'mobile': {'page': String mobileUrl},
+        },
         'description': String description,
         'thumbnail': Map<String, Object?> thumbnail,
         'originalimage': Map<String, Object?> originalImage,
@@ -69,6 +77,7 @@ class Summary {
           originalImage: OriginalImage.fromJson(originalImage),
           lang: lang,
           dir: dir,
+          url: url,
           description: description,
         ),
       {
@@ -80,6 +89,10 @@ class Summary {
         'dir': String dir,
         'thumbnail': Map<String, Object?> thumbnail,
         'originalimage': Map<String, Object?> originalImage,
+        'content_urls': {
+          'desktop': {'page': String url},
+          'mobile': {'page': String mobileUrl},
+        },
       } =>
         Summary(
           titles: TitlesSet.fromJson(titles),
@@ -90,6 +103,7 @@ class Summary {
           originalImage: OriginalImage.fromJson(originalImage),
           lang: lang,
           dir: dir,
+          url: url,
         ),
       {
         'titles': Map<String, Object?> titles,
@@ -99,6 +113,10 @@ class Summary {
         'lang': String lang,
         'dir': String dir,
         'description': String description,
+        'content_urls': {
+          'desktop': {'page': String url},
+          'mobile': {'page': String mobileUrl},
+        },
       } =>
         Summary(
           titles: TitlesSet.fromJson(titles),
@@ -108,6 +126,7 @@ class Summary {
           lang: lang,
           dir: dir,
           description: description,
+          url: url,
         ),
       {
         'titles': Map<String, Object?> titles,
@@ -116,6 +135,10 @@ class Summary {
         'extract_html': String extractHtml,
         'lang': String lang,
         'dir': String dir,
+        'content_urls': {
+          'desktop': {'page': String url},
+          'mobile': {'page': String mobileUrl},
+        },
       } =>
         Summary(
           titles: TitlesSet.fromJson(titles),
@@ -124,6 +147,7 @@ class Summary {
           extractHtml: extractHtml,
           lang: lang,
           dir: dir,
+          url: url,
         ),
       _ => throw FormatException('Could not deserialize Summary, json=$json'),
     };

@@ -1,3 +1,5 @@
+import 'package:wikipedia_api/wikipedia_api.dart';
+
 class Strings {
   static final welcome = 'Welcome to Wikipedia Dart!';
   static final getStarted = 'To get started, tell me what you want to do:';
@@ -22,4 +24,11 @@ To make a selection, enter the number [1-4], and add provide it's arguments if n
 ╚███╔███╔╝██║██║  ██╗██║██║     ███████╗██████╔╝██║██║  ██║
  ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝ 
  ''';
+
+  static void prettyPrintSummary(Summary summary) {
+    print('=== ${summary.titles.normalized} ===');
+    print(summary.extract);
+    print('Read more: ${summary.url}');
+    print(' ');
+  }
 }

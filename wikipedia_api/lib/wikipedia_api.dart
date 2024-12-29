@@ -6,4 +6,5 @@ export 'src/model/original_image.dart';
 export 'src/model/summary.dart';
 export 'src/model/thumbnail.dart';
 export 'src/model/title_set.dart';
-export 'src/wikipedia_api_client.dart';
+export 'src/wikipedia_open_api_client.dart';
+export 'src/wikimedia_api_client.dart';

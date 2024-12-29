@@ -8,13 +8,13 @@ import 'package:wikipedia_api/wikipedia_api.dart';
 Future<void> handleRandomArticle() async {
   print('Fetching random article summary...');
   var summary = await WikipediaApiClient.getRandomArticle();
-  print(summary.titles.normalized);
+  Strings.prettyPrintSummary(summary);
 }
 
 void handleNamedArticle(String name) async {
   print('Fetching $name article summary...');
   var summary = await WikipediaApiClient.getArticleSummary(name);
-  print(summary.titles.normalized);
+  Strings.prettyPrintSummary(summary);
 }
 
 void handleOnThisDayTimeline(String date) {}
