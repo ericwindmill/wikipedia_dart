@@ -67,7 +67,7 @@ void main() {
       () async {
         var articleJson = await File(catExtractJson).readAsString();
         var articleAsMap = jsonDecode(articleJson);
-        final List<Article> article = Article.fromJson(articleAsMap);
+        final List<Article> article = Article.listFromJson(articleAsMap);
         expect(article.first.title.toLowerCase(), 'cat');
       },
     );

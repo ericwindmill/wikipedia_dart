@@ -4,7 +4,8 @@ class Article {
   final String title;
   final String extract;
 
-  static List<Article> fromJson(Map<String, Object?> json) {
+  static List<Article> listFromJson(Map<String, Object?> json) {
+    print(json);
     final articles = <Article>[];
     if (json case {"query": {"pages": Map<String, Object?> pages}}) {
       for (var MapEntry(:key, :value) in pages.entries) {

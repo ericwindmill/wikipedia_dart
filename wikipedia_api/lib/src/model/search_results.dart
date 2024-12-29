@@ -43,6 +43,6 @@ class SearchResults {
     for (var result in results) {
       pretty += '${result.url} \n';
     }
-    return 'SearchResults: \n $pretty';
+    return '\nSearchResults for $searchTerm: \n$pretty';
   }
 }

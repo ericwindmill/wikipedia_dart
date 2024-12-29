@@ -14,14 +14,14 @@ class WikimediaApiClient {
         // order matters - explaintext must come after prop
         'action': 'query',
         'format': 'json',
-        'titles': title,
+        'titles': title.trim(),
         'prop': 'extracts',
         'explaintext': '',
       });
       final response = await client.get(url);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        return Article.fromJson(jsonData);
+        return Article.listFromJson(jsonData);
       } else {
         throw HttpException(
           '[WikimediaApiClient.getArticleByTitle] statusCode=${response.statusCode}, body=${response.body}',

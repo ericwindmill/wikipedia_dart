@@ -29,7 +29,7 @@ void main(List<String> arguments) async {
         print("No name provided, fetching article for 'cat'");
         name = 'cat';
       }
-      handleNamedArticle(name);
+      handleArticleSummary(name);
     }
 
     if (results.option('type') == 'timeline') {
@@ -40,6 +40,20 @@ void main(List<String> arguments) async {
         date = "01/01";
       }
       handleOnThisDayTimeline(date);
+    }
+
+    if (results.option('type') == 'article') {
+      print('What article would you like to fetch? [name]');
+      String? name = stdin.readLineSync();
+      if (name == null) {
+        print("No name provided, fetching article for 'cat'");
+        name = 'cat';
+      }
+      handleArticle(name);
+    }
+
+    if (results.option('search') != null) {
+      handleSearch(results.option('search')!);
     }
 
     if (results.flag('interactive')) {

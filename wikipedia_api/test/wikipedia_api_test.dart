@@ -42,6 +42,7 @@ void main() {
         expect(articles.first.title.toLowerCase(), 'dart');
       },
     );
+
     test('Handles searching', () async {
       final searchResults = await WikimediaApiClient.search('dart');
       expect(searchResults.searchTerm, 'dart');
