@@ -12,7 +12,7 @@ void main(List<String> arguments) async {
     final ArgResults results = argParser.parse(arguments);
 
     // Process the parsed arguments.
-    if (results.flag('help')) {
+    if (results.flag('help') || results.arguments.isEmpty) {
       printUsage(argParser);
       return;
     }
@@ -59,6 +59,7 @@ void main(List<String> arguments) async {
     if (results.flag('interactive')) {
       // Launch the interactive CLI
       final app = CommandLineApp();
+      app.start();
     }
   } on FormatException catch (e) {
     // Print usage information if an invalid argument was provided.

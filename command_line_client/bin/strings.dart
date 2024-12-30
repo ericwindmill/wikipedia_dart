@@ -30,18 +30,4 @@ To make a selection, enter the number [1-7], and add provide it's arguments if n
 
   static final missingArgument =
       'That command requires an argument. Please try again with an argument in the following format: <CMD>=<ARG>. For example, you can get an article with 2=cat';
-
-  static void prettyPrintSummary(Summary summary) {
-    print('=== ${summary.titles.normalized} ===');
-    print(summary.extract);
-    print('Read more: ${summary.url}');
-    print(' ');
-  }
-
-  static void prettyPrintArticle(Article article) {
-    print('');
-    print('=== ${article.title} ===');
-    print('');
-    print(article.extract);
-  }
 }
