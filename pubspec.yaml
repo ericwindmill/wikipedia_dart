@@ -4,4 +4,4 @@ environment:
   sdk: ^3.6.0
 workspace:
   - wikipedia_api
-  - tool
+  - command_line_client
