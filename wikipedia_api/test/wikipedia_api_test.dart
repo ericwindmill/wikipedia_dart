@@ -1,7 +1,3 @@
-@TestOn('vm')
-library;
-
-import 'package:wikipedia_api/src/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 import 'package:test/test.dart';
 
@@ -20,8 +16,8 @@ void main() {
 
     test("Fetches 'on this day' timeline from Wikipedia", () async {
       final timeline = await WikipediaApiClient.getTimelineForDate(
-        month: toStringWithPad(8),
-        date: toStringWithPad(2),
+        month: 8,
+        day: 2,
       );
       expect(timeline.selected, isNotEmpty);
     });

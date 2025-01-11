@@ -56,18 +56,21 @@ class WikipediaApiClient {
 
   /// [month] and [date] should be 2 digits, padded with a 0 if necessary.
   static Future<OnThisDayTimeline> getTimelineForDate({
-    required String month,
-    required String date,
+    required int month,
+    required int day,
   }) async {
-    if (!verifyMonthAndDate(month: month, date: date)) {
+    if (!verifyMonthAndDate(month: month, day: day)) {
       throw Exception('Month and date must be valid combination.');
     }
+
+    var strMonth = toStringWithPad(month);
+    var strDay = toStringWithPad(day);
 
     final client = http.Client();
     try {
       final url = Uri.https(
         'en.wikipedia.org',
-        '/api/rest_v1/feed/onthisday/all/$month/$date',
+        '/api/rest_v1/feed/onthisday/all/$strMonth/$strDay',
       );
       final response = await client.get(url);
       if (response.statusCode == 200) {
@@ -84,9 +87,4 @@ class WikipediaApiClient {
       client.close();
     }
   }
-
-  final wikimediaExample =
-      'https://en.wikipedia.org/w/api.php?action=query&format=json&titles=cat&prop=extracts&explaintext';
-  final searchExample =
-      'https://en.wikipedia.org/w/api.php?action=opensearch&search=dart';
 }

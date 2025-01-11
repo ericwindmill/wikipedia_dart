@@ -5,3 +5,4 @@ environment:
 workspace:
   - wikipedia_api
   - command_line_client
+  - flutter_client

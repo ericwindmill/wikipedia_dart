@@ -19,9 +19,18 @@ Future<void> handleArticleSummary(String name) async {
 }
 
 Future<void> handleOnThisDayTimeline(String date) async {
-  var [String month, String day] = date.split('/');
+  var [String strMonth, String strDay] = date.split('/');
+  var month = int.tryParse(strMonth);
+  var day = int.tryParse(strDay);
+
+  if (month == null || day == null) {
+    print('Invalid date input: $month/$day');
+  }
+
   var timeline = await WikipediaApiClient.getTimelineForDate(
-      month: month.trim(), date: day.trim());
+    month: month!,
+    day: day!,
+  );
   for (var event in timeline.selected) {
     print("${event.year} = ${event.text}");
     print(event.pages.first.url);
@@ -116,7 +125,8 @@ class CommandLineApp {
   void _printNext() async {
     print('');
     print(
-        'Enter another command when ready, or type "help" to see the list of commands again');
+      'Enter another command when ready, or type "help" to see the list of commands again',
+    );
     await delayedPrint(Strings.commands);
     print('');
   }

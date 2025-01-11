@@ -27,7 +27,7 @@ void prettyPrintArticle(Article article) async {
   print('');
   var lines = article.extract.split('\n');
   for (var l in lines) {
-    await printByLine(article.extract.splitByLength(80));
+    await printByLine(l.splitByLength(80));
   }
 }
 
@@ -37,8 +37,7 @@ extension on String {
 
     for (int i = 0; i < this.length; i += length) {
       int offset = i + length;
-      String piece =
-          this.substring(i, offset >= this.length ? this.length : offset);
+      String piece = substring(i, offset >= this.length ? this.length : offset);
 
       if (ignoreEmpty) {
         piece = piece.replaceAll(RegExp(r'\s+'), '');

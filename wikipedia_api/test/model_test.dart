@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:test/test.dart';
-import 'package:wikipedia_api/src/model/article.dart';
-import 'package:wikipedia_api/src/model/search_results.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 final dartLangSummaryJson = './test/test_data/dart_lang_summary.json';

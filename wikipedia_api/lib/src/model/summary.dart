@@ -62,7 +62,7 @@ class Summary {
         'dir': String dir,
         'content_urls': {
           'desktop': {'page': String url},
-          'mobile': {'page': String mobileUrl},
+          'mobile': {'page': String _},
         },
         'description': String description,
         'thumbnail': Map<String, Object?> thumbnail,
@@ -91,7 +91,7 @@ class Summary {
         'originalimage': Map<String, Object?> originalImage,
         'content_urls': {
           'desktop': {'page': String url},
-          'mobile': {'page': String mobileUrl},
+          'mobile': {'page': String _},
         },
       } =>
         Summary(
@@ -115,7 +115,7 @@ class Summary {
         'description': String description,
         'content_urls': {
           'desktop': {'page': String url},
-          'mobile': {'page': String mobileUrl},
+          'mobile': {'page': String _},
         },
       } =>
         Summary(
@@ -137,7 +137,7 @@ class Summary {
         'dir': String dir,
         'content_urls': {
           'desktop': {'page': String url},
-          'mobile': {'page': String mobileUrl},
+          'mobile': {'page': String _},
         },
       } =>
         Summary(

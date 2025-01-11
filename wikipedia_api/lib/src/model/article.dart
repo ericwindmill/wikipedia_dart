@@ -8,7 +8,7 @@ class Article {
     print(json);
     final articles = <Article>[];
     if (json case {"query": {"pages": Map<String, Object?> pages}}) {
-      for (var MapEntry(:key, :value) in pages.entries) {
+      for (var MapEntry(:value) in pages.entries) {
         if (value case {"title": String title, "extract": String extract}) {
           articles.add(Article(title: title, extract: extract));
         }

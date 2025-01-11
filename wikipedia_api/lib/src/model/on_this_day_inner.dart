@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import '../../wikipedia_api.dart';
 
 class OnThisDayEvent {
@@ -9,6 +11,8 @@ class OnThisDayEvent {
 
   // Year of the event
   int? year;
+
+  //
 
   /// List of pages related to the event
   List<Summary> pages;

@@ -1,5 +1,3 @@
-import 'package:wikipedia_api/wikipedia_api.dart';
-
 class Strings {
   static final welcome = 'Welcome to Wikipedia Dart!';
   static final getStarted = 'To get started, tell me what you want to do:';

@@ -1,8 +1,11 @@
+import 'dart:collection';
+
 import 'on_this_day_inner.dart';
 
-class OnThisDayTimeline {
+class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
   /// Returns a new [OnThisDayTimeline] instance.
   OnThisDayTimeline({
+    this.all = const [],
     this.births = const [],
     this.deaths = const [],
     this.events = const [],
@@ -10,15 +13,20 @@ class OnThisDayTimeline {
     this.selected = const [],
   });
 
-  List<OnThisDayEvent> births;
+  final List<OnThisDayEvent> all;
 
-  List<OnThisDayEvent> deaths;
+  final List<OnThisDayEvent> births;
 
-  List<OnThisDayEvent> events;
+  final List<OnThisDayEvent> deaths;
 
-  List<OnThisDayEvent> holidays;
+  final List<OnThisDayEvent> events;
 
-  List<OnThisDayEvent> selected;
+  final List<OnThisDayEvent> holidays;
+
+  final List<OnThisDayEvent> selected;
+
+  @override
+  Iterator<OnThisDayEvent> get iterator => all.iterator;
 
   Map<String, dynamic> toJson() {
     return {
@@ -32,21 +40,33 @@ class OnThisDayTimeline {
 
   /// Returns a new [OnThisDayTimeline] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
-  // ignore: prefer_constructors_over_static_methods
+  /// TODO: Use JsonSerializable here, and then merge everything elsewhere
   static OnThisDayTimeline fromJson(Map<String, Object?> json) {
     if (json case {
-      'births': List births,
-      'deaths': List deaths,
-      'events': List events,
-      'holidays': List holidays,
-      'selected': List selected,
+      'births': List birthsJson,
+      'deaths': List deathsJson,
+      'events': List eventsJson,
+      'holidays': List holidaysJson,
+      'selected': List selectedJson,
     }) {
+      var births = [for (var e in birthsJson) OnThisDayEvent.fromJson(e)];
+      var deaths = [for (var e in deathsJson) OnThisDayEvent.fromJson(e)];
+      var events = [for (var e in eventsJson) OnThisDayEvent.fromJson(e)];
+      var holidays = [for (var e in holidaysJson) OnThisDayEvent.fromJson(e)];
+      var selected = [for (var e in selectedJson) OnThisDayEvent.fromJson(e)];
+
+      var all =
+          {...births, ...deaths, ...events, ...holidays, ...selected}.toList();
+      all.removeWhere((event) => event.year == null);
+      all.sort((eventA, eventB) => eventA.year!.compareTo(eventB.year!));
+
       return OnThisDayTimeline(
-        births: [for (var e in births) OnThisDayEvent.fromJson(e)],
-        deaths: [for (var e in deaths) OnThisDayEvent.fromJson(e)],
-        events: [for (var e in events) OnThisDayEvent.fromJson(e)],
-        holidays: [for (var e in holidays) OnThisDayEvent.fromJson(e)],
-        selected: [for (var e in selected) OnThisDayEvent.fromJson(e)],
+        all: all,
+        births: births,
+        deaths: deaths,
+        events: events,
+        holidays: holidays,
+        selected: selected,
       );
     }
     throw FormatException(
