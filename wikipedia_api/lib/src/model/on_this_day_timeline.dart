@@ -30,11 +30,11 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
 
   Map<String, dynamic> toJson() {
     return {
-      'births': [for (var b in births) b.toJson()],
-      'deaths': [for (var b in deaths) b.toJson()],
-      'holidays': [for (var b in events) b.toJson()],
-      'events': [for (var b in holidays) b.toJson()],
-      'selected': [for (var b in selected) b.toJson()],
+      'births': [for (var b in births) OnThisDayEvent.toJson(b)],
+      'deaths': [for (var b in deaths) OnThisDayEvent.toJson(b)],
+      'holidays': [for (var b in events) OnThisDayEvent.toJson(b)],
+      'events': [for (var b in holidays) OnThisDayEvent.toJson(b)],
+      'selected': [for (var b in selected) OnThisDayEvent.toJson(b)],
     };
   }
 
@@ -49,16 +49,14 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
       'holidays': List holidaysJson,
       'selected': List selectedJson,
     }) {
-      var births = [for (var e in birthsJson) OnThisDayEvent.fromJson(e)];
-      var deaths = [for (var e in deathsJson) OnThisDayEvent.fromJson(e)];
-      var events = [for (var e in eventsJson) OnThisDayEvent.fromJson(e)];
-      var holidays = [for (var e in holidaysJson) OnThisDayEvent.fromJson(e)];
-      var selected = [for (var e in selectedJson) OnThisDayEvent.fromJson(e)];
+      var births = [for (var e in birthsJson) Birthday.fromJson(e)];
+      var deaths = [for (var e in deathsJson) NotableDeath.fromJson(e)];
+      var events = [for (var e in eventsJson) Event.fromJson(e)];
+      var holidays = [for (var e in holidaysJson) Holiday.fromJson(e)];
+      var selected = [for (var e in selectedJson) FeaturedEvent.fromJson(e)];
 
       var all =
           {...births, ...deaths, ...events, ...holidays, ...selected}.toList();
-      all.removeWhere((event) => event.year == null);
-      all.sort((eventA, eventB) => eventA.year!.compareTo(eventB.year!));
 
       return OnThisDayTimeline(
         all: all,

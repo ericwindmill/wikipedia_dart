@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_client/features/on_this_day/view.dart';
+import 'package:flutter_client/features/ui/theme.dart';
 
 import 'features/on_this_day/view_model.dart';
 
@@ -12,6 +13,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: OnThisDayView(viewModel: OnThisDayViewModel()));
+    return MaterialApp(
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      home: OnThisDayView(viewModel: OnThisDayViewModel()),
+    );
   }
 }

@@ -1,7 +1,7 @@
 bool verifyMonthAndDate({required int month, required int day}) {
   final longMonths = [1, 3, 5, 7, 8, 10, 12];
   final shortMonths = [4, 6, 9, 11];
-  if (month < 1 || day > 12) return false;
+  if (month < 1 || month > 12) return false;
   if (day < 1) return false;
   if (longMonths.contains(month)) {
     if (day > 31) return false;
@@ -20,4 +20,25 @@ String toStringWithPad(int number) {
   }
 
   return number.toString();
+}
+
+Map<int, String> months = {
+  1: 'January',
+  2: 'February',
+  3: 'March',
+  4: 'April',
+  5: 'May',
+  6: 'June',
+  7: 'July',
+  8: 'August',
+  9: 'September',
+  10: 'October',
+  11: 'November',
+  12: 'December',
+};
+
+extension Readable on DateTime {
+  String get humanReadable {
+    return '${months[month]} $day';
+  }
 }

@@ -1,46 +1,26 @@
-import 'dart:collection';
-
 import '../../wikipedia_api.dart';
 
-class OnThisDayEvent {
+sealed class OnThisDayEvent {
   /// Returns a new [OnThisDayEvent] instance.
-  OnThisDayEvent({required this.text, this.year, this.pages = const []});
+  OnThisDayEvent({required this.text, this.pages = const []});
 
   // Description of the event
   String text;
 
-  // Year of the event
-  int? year;
-
-  //
-
   /// List of pages related to the event
   List<Summary> pages;
 
-  Map<String, Object?> toJson() {
-    return {
-      'text': text,
-      'year': year,
-      'pages': {for (var p in pages) p.toJson()},
-    };
-  }
-
-  static OnThisDayEvent fromJson(Map<String, Object?> json) {
-    return switch (json) {
-      {'text': String text, 'year': int year, 'pages': Iterable pages} =>
-        OnThisDayEvent(
-          text: text,
-          year: year,
-          pages: [for (var p in pages) Summary.fromJson(p)],
-        ),
-      {'text': String text, 'pages': Iterable pages} => Holiday(
-        text: text,
-        pages: [for (var p in pages) Summary.fromJson(p)],
-      ),
-      _ =>
-        throw FormatException(
-          'Could not deserialize OnThisDayInner, json=$json',
-        ),
+  static Map<String, Object?> toJson(OnThisDayEvent instance) {
+    return switch (instance) {
+      Year e => {
+        'text': e.text,
+        'year': e.year,
+        'pages': {for (var p in e.pages) p.toJson()},
+      },
+      Holiday h => {
+        'text': h.text,
+        'pages': {for (var p in h.pages) p.toJson()},
+      },
     };
   }
 
@@ -59,6 +39,120 @@ class OnThisDayEvent {
   String toString() => 'OnThisDayInner[text=$text, pages=$pages]';
 }
 
+// Holidays don't have years
 class Holiday extends OnThisDayEvent {
   Holiday({required super.text, super.pages});
+
+  static Holiday fromJson(Map<String, Object?> json) {
+    if (json case {'text': String text, 'pages': Iterable pages}) {
+      return Holiday(
+        text: text,
+        pages: [for (var p in pages) Summary.fromJson(p)],
+      );
+    }
+
+    throw FormatException('Invalid json in OnThisDayEvent.fromJson');
+  }
+}
+
+mixin Year on OnThisDayEvent {
+  // Year of the event
+  late final int year;
+
+  int get yearsAgo => DateTime.now().year - year;
+}
+
+class Birthday extends OnThisDayEvent with Year {
+  Birthday({required super.text, super.pages, required this.year});
+
+  @override
+  final int year;
+
+  static Birthday fromJson(Map<String, Object?> json) {
+    if (json case {
+      'text': String text,
+      'year': int year,
+      'pages': Iterable pages,
+    }) {
+      return Birthday(
+        text: text,
+        year: year,
+        pages: [for (var p in pages) Summary.fromJson(p)],
+      );
+    }
+
+    throw FormatException('Invalid json in OnThisDayEvent.fromJson');
+  }
+}
+
+class NotableDeath extends OnThisDayEvent with Year {
+  NotableDeath({required super.text, super.pages, required this.year});
+
+  // Year of the event
+  @override
+  final int year;
+
+  static NotableDeath fromJson(Map<String, Object?> json) {
+    if (json case {
+      'text': String text,
+      'year': int year,
+      'pages': Iterable pages,
+    }) {
+      return NotableDeath(
+        text: text,
+        year: year,
+        pages: [for (var p in pages) Summary.fromJson(p)],
+      );
+    }
+
+    throw FormatException('Invalid json in OnThisDayEvent.fromJson');
+  }
+}
+
+class FeaturedEvent extends OnThisDayEvent with Year {
+  FeaturedEvent({required super.text, super.pages, required this.year});
+
+  // Year of the event
+  @override
+  final int year;
+
+  static FeaturedEvent fromJson(Map<String, Object?> json) {
+    if (json case {
+      'text': String text,
+      'year': int year,
+      'pages': Iterable pages,
+    }) {
+      return FeaturedEvent(
+        text: text,
+        year: year,
+        pages: [for (var p in pages) Summary.fromJson(p)],
+      );
+    }
+
+    throw FormatException('Invalid json in OnThisDayEvent.fromJson');
+  }
+}
+
+class Event extends OnThisDayEvent with Year {
+  Event({required super.text, super.pages, required this.year});
+
+  // Year of the event
+  @override
+  final int year;
+
+  static Event fromJson(Map<String, Object?> json) {
+    if (json case {
+      'text': String text,
+      'year': int year,
+      'pages': Iterable pages,
+    }) {
+      return Event(
+        text: text,
+        year: year,
+        pages: [for (var p in pages) Summary.fromJson(p)],
+      );
+    }
+
+    throw FormatException('Invalid json in OnThisDayEvent.fromJson');
+  }
 }
