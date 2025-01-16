@@ -42,3 +42,15 @@ extension Readable on DateTime {
     return '${months[month]} $day';
   }
 }
+
+/// Turns ints into Strings with BCE
+/// if the year is negative
+extension ReadableYear on int {
+  String get absYear {
+    if (this < 0) {
+      return '${abs()} BCE';
+    }
+
+    return abs().toString();
+  }
+}

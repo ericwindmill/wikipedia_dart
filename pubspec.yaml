@@ -4,5 +4,5 @@ environment:
   sdk: ^3.6.0
 workspace:
   - wikipedia_api
-  - command_line_client
-  - flutter_client
+  - cli
+  - flutter_app

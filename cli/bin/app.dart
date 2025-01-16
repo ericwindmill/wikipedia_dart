@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'strings.dart';
+import 'print_utils.dart';
 import 'utils.dart';
 
 import 'package:wikipedia_api/wikipedia_api.dart';
+
+const normalLineLength = 60;
 
 Future<void> handleRandomArticle() async {
   await delayedPrint('Fetching random article summary...');
@@ -31,21 +34,24 @@ Future<void> handleOnThisDayTimeline(String date) async {
     month: month!,
     day: day!,
   );
+  stdin.echoMode = false;
   for (var event in timeline.selected) {
-    print("${event.year} = ${event.text}");
-    print(event.pages.first.url);
+    await prettyPrintOnThisDayEvent(event);
     print('');
-    print('Enter "N" for next event or "exit" to return to menu.');
+    stdout.write('-> or exit'.cyanBackground());
     var input = stdin.readLineSync();
     var cmd = input != null ? input.trim().toLowerCase() : 'error';
     if (cmd == 'n') {
+      stdout.write('\r                                       ');
+      stdout.write('\n');
       continue;
     }
     if (cmd == 'exit') {
+      stdin.echoMode = true;
       break;
     }
     if (cmd == 'error') {
-      print('Unrecognized command, exiting timeline reader');
+      print('Unrecognized command, exiting timeline reader'.red());
       await delayedPrint(Strings.commands);
       break;
     }
@@ -56,7 +62,27 @@ Future<void> handleArticle(String name) async {
   await delayedPrint('Fetching $name full article text');
   try {
     var article = await WikimediaApiClient.getArticleByTitle(name);
-    print(article);
+    var lines = article.first.extract.split('\n');
+    var i = 0;
+    while (i < lines.length) {
+      printByLine(lines.sublist(i, i + 10));
+      stdout.write('n -> or exit'.cyanBackground().black());
+      var input = stdin.readLineSync();
+      var cmd = input != null ? input.trim().toLowerCase() : 'error';
+      if (cmd == 'n') {
+        i += 10;
+        continue;
+      }
+      if (cmd == 'exit') {
+        stdin.echoMode = true;
+        break;
+      }
+      if (cmd == 'error') {
+        print('Unrecognized command, exiting timeline reader'.red());
+        await delayedPrint(Strings.commands);
+        break;
+      }
+    }
   } catch (e) {
     print(e);
   }
@@ -106,6 +132,7 @@ class CommandLineApp {
           await handleArticleSummary(args!);
           _printNext();
         case '4' || 'on this day' || 'timeline':
+          // TODO:
           // verifyDate();
           await handleOnThisDayTimeline(args!);
           _printNext();

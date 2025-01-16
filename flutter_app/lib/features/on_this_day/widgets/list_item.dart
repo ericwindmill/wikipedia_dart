@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_client/features/on_this_day/widgets/event_info.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 import '../view.dart';
+import 'event_info.dart';
 import 'wiki_page_link.dart';
 
 class TimelineListItem extends StatelessWidget {
   const TimelineListItem({super.key, required this.event});
 
   final OnThisDayEvent event;
-
-  Widget eventInfo() {
-    return switch(event) {
-      Holiday e => HolidayInfo(e),
-      Birthday e => BirthdayInfo(e),
-      NotableDeath e => NotableDeathInfo(e),
-      Event e => EventInfo(e),
-      FeaturedEvent e => FeaturedEventInfo(e),
-    };
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,33 +30,7 @@ class TimelineListItem extends StatelessWidget {
                   SizedBox(width: width * sidebarWidthPercentage),
                   SizedBox(
                     width: width * mainColumnWidthPercentage,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// TODO: make separate Widgets for different
-                        /// event types (i.e. Holiday, Birth, etc)
-                        if (event is Birthday) BirthdayInfo(event as Birthday)
-                        if (event is NotableDeath) NotableDeathInfo(event as NotableDeath)
-                        if (event is FeaturedEvent) FeaturedEventInfo(event as FeaturedEvent)
-                        if (event is Birthday) BirthdayInfo(event as Birthday)
-                        if (event is Holiday) HolidayInfo(event as Holiday),
-                          Text(
-                            event.year.toString(),
-                            style: TextTheme.of(context).titleMedium,
-                          ),
-                        if (event is! Holiday)
-                          Text(
-                            '${event.yearsAgo} years ago',
-                            style: TextTheme.of(context).bodyMedium,
-                          ),
-                        SizedBox(height: 10),
-                        Text(
-                          event.text,
-                          style: TextTheme.of(context).bodyMedium,
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
+                    child: EventInfo(event),
                   ),
                 ],
               ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'theme_extensions/page_link_extension.dart';
+
 /// I copied this from the compass_app. IRL the AppTheme will be much smaller.
 abstract final class AppTheme {
   static const _textTheme = TextTheme(
@@ -12,11 +14,7 @@ abstract final class AppTheme {
       fontWeight: FontWeight.w600,
       color: Colors.blueAccent,
     ),
-    titleSmall: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: Colors.black87,
-    ),
+    titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
     bodyLarge: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
     bodyMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
     bodySmall: TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
@@ -37,30 +35,30 @@ abstract final class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: AppColors.lightColorScheme,
-    textTheme: _textTheme,
+    textTheme: _textTheme.copyWith(
+      titleSmall: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: Colors.black54,
+      ),
+    ),
     inputDecorationTheme: _inputDecorationTheme,
-    extensions: [
-      // TODO
-      // TagChipTheme(
-      //   chipColor: AppColors.whiteTransparent,
-      //   onChipColor: Colors.white,
-      // ),
-    ],
+    extensions: [PageLinkTheme(backgroundColor: Colors.grey.shade200)],
   );
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: AppColors.darkColorScheme,
-    textTheme: _textTheme,
+    textTheme: _textTheme.copyWith(
+      titleSmall: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: Colors.white70,
+      ),
+    ),
     inputDecorationTheme: _inputDecorationTheme,
-    extensions: [
-      // TODO
-      // TagChipTheme(
-      //   chipColor: AppColors.blackTransparent,
-      //   onChipColor: Colors.white,
-      // ),
-    ],
+    extensions: [PageLinkTheme(backgroundColor: Colors.grey.shade800)],
   );
 }
 

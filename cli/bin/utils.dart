@@ -1,3 +1,5 @@
+import 'print_utils.dart';
+import 'app.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 Future setTimeout(callback, [int duration = 1000]) async {
@@ -29,6 +31,23 @@ void prettyPrintArticle(Article article) async {
   for (var l in lines) {
     await printByLine(l.splitByLength(80));
   }
+}
+
+Future<void> prettyPrintOnThisDayEvent(OnThisDayEvent event) async {
+  await delayedPrint('=== ${event.year} ==='.cyan());
+  var words = event.text.split(' ');
+  var lineLength = normalLineLength;
+  var str = StringBuffer();
+  for (var word in words) {
+    if ((lineLength - word.length + 1) > 0) {
+      str.write('$word ');
+      lineLength -= word.length;
+    } else {
+      str.write('\n');
+      lineLength = 80;
+    }
+  }
+  await printByLine(str.toString().split('\n'));
 }
 
 extension on String {

@@ -18,7 +18,10 @@ void main() {
       () async {
         var pageSummaryInput = await File(terryItoInnerJson).readAsString();
         var pageSummaryMap = jsonDecode(pageSummaryInput);
-        final OnThisDayEvent summary = OnThisDayEvent.fromJson(pageSummaryMap);
+        final OnThisDayEvent summary = OnThisDayEvent.fromJson(
+          pageSummaryMap,
+          EventType.birthday,
+        );
         expect(summary.year, 1949);
       },
     );
@@ -41,6 +44,7 @@ void main() {
         var onThisDayInnerMap = jsonDecode(onThisDayInnerInput);
         OnThisDayEvent onThisDayInner = OnThisDayEvent.fromJson(
           onThisDayInnerMap,
+          EventType.birthday,
         );
         expect(onThisDayInner.year, 1999);
       },

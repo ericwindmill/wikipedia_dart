@@ -5,7 +5,6 @@ class Article {
   final String extract;
 
   static List<Article> listFromJson(Map<String, Object?> json) {
-    print(json);
     final articles = <Article>[];
     if (json case {"query": {"pages": Map<String, Object?> pages}}) {
       for (var MapEntry(:value) in pages.entries) {

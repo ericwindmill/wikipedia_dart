@@ -1,4 +1,4 @@
-name: command_line_client
+name: cli
 description: A sample command-line application that fetches articles from Wikipedia.
 version: 0.0.1
 resolution: workspace
@@ -10,6 +10,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   args: ^2.5.0
+  io: ^1.0.5
   wikipedia_api:
     path: ../wikipedia_api
 
