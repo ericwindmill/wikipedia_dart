@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:wikipedia_api/src/model/search_results.dart';
 
 import 'model/article.dart';
+import 'model/search_results.dart';
 
 class WikimediaApiClient {
   static Future<List<Article>> getArticleByTitle(String title) async {

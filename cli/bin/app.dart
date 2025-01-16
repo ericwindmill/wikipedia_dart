@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:shared/wikipedia_api.dart';
+
 import 'strings.dart';
 import 'print_utils.dart';
 import 'utils.dart';
 
-import 'package:wikipedia_api/wikipedia_api.dart';
 
 const normalLineLength = 60;
 

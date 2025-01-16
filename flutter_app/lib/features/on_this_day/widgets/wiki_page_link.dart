@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wikipedia_api/wikipedia_api.dart';
+import 'package:shared/wikipedia_api.dart';
 
 import '../../ui/theme_extensions/page_link_extension.dart';
 

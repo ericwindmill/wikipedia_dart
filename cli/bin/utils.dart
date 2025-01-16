@@ -1,6 +1,7 @@
+import 'package:shared/wikipedia_api.dart';
+
 import 'print_utils.dart';
 import 'app.dart';
-import 'package:wikipedia_api/wikipedia_api.dart';
 
 Future setTimeout(callback, [int duration = 1000]) async {
   return await Future.delayed(Duration(milliseconds: duration), callback);

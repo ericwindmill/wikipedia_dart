@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:shared/wikipedia_api.dart';
 import 'package:test/test.dart';
-import 'package:wikipedia_api/wikipedia_api.dart';
 
 final dartLangSummaryJson = './test/test_data/dart_lang_summary.json';
 final terryItoInnerJson = './test/test_data/terry_ito_inner.json';

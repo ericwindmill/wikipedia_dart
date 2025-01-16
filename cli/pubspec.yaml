@@ -11,8 +11,8 @@ environment:
 dependencies:
   args: ^2.5.0
   io: ^1.0.5
-  wikipedia_api:
-    path: ../wikipedia_api
+  shared:
+    path: ../shared
 
 dev_dependencies:
   lints: ^5.0.0

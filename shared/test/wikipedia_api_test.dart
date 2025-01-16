@@ -1,4 +1,4 @@
-import 'package:wikipedia_api/wikipedia_api.dart';
+import 'package:shared/wikipedia_api.dart';
 import 'package:test/test.dart';
 
 void main() {

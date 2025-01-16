@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:wikipedia_api/src/util.dart';
 
 import '../wikipedia_api.dart';
 

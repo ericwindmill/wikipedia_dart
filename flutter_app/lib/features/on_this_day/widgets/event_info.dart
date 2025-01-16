@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wikipedia_api/wikipedia_api.dart';
+import 'package:shared/wikipedia_api.dart';
 
 class EventInfo extends StatelessWidget {
   const EventInfo(this.event, {super.key});
