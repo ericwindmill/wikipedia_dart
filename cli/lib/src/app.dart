@@ -4,10 +4,13 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
+
 import 'command/command.dart';
 import 'outputs.dart';
-import 'utils/print_utils.dart';
+import 'utils/print.dart';
 
+/// TODO: rewrite this
+/// TODO: add dartdoc everywhere
 /// [InteractiveCommandRunner] establishes a protocol for the
 /// app to communicate with a continuously with an I/O source.
 /// [T] represents the output of [InteractiveCommandRunner] (via [listen]),
@@ -43,16 +46,18 @@ class InteractiveCommandRunner<T> {
     addCommand(QuitCommand());
   }
 
+  late StreamSubscription _commandLineSubscription;
   final Map<String, Command> _commands = {};
   UnmodifiableSetView<Command> get commands =>
       UnmodifiableSetView({..._commands.values});
 
   void run() async {
-    stdin.listen((data) async {
+    _commandLineSubscription = stdin.listen((data) async {
       var input = utf8.decode(data).trim();
       await onInput(input);
     });
-    await write(Outputs.titleScreen);
+    await write(Outputs.dartTitle);
+    await write(Outputs.wikipediaTitle);
     // print usage to start
     onInput('help');
   }
@@ -87,6 +92,9 @@ class InteractiveCommandRunner<T> {
   void quit([int code = 0]) => _quit(code);
 
   void _quit(int code) {
+    _commandLineSubscription.cancel();
     exit(code);
   }
 }
+
+// '\x1b[31m'

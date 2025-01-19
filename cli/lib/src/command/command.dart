@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:cli/src/utils/ansi.dart';
 import 'package:shared/wikipedia_api.dart';
 
 import '../../wikipedia_cli.dart';
 import '../outputs.dart';
-import '../utils/print_utils.dart';
+import '../utils/print.dart';
+import '../utils/style_text.dart';
 
 part 'help.dart';
 part 'timeline.dart';

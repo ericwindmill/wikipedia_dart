@@ -12,7 +12,8 @@ Future<void> _delayedPrint(String text, {int duration = 200}) async {
   );
 }
 
-/// [duration] defines how much time there will be between each line print (in milliseconds).
+/// [duration] defines how many milliseconds
+/// there will be between each line print
 Future<void> write(String text, {int duration = 100}) async {
   var lines = text.split('\n');
   for (var l in lines) {

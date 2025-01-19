@@ -13,15 +13,13 @@ class HelpCommand extends Command<String> {
   final int _maxWidth = 80;
   final StringBuffer _buffer = StringBuffer();
   final List<String> columns = ['Command', 'Args', 'Descriptions'];
-  final String spacer = ' | ';
+  final String separator = ' | ';
 
   @override
   Stream<String> run({List<String>? args}) async* {
     // 3 columns: Command, Args, Description
     List<int> colWidths = _columnWidths();
-    yield 'Welcome to Dart Wikipedia. Enter a command to continue. \n'
-        .bold()
-        .yellow();
+    yield 'Welcome to Dart Wikipedia. Enter a command to continue. \n'.bold;
 
     yield* _header(colWidths);
     for (var c in runner.commands) {
@@ -47,7 +45,7 @@ class HelpCommand extends Command<String> {
 
         var isBlankLine = cols.every((element) => element.trim().isEmpty);
         if (!isBlankLine) {
-          _buffer.writeAll(cols, spacer);
+          _buffer.writeAll(cols, separator);
           yield _buffer.toString();
         }
 
@@ -56,10 +54,6 @@ class HelpCommand extends Command<String> {
         i++;
       }
     }
-  }
-
-  void _writeString(String str, int colWidth, int start) {
-    _buffer.write('$str${' ' * (colWidth - str.length)} ');
   }
 
   List<int> _columnWidths() {

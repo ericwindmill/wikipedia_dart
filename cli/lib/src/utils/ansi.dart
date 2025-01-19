@@ -1,26 +1,59 @@
-import 'package:io/ansi.dart' as ansi;
+const ansiEscapeLiteral = '\x1B';
 
-extension Stylize on String {
-  // Foreground colors
-  String lightGray() => ansi.lightGray.wrap(this)!;
-  String red() => ansi.red.wrap(this)!;
-  String black() => ansi.black.wrap(this)!;
-  String cyan() => ansi.cyan.wrap(this)!;
-  String blue() => ansi.blue.wrap(this)!;
-  String yellow() => ansi.yellow.wrap(this)!;
+enum ConsoleColor {
+  red(200, 0, 0),
+  dart(4, 56, 117);
 
-  // Background colors
-  String darkGrayBackground() => ansi.backgroundDarkGray.wrap(this)!;
-  String cyanBackground() => ansi.backgroundCyan.wrap(this)!;
-  String greenBackground() => ansi.backgroundGreen.wrap(this)!;
-  String yellowBackground() => ansi.backgroundYellow.wrap(this)!;
-  String magentaBackground() => ansi.backgroundLightMagenta.wrap(this)!;
+  final int r;
+  final int g;
+  final int b;
 
-  // Font styles
-  String bold() => ansi.styleBold.wrap(this)!;
-  String italicize() => ansi.styleItalic.wrap(this)!;
-  String blinking() => ansi.styleBlink.wrap(this)!;
+  const ConsoleColor(this.r, this.b, this.g);
 
-  String defaultTextStyle() =>
-      ansi.wrapWith(this, [ansi.defaultForeground, ansi.backgroundDefault])!;
+  /// Change text color for all future output (until reset)
+  /// ```dart
+  /// print('hello'); // prints in terminal default color
+  /// print('AnsiColor.red.enableForeground');
+  /// print('hello'); // prints in red color
+  /// ```
+  String get enableForeground => '$ansiEscapeLiteral[38;2;$r;$g;${b}m';
+
+  /// Change text color for all future output (until reset)
+  /// ```dart
+  /// print('hello'); // prints in terminal default color
+  /// print('AnsiColor.red.enableForeground');
+  /// print('hello'); // prints in red color
+  /// ```
+  String get enableBackground => '$ansiEscapeLiteral[48;2;$r;$g;${b}m';
+
+  /// Reset text and background color to terminal defaults
+  static String get reset => '$ansiEscapeLiteral[0m';
+
+  /// Sets text color and then resets the color change
+  String applyForeground(String text) {
+    return '$ansiEscapeLiteral[38;2;$r;$g;${b}m$text$ansiEscapeLiteral[0m';
+  }
+
+  /// Sets background color and then resets the color change
+  String applyBackground(String text) {
+    return '$ansiEscapeLiteral[48;2;$r;$g;${b}m$text$ansiEscapeLiteral[0m';
+  }
+}
+
+enum ConsoleTextStyle {
+  bold(1),
+  faint(2),
+  italic(3),
+  underscore(4),
+  blink(5),
+  inverted(6),
+  invisible(7),
+  strikethru(8);
+
+  final int ansiCode;
+  const ConsoleTextStyle(this.ansiCode);
+
+  String apply(String text) {
+    return '$ansiEscapeLiteral[$ansiCode;m$text';
+  }
 }

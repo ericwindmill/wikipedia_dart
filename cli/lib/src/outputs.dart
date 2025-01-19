@@ -1,10 +1,11 @@
-import 'package:cli/src/utils/ansi.dart';
 import 'package:shared/wikipedia_api.dart';
 
-class Outputs {
-  static String inputExists(String name) => 'Input $name already exists.'.red();
+import './utils/style_text.dart';
 
-  static final titleScreen =
+class Outputs {
+  static String inputExists(String name) => 'Input $name already exists.'.red;
+
+  static final dartTitle =
       '''
             ██████╗  █████╗ ██████╗ ████████╗              
             ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝              
@@ -12,20 +13,24 @@ class Outputs {
             ██║  ██║██╔══██║██╔══██╗   ██║                 
             ██████╔╝██║  ██║██║  ██║   ██║                 
             ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝                 
+ '''.dartBlue.bold;
+
+  static final wikipediaTitle =
+      '''            
 ██╗    ██╗██╗██╗  ██╗██╗██████╗ ███████╗██████╗ ██╗ █████╗ 
 ██║    ██║██║██║ ██╔╝██║██╔══██╗██╔════╝██╔══██╗██║██╔══██╗
 ██║ █╗ ██║██║█████╔╝ ██║██████╔╝█████╗  ██║  ██║██║███████║
 ██║███╗██║██║██╔═██╗ ██║██╔═══╝ ██╔══╝  ██║  ██║██║██╔══██║
 ╚███╔███╔╝██║██║  ██╗██║██║     ███████╗██████╔╝██║██║  ██║
  ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝ 
- '''.blue().blinking();
+ '''.bold;
 
   static String event(OnThisDayEvent event) {
-    var strBuffer = StringBuffer(" * ".blue().bold());
+    var strBuffer = StringBuffer(" * FIX ".red.bold);
     if (event.year != null) {
-      strBuffer.write(event.year.toString().blue().bold());
+      // strBuffer.write(event.year.toString().blue().bold());
     } else {
-      strBuffer.write('Holiday'.blue().bold());
+      // strBuffer.write('Holiday'.blue().bold());
     }
     strBuffer.write('\n');
     var text = event.text.splitLinesByLength(50);
