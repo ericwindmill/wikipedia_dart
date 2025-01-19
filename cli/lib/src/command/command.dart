@@ -44,19 +44,8 @@ mixin Args on Command<String> {
     }
     buffer.write('$argName=$argHelp');
 
-    var defaultVal = argDefault != null ? 'defaults to: $argDefault' : '';
+    var defaultVal = argDefault != null ? 'default: $argDefault' : '';
 
     return [colA, buffer.toString(), defaultVal, description];
-  }
-
-  String buildArgUsage() {
-    var isRequired = required && argDefault != null ? 'required' : '';
-    var defaultVal = argDefault != null ? 'defaults to: $argDefault' : '';
-    if (isRequired.isEmpty && defaultVal.isEmpty) {
-      return '$argName=$argHelp';
-    }
-    var descriptors = '($isRequired$defaultVal)';
-
-    return '$argName=$argHelp $descriptors';
   }
 }

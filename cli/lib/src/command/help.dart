@@ -44,10 +44,12 @@ class HelpCommand extends Command<String> {
         var descLine = descSplit.elementAtOrNull(i) ?? '';
         _writeString(descLine, colWidths[1], start);
         i++;
+
+        var output = _buffer.toString();
+        _buffer.clear();
+        if (output.trim().isEmpty) continue;
+        yield output;
       }
-      // _buffer.write('\n');
-      yield _buffer.toString();
-      _buffer.clear();
     }
   }
 
