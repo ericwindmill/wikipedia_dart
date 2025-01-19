@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cli/src/utils/ansi.dart';
 import 'package:shared/wikipedia_api.dart';
 
 import '../../wikipedia_cli.dart';

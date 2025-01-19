@@ -12,14 +12,18 @@ class HelpCommand extends Command<String> {
 
   final int _maxWidth = 80;
   final StringBuffer _buffer = StringBuffer();
-  int _newLines = 0;
   final List<String> columns = ['Command', 'Args', 'Descriptions'];
+  final String spacer = ' | ';
 
   @override
   Stream<String> run({List<String>? args}) async* {
     // 3 columns: Command, Args, Description
     List<int> colWidths = _columnWidths();
+    yield 'Welcome to Dart Wikipedia. Enter a command to continue. \n'
+        .bold()
+        .yellow();
 
+    yield* _header(colWidths);
     for (var c in runner.commands) {
       var items = c.usage;
       var nameSplit = items[0].splitLinesByLength(colWidths[0]);
@@ -31,46 +35,31 @@ class HelpCommand extends Command<String> {
       );
 
       // Create a single line
+      var cols = <String>[];
       var i = 0;
       while (i < numLines) {
-        var start =
-            i == 0
-                ? 0
-                : colWidths.take(i).reduce((start, col) => start + col + 1);
         var nameLine = nameSplit.elementAtOrNull(i) ?? '';
-        _writeString(nameLine, colWidths[0], 0);
+        cols.add('$nameLine${' ' * (colWidths[i] - nameLine.length)} ');
         var argLine = argSplit.elementAtOrNull(i) ?? '';
-        _writeString(argLine, colWidths[1], start);
+        cols.add('$argLine${' ' * (colWidths[i] - argLine.length)} ');
         var descLine = descSplit.elementAtOrNull(i) ?? '';
-        _writeString(descLine, colWidths[1], start);
-        i++;
+        cols.add('$descLine${' ' * (colWidths[i] - descLine.length)} ');
 
-        var output = _buffer.toString();
+        var isBlankLine = cols.every((element) => element.trim().isEmpty);
+        if (!isBlankLine) {
+          _buffer.writeAll(cols, spacer);
+          yield _buffer.toString();
+        }
+
         _buffer.clear();
-        if (output.trim().isEmpty) continue;
-        yield output;
+        cols.clear();
+        i++;
       }
     }
   }
 
   void _writeString(String str, int colWidth, int start) {
     _buffer.write('$str${' ' * (colWidth - str.length)} ');
-    // var lineCount = 0;
-    // // The lines need to be wrapped if the str is too long
-    // if (str.length > colWidth) {
-    //   // List<String> lines = str.splitLinesByLength(colWidth);
-    //   // _buffer.write('${lines.first}\n');
-    //   // lineCount++;
-    //   // for (var line in lines.sublist(1)) {
-    //   //   _buffer.write(' ' * start);
-    //   //   _buffer.write('$line\n');
-    //   //   lineCount++;
-    //   // }
-    //   // if (lineCount > _newLines) _newLines = lineCount;
-    // } else {
-    //   // If the str is less than the column width
-    //
-    // }
   }
 
   List<int> _columnWidths() {
@@ -96,5 +85,17 @@ class HelpCommand extends Command<String> {
     );
 
     return [commandColLength, argsColLength, descriptionColLength];
+  }
+
+  Stream<String> _header(List<int> columnWidths) async* {
+    var buffer = StringBuffer();
+    var cols = [];
+
+    for (var i = 0; i < columns.length; i++) {
+      cols.add('${columns[i]}${' ' * (columnWidths[i] - columns[i].length)} ');
+    }
+    buffer.writeAll(cols, ' | ');
+    yield buffer.toString();
+    yield '-' * columnWidths.reduce((start, col) => start + col);
   }
 }

@@ -52,7 +52,7 @@ class InteractiveCommandRunner<T> {
       var input = utf8.decode(data).trim();
       await onInput(input);
     });
-    // await write(Outputs.titleScreen);
+    await write(Outputs.titleScreen);
     // print usage to start
     onInput('help');
   }
