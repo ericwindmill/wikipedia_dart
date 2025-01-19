@@ -21,6 +21,18 @@ void main() {
       );
       expect(timeline.selected, isNotEmpty);
     });
+
+    test(
+      "Fetches on 'selected' events from 'on this day' timeline from Wikipedia",
+      () async {
+        final timeline = await WikipediaApiClient.getTimelineForDate(
+          month: 8,
+          day: 2,
+          type: EventType.selected,
+        );
+        expect(timeline.selected, isNotEmpty);
+      },
+    );
   });
 
   group('Fetch from wikimedia api', () {

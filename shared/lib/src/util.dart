@@ -54,3 +54,28 @@ extension ReadableYear on int {
     return abs().toString();
   }
 }
+
+extension SplitByLength on String {
+  List<String> splitLinesByLength(int length) {
+    var words = split(' ');
+    var output = <String>[];
+    var strBuffer = StringBuffer();
+    for (var i = 0; i < words.length; i++) {
+      var word = words[i];
+      if (strBuffer.length + word.length < length) {
+        strBuffer.write(word);
+        if (i + 1 != words.length) {
+          strBuffer.write(' ');
+        }
+      } else {
+        strBuffer.write(word);
+        output.add(strBuffer.toString());
+        strBuffer.clear();
+      }
+    }
+
+    // Add left overs
+    output.add(strBuffer.toString());
+    return output;
+  }
+}

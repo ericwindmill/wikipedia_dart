@@ -1,5 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import '../../wikipedia_api.dart';
 
+@JsonSerializable()
 class Summary {
   /// Returns a new [Summary] instance.
   Summary({
@@ -50,7 +53,6 @@ class Summary {
 
   /// Returns a new [Summary] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
-  // ignore: prefer_constructors_over_static_methods
   static Summary fromJson(Map<String, Object?> json) {
     return switch (json) {
       {

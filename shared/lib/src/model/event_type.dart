@@ -1,11 +1,12 @@
 enum EventType {
-  holiday('Holiday'),
-  birthday('Birthday'),
-  death('Notable death'),
-  event('Event'),
-  selected('Wikipedia featured event');
+  holiday('Holiday', 'holidays'),
+  birthday('Birthday', 'births'),
+  death('Notable death', 'deaths'),
+  event('Event', 'events'),
+  selected('Wikipedia featured event', 'selected');
 
   final String humanReadable;
+  final String apiStr;
 
-  const EventType(this.humanReadable);
+  const EventType(this.humanReadable, this.apiStr);
 }

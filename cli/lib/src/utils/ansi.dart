@@ -6,6 +6,8 @@ extension Stylize on String {
   String red() => ansi.red.wrap(this)!;
   String black() => ansi.black.wrap(this)!;
   String cyan() => ansi.cyan.wrap(this)!;
+  String blue() => ansi.blue.wrap(this)!;
+  String yellow() => ansi.yellow.wrap(this)!;
 
   // Background colors
   String darkGrayBackground() => ansi.backgroundDarkGray.wrap(this)!;

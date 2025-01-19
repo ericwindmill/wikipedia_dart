@@ -57,6 +57,8 @@ class WikipediaApiClient {
   static Future<OnThisDayTimeline> getTimelineForDate({
     required int month,
     required int day,
+    // Be default, fetch all types.
+    EventType? type,
   }) async {
     if (!verifyMonthAndDate(month: month, day: day)) {
       throw Exception('Month and date must be valid combination.');
@@ -64,13 +66,15 @@ class WikipediaApiClient {
 
     var strMonth = toStringWithPad(month);
     var strDay = toStringWithPad(day);
+    var strType = type == null ? 'all' : type.apiStr;
 
     final client = http.Client();
     try {
       final url = Uri.https(
         'en.wikipedia.org',
-        '/api/rest_v1/feed/onthisday/all/$strMonth/$strDay',
+        '/api/rest_v1/feed/onthisday/$strType/$strMonth/$strDay',
       );
+
       final response = await client.get(url);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);

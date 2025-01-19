@@ -1,3 +1,3 @@
 library;
 
-export 'app.dart';
+export 'src/app.dart';

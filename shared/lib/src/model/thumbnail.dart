@@ -1,3 +1,6 @@
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonSerializable()
 class Thumbnail {
   /// Returns a new [Thumbnail] instance.
   Thumbnail({required this.source, required this.width, required this.height});
@@ -17,7 +20,6 @@ class Thumbnail {
 
   /// Returns a new [Thumbnail] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
-  // ignore: prefer_constructors_over_static_methods
   static Thumbnail fromJson(Map<String, Object?> json) {
     if (json case {
       'source': String source,

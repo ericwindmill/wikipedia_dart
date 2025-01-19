@@ -1,6 +1,8 @@
-import '../../wikipedia_api.dart';
-import 'event_type.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import '../../wikipedia_api.dart';
+
+@JsonSerializable(explicitToJson: true)
 class OnThisDayEvent {
   /// Returns a new [OnThisDayEvent] instance.
   OnThisDayEvent({

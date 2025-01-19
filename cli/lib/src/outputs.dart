@@ -1,17 +1,11 @@
-class Strings {
-  static final welcome = 'Welcome to Wikipedia Dart!';
-  static final getStarted = 'To get started, tell me what you want to do:';
-  static final commands = '''
-1. Random - Get a random article summary from Wikipedia.
-2. Article=<TITLE> - Get an article from Wikipedia by name. (e.g. article=cat)
-3. Summary=<TITLE> - Get an article summary from Wikipedia by name. (e.g. summary=cat)
-4. Timeline=<MM/DD> - Get a list of events that happened on this time through out history. (e.g. timeline=08/02)
-5. Search=<TERM> - Search for Wikipedia articles related to a term. (e.g. search=dart)
-6. Help - Get usage information about this app.
-7. Exit - Quit the application.
+import 'package:cli/src/utils/ansi.dart';
+import 'package:shared/wikipedia_api.dart';
 
-To make a selection, enter the number [1-7], and add provide it's arguments if necessary.''';
-  static final titleScreen = '''
+class Outputs {
+  static String inputExists(String name) => 'Input $name already exists.'.red();
+
+  static final titleScreen =
+      '''
             ██████╗  █████╗ ██████╗ ████████╗              
             ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝              
             ██║  ██║███████║██████╔╝   ██║                 
@@ -24,8 +18,20 @@ To make a selection, enter the number [1-7], and add provide it's arguments if n
 ██║███╗██║██║██╔═██╗ ██║██╔═══╝ ██╔══╝  ██║  ██║██║██╔══██║
 ╚███╔███╔╝██║██║  ██╗██║██║     ███████╗██████╔╝██║██║  ██║
  ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝ 
- ''';
+ '''.blue().blinking();
 
-  static final missingArgument =
-      'That command requires an argument. Please try again with an argument in the following format: <CMD>=<ARG>. For example, you can get an article with 2=cat';
+  static String event(OnThisDayEvent event) {
+    var strBuffer = StringBuffer(" * ".blue().bold());
+    if (event.year != null) {
+      strBuffer.write(event.year.toString().blue().bold());
+    } else {
+      strBuffer.write('Holiday'.blue().bold());
+    }
+    strBuffer.write('\n');
+    var text = event.text.splitLinesByLength(50);
+    for (var line in text) {
+      strBuffer.write('$line\n');
+    }
+    return strBuffer.toString();
+  }
 }
