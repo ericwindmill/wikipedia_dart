@@ -50,11 +50,15 @@ class InteractiveCommandRunner<T> {
       UnmodifiableSetView({..._commands.values});
 
   void run() async {
+    await write('');
     await write(Outputs.dartTitle);
     await write(Outputs.wikipediaTitle);
+    await write('');
     // print usage to start
     onInput('help');
     await for (var data in stdin) {
+      // When control is released back to main input, toggle rawMode off
+      rawMode = false;
       var input = String.fromCharCodes(data).trim();
       await onInput(input);
     }

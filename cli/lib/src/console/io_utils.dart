@@ -11,7 +11,7 @@ Future<String?> prompt(String input) async {
 Future<void> _delayedPrint(String text, {int duration = 100}) async {
   return await Future.delayed(
     Duration(milliseconds: duration),
-    () => print(text),
+    () => stdout.write(text),
   );
 }
 
@@ -21,13 +21,16 @@ Future<void> _delayedPrint(String text, {int duration = 100}) async {
 Future<void> write(String text, {int duration = 100}) async {
   var lines = text.split('\n');
   for (var l in lines) {
-    await _delayedPrint(l);
+    await _delayedPrint('$l \n');
   }
 }
 
-void toggleRawMode() {
-  stdin.lineMode = false;
-  stdin.echoMode = false;
+bool _rawMode = false;
+bool get rawMode => _rawMode;
+set rawMode(bool value) {
+  stdin.lineMode = !value;
+  stdin.echoMode = !value;
+  _rawMode = value;
 }
 
 const ansiEraseInLineAll = '\x1b[2K';
@@ -55,7 +58,7 @@ enum ConsoleControl {
   String get execute => '$ansiEscapeLiteral[$ansiCode';
 
   static Future<ConsoleControl> readKey() async {
-    toggleRawMode();
+    rawMode = true;
     var codeUnit = 0;
     ConsoleControl key = ConsoleControl.unknown;
 
@@ -91,7 +94,7 @@ enum ConsoleControl {
         };
       }
     }
-    toggleRawMode();
+    rawMode = false;
     return key;
   }
 }
