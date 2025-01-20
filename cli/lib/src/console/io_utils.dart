@@ -30,6 +30,9 @@ void toggleRawMode() {
   stdin.echoMode = false;
 }
 
+const ansiEraseInLineAll = '\x1b[2K';
+void eraseLine() => stdout.write(ansiEraseInLineAll);
+
 /// Reads the incoming bytes from stdin, and determines which
 /// [ConsoleControl] key has been entered.
 ///

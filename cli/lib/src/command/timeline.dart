@@ -74,6 +74,8 @@ class TimelineCommand extends Command<String> with Args {
       yield Outputs.event(event);
       while (i < timeline.length) {
         yield Outputs.enterLeftOrRight;
+
+        // TODO erase the reminder message on enter
         var key = await ConsoleControl.readKey();
 
         switch (key) {
@@ -86,6 +88,7 @@ class TimelineCommand extends Command<String> with Args {
             } else {
               i--;
               var event = timeline[i];
+              eraseLine();
               yield Outputs.event(event);
             }
           case ConsoleControl.cursorRight:
@@ -93,10 +96,12 @@ class TimelineCommand extends Command<String> with Args {
             i++;
             if (i + 1 == timeline.length) break;
             var event = timeline[i];
+            eraseLine();
             yield Outputs.event(event);
           case ConsoleControl.q:
             return;
           default:
+            eraseLine();
             yield Outputs.unknownInput;
             yield Outputs.enterLeftOrRight;
         }
