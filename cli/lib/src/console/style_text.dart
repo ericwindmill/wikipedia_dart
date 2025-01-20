@@ -2,11 +2,14 @@ const ansiEscapeLiteral = '\x1B';
 
 // As a demo, only includes colors this program cares about.
 // If you want to use more colors, add them here.
+/// All colors from Dart's brand styleguide
 enum ConsoleColor {
-  red(200, 0, 0),
-  white(0, 0, 0),
-  dartPrimary(4, 56, 117),
-  dartSecondary(0, 0, 0);
+  dartPrimaryDark(4, 56, 117),
+  dartPrimaryLight(184, 234, 254),
+  red(242, 93, 80),
+  white(255, 255, 255),
+  teal(28, 218, 197),
+  yellow(255, 242, 117);
 
   final int r;
   final int g;
@@ -65,11 +68,18 @@ enum ConsoleTextStyle {
 extension StyleText on String {
   // Text color
   String get red => ConsoleColor.red.applyForeground(this);
-  String get dartBlue => ConsoleColor.dartPrimary.applyForeground(this);
+  String get darkBlue => ConsoleColor.dartPrimaryDark.applyForeground(this);
+  String get lightBlue => ConsoleColor.dartPrimaryLight.applyForeground(this);
+  String get yellow => ConsoleColor.yellow.applyForeground(this);
+  String get teal => ConsoleColor.teal.applyForeground(this);
+  String get white => ConsoleColor.white.applyForeground(this);
 
   // Text background colors
-  String get dartBlueBackground =>
-      ConsoleColor.dartPrimary.applyBackground(this);
+  String get darkBlueBackground =>
+      ConsoleColor.dartPrimaryDark.applyBackground(this);
+  String get lightBlueBackground =>
+      ConsoleColor.dartPrimaryDark.applyBackground(this);
+  String get whiteBackground => ConsoleColor.white.applyBackground(this);
 
   // Styles
   String get bold => ConsoleTextStyle.bold.apply(this);
@@ -108,24 +118,4 @@ extension StyleText on String {
     if (strikethru) styles.add(9);
     return '$ansiEscapeLiteral[${styles.join(";")}m$this$ansiEscapeLiteral[0m';
   }
-
-  // TODO - finish adding colors
-  // Foreground colors
-  // String lightGray() => ansi.lightGray.wrap(this)!;
-  // // String red() => ansi.red.wrap(this)!;
-  // String black() => ansi.black.wrap(this)!;
-  // String cyan() => ansi.cyan.wrap(this)!;
-  // String blue() => ansi.blue.wrap(this, forScript: true)!;
-  // String yellow() => ansi.yellow.wrap(this)!;
-  //
-  // // Background colors
-  // String darkGrayBackground() => ansi.backgroundDarkGray.wrap(this)!;
-  // String cyanBackground() => ansi.backgroundCyan.wrap(this)!;
-  // String greenBackground() => ansi.backgroundGreen.wrap(this)!;
-  // String yellowBackground() =>
-  //     ansi.backgroundYellow.wrap(this, forScript: true)!;
-  // String magentaBackground() => ansi.backgroundLightMagenta.wrap(this)!;
-  //
-  // String defaultTextStyle() =>
-  //     ansi.wrapWith(this, [ansi.defaultForeground, ansi.backgroundDefault])!;
 }

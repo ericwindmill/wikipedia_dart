@@ -17,17 +17,16 @@ class Outputs {
             ██║  ██║███████║██████╔╝   ██║                 
             ██║  ██║██╔══██║██╔══██╗   ██║                 
             ██████╔╝██║  ██║██║  ██║   ██║                 
-            ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝                 
- '''.dartBlue;
-
-  static final wikipediaTitle = '''            
+            ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝'''.lightBlue;
+  static final wikipediaTitle =
+      '''            
 ██╗    ██╗██╗██╗  ██╗██╗██████╗ ███████╗██████╗ ██╗ █████╗ 
 ██║    ██║██║██║ ██╔╝██║██╔══██╗██╔════╝██╔══██╗██║██╔══██╗
 ██║ █╗ ██║██║█████╔╝ ██║██████╔╝█████╗  ██║  ██║██║███████║
 ██║███╗██║██║██╔═██╗ ██║██╔═══╝ ██╔══╝  ██║  ██║██║██╔══██║
 ╚███╔███╔╝██║██║  ██╗██║██║     ███████╗██████╔╝██║██║  ██║
- ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝ 
- ''';
+ ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝
+ '''.white;
 
   static String invalidArgs(Args arg) {
     var base = 'Invalid args for command.'.red;
@@ -41,11 +40,11 @@ class Outputs {
   static String unknownInput = 'Unknown input.'.red;
 
   static String event(OnThisDayEvent event) {
-    var strBuffer = StringBuffer(" * ".dartBlue.bold);
+    var strBuffer = StringBuffer(" * ".lightBlue.bold);
     if (event.year != null) {
-      strBuffer.write(event.year.toString().dartBlue.bold);
+      strBuffer.write(event.year.toString().lightBlue.bold);
     } else {
-      strBuffer.write('Holiday'.dartBlue.bold);
+      strBuffer.write('Holiday'.lightBlue.bold);
     }
     strBuffer.write('\n');
     var text = event.text.splitLinesByLength(50);
