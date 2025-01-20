@@ -1,11 +1,11 @@
 import 'dart:math';
 
+import 'package:cli/src/console/io_utils.dart';
 import 'package:shared/wikipedia_api.dart';
 
 import '../../wikipedia_cli.dart';
 import '../outputs.dart';
-import '../utils/print.dart';
-import '../utils/style_text.dart';
+import '../console/style_text.dart';
 
 part 'help.dart';
 part 'timeline.dart';
@@ -18,11 +18,9 @@ sealed class Command<T> {
   late InteractiveCommandRunner runner;
   Stream<T> run({List<String>? args});
 
-  /// Returns the pieces of usage, formatted
-  /// Pieces are [name(s), args, defaultArg, description].
-  List<String> get usage {
-    var buffer = StringBuffer()..writeAll(aliases, ', ');
-    return ['$name, ${buffer.toString()}', '', '', description];
+  String get usage {
+    var buffer = StringBuffer()..writeAll([name, ...aliases], ', ');
+    return '${buffer.toString()} - $description';
   }
 }
 
@@ -32,21 +30,27 @@ mixin Args on Command<String> {
   bool get required => false;
   String? get argDefault;
 
-  /// Returns the pieces of usage, formatted
-  /// Pieces are [name(s), args, defaultArg, description].
-  @override
-  List<String> get usage {
-    var buffer = StringBuffer('$name, ')..writeAll(aliases, ', ');
-    var colA = buffer.toString();
-    buffer.clear();
-
-    if (required) {
-      buffer.write('[required] ');
+  bool validateArgs(List<String>? args) {
+    if (required && args == null || required && args!.isEmpty) return false;
+    for (var arg in args!) {
+      if (!arg.contains('=')) return false;
     }
-    buffer.write('$argName=$argHelp');
+    return true;
+  }
 
-    var defaultVal = argDefault != null ? 'default: $argDefault' : '';
+  @override
+  String get usage {
+    var buffer = StringBuffer('$name, ')..writeAll(aliases, ', ');
 
-    return [colA, buffer.toString(), defaultVal, description];
+    buffer.write(' - $argName=$argHelp ');
+    if (required) {
+      buffer.write(' [required] ');
+    }
+
+    var defaultVal = argDefault != null ? ' default: $argDefault' : '';
+    buffer.write(defaultVal);
+
+    buffer.write('\n$description');
+    return buffer.toString();
   }
 }

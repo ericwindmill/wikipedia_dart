@@ -2,12 +2,11 @@ library;
 
 import 'dart:async';
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:io';
 
 import 'command/command.dart';
 import 'outputs.dart';
-import 'utils/print.dart';
+import 'console/io_utils.dart';
 
 /// TODO: rewrite this
 /// TODO: add dartdoc everywhere
@@ -46,27 +45,31 @@ class InteractiveCommandRunner<T> {
     addCommand(QuitCommand());
   }
 
-  late StreamSubscription _commandLineSubscription;
   final Map<String, Command> _commands = {};
   UnmodifiableSetView<Command> get commands =>
       UnmodifiableSetView({..._commands.values});
 
   void run() async {
-    _commandLineSubscription = stdin.listen((data) async {
-      var input = utf8.decode(data).trim();
-      await onInput(input);
-    });
     await write(Outputs.dartTitle);
     await write(Outputs.wikipediaTitle);
     // print usage to start
     onInput('help');
+    await for (var data in stdin) {
+      var input = String.fromCharCodes(data).trim();
+      await onInput(input);
+    }
   }
 
   Future<void> onInput(String input) async {
-    var allArgs = input.split(' ');
-    var cmd = parse(allArgs.first);
-    await for (final message in cmd.run(args: allArgs.sublist(1))) {
-      await write(message);
+    try {
+      var allArgs = input.split(' ');
+      var cmd = parse(allArgs.first);
+      await for (final message in cmd.run(args: allArgs.sublist(1))) {
+        await write(message);
+      }
+    } catch (e) {
+      // TODO: handle inputs
+      write(e.toString());
     }
   }
 
@@ -92,9 +95,7 @@ class InteractiveCommandRunner<T> {
   void quit([int code = 0]) => _quit(code);
 
   void _quit(int code) {
-    _commandLineSubscription.cancel();
+    // Cancel subscriptions and close streams here
     exit(code);
   }
 }
-
-// '\x1b[31m'

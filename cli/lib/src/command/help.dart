@@ -15,6 +15,7 @@ class HelpCommand extends Command<String> {
   final List<String> columns = ['Command', 'Args', 'Descriptions'];
   final String separator = ' | ';
 
+  // TODO: create Table class?
   @override
   Stream<String> run({List<String>? args}) async* {
     // 3 columns: Command, Args, Description
@@ -23,7 +24,7 @@ class HelpCommand extends Command<String> {
 
     yield* _header(colWidths);
     for (var c in runner.commands) {
-      var items = c.usage;
+      var items = _valuesForCommand(c);
       var nameSplit = items[0].splitLinesByLength(colWidths[0]);
       var argSplit = [items[1], items[2]];
       var descSplit = items[3].splitLinesByLength(colWidths[2]);
@@ -56,12 +57,31 @@ class HelpCommand extends Command<String> {
     }
   }
 
+  // Returns the pieces of usage, formatted
+  // Pieces are [name(s), args, defaultArg, description].
+  List<String> _valuesForCommand(Command c) {
+    var buffer = StringBuffer('${c.name}, ')..writeAll(c.aliases, ', ');
+    var colA = buffer.toString();
+    buffer.clear();
+
+    if (c is Args) {
+      if (c.required) {
+        buffer.write('[required] ');
+      }
+      buffer.write('${c.argName}=${c.argHelp}');
+      var defaultVal = c.argDefault != null ? 'default: ${c.argDefault}' : '';
+      return [colA, buffer.toString(), defaultVal, c.description];
+    }
+
+    return [colA, '', '', c.description];
+  }
+
   List<int> _columnWidths() {
     int commandColLength = 0;
     int argsColLength = 0;
     int descriptionColLength = 0;
     for (var c in runner.commands) {
-      var items = c.usage;
+      var items = _valuesForCommand(c);
       assert(items.length == columns.length + 1);
       commandColLength = max(commandColLength, items[0].length);
 

@@ -1,14 +1,5 @@
 part of 'command.dart';
 
-enum _TimelineInputs {
-  next(['next', 'n']),
-  back(['back', 'b']);
-
-  const _TimelineInputs(this.aliases);
-
-  final List<String> aliases;
-}
-
 class TimelineCommand extends Command<String> with Args {
   @override
   String get name => 'timeline';
@@ -38,16 +29,35 @@ class TimelineCommand extends Command<String> with Args {
   }
 
   @override
+  bool validateArgs(List<String>? args) {
+    if (!super.validateArgs(args)) return false;
+    // Args are null checked in super
+    if (args!.length > 1) return false;
+    if (!args.first.contains('/')) return false;
+    var dateNums = args.first.split('/');
+    if (dateNums.length != 2) return false;
+    if (dateNums.any((n) => n.length > 2)) return false;
+    var month = int.tryParse(dateNums.first);
+    var day = int.tryParse(dateNums.last);
+
+    if (month == null || day == null) return false;
+    return verifyMonthAndDate(month: month, day: day);
+  }
+
+  @override
   Stream<String> run({List<String>? args}) async* {
     var month = '';
     var day = '';
     var date = argDefault;
 
+    // If the user specified a date, use it.
     if (args != null && args.isNotEmpty) {
-      date = args.first.split('=').last;
-    } else if (args != null && args.length > 1) {
-      yield 'Invalid args for command. Command takes 1 argument: date=MM/DD';
-      return;
+      if (validateArgs(args)) {
+        date = args.first.split('=').last;
+      } else {
+        yield Outputs.invalidArgs(this);
+        return;
+      }
     }
 
     [month, day] = date.split('/');
@@ -59,31 +69,45 @@ class TimelineCommand extends Command<String> with Args {
         type: EventType.selected,
       );
 
-      var output = Outputs.event(timeline.first);
-      yield output;
-      var i = 1;
+      var i = 0;
+      var event = timeline[i];
+      yield Outputs.event(event);
       while (i < timeline.length) {
-        var next = await prompt(
-          'enter n for next, and back to return to menu.',
-        );
-        if (_TimelineInputs.next.aliases.contains(next)) {
-          var event = timeline[i];
-          yield Outputs.event(event);
-          i++;
-        } else if (_TimelineInputs.back.aliases.contains(next)) {
-          break;
-        } else {
-          yield 'Unknown input $next';
+        yield Outputs.enterLeftOrRight;
+        var key = await ConsoleControl.readKey();
+
+        switch (key) {
+          case ConsoleControl.cursorLeft:
+          case ConsoleControl.cursorUp:
+            if (i <= 0) {
+              i = 0;
+              yield Outputs.onFirstEvent;
+              continue;
+            } else {
+              i--;
+              var event = timeline[i];
+              yield Outputs.event(event);
+            }
+          case ConsoleControl.cursorRight:
+          case ConsoleControl.cursorDown:
+            i++;
+            if (i + 1 == timeline.length) break;
+            var event = timeline[i];
+            yield Outputs.event(event);
+          case ConsoleControl.q:
+            return;
+          default:
+            yield Outputs.unknownInput;
+            yield Outputs.enterLeftOrRight;
         }
       }
-
-      runner.onInput('help');
+      yield Outputs.onFirstEvent;
     } catch (e) {
       yield e.toString();
       return;
+    } finally {
+      // "return to the menu" (print usage again)
+      runner.onInput('help');
     }
-
-    yield 'End of event list.';
-    return;
   }
 }
