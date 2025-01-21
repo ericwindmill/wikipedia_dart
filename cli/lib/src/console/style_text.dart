@@ -66,6 +66,14 @@ enum ConsoleTextStyle {
 }
 
 extension StyleText on String {
+  // ColorTheme text styles
+  // For dark-mode themed terminals
+  String get errorText => applyStyles(foreground: ConsoleColor.red);
+  String get displayTextLight =>
+      applyStyles(foreground: ConsoleColor.dartPrimaryLight, bold: true);
+  String get instructionTextLight =>
+      applyStyles(foreground: ConsoleColor.white, italic: true);
+
   // Text color
   String get red => ConsoleColor.red.applyForeground(this);
   String get darkBlue => ConsoleColor.dartPrimaryDark.applyForeground(this);
@@ -86,8 +94,7 @@ extension StyleText on String {
   String get italicize => ConsoleTextStyle.italic.apply(this);
   String get blinking => ConsoleTextStyle.blink.apply(this);
 
-  String applyStyles(
-    String text, {
+  String applyStyles({
     ConsoleColor? foreground,
     ConsoleColor? background,
     bool bold = false,
@@ -117,5 +124,12 @@ extension StyleText on String {
     if (invisible) styles.add(8);
     if (strikethru) styles.add(9);
     return '$ansiEscapeLiteral[${styles.join(";")}m$this$ansiEscapeLiteral[0m';
+  }
+
+  String get strip {
+    return replaceAll(RegExp(r'\x1b\[[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e]'), '')
+        .replaceAll(RegExp(r'\x1b[PX^_].*?\x1b\\'), '')
+        .replaceAll(RegExp(r'\x1b\][^\a]*(?:\a|\x1b\\)'), '')
+        .replaceAll(RegExp(r'\x1b[\[\]A-Z\\^_@]'), '');
   }
 }

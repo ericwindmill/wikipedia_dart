@@ -112,7 +112,7 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
       // Sorts all holidays to the end
       if (eventA.type == EventType.holiday) return -1;
       if (eventB.type == EventType.holiday) return 1;
-      return eventA.year!.compareTo(eventB.year!);
+      return eventB.year!.compareTo(eventA.year!);
     });
 
     return OnThisDayTimeline(

@@ -20,9 +20,7 @@ class HelpCommand extends Command<String> {
   Stream<String> run({List<String>? args}) async* {
     // 3 columns: Command, Args, Description
     List<int> colWidths = _columnWidths();
-    yield 'Welcome to Dart Wikipedia. Enter a command to continue. \n'
-        .yellow
-        .bold;
+    yield '${Outputs.enterACommand} \n'.instructionTextLight;
 
     yield* _header(colWidths);
     for (var c in runner.commands) {

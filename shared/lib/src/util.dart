@@ -62,13 +62,15 @@ extension SplitByLength on String {
     var strBuffer = StringBuffer();
     for (var i = 0; i < words.length; i++) {
       var word = words[i];
-      if (strBuffer.length + word.length < length) {
+      if (strBuffer.length + word.length <= length) {
         strBuffer.write(word);
-        if (i + 1 != words.length) {
+        if (strBuffer.length + 1 <= length) {
           strBuffer.write(' ');
         }
-      } else {
-        strBuffer.write(word);
+      }
+      // If the next word surpasses length, start the next line
+      if (i + 1 < words.length &&
+          words[i + 1].length + strBuffer.length + 1 > length) {
         output.add(strBuffer.toString());
         strBuffer.clear();
       }

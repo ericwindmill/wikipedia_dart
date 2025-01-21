@@ -76,8 +76,8 @@ class TimelineCommand extends Command<String> with Args {
         yield Outputs.enterLeftOrRight;
         stdout.write(ConsoleControl.cursorUp.execute);
 
-        /// Todo, handle scrolling back
-        var key = await ConsoleControl.readKey();
+        // Todo, handle scrolling back
+        var key = await console.readKey();
         switch (key) {
           case ConsoleControl.cursorLeft:
           case ConsoleControl.cursorUp:
@@ -88,7 +88,7 @@ class TimelineCommand extends Command<String> with Args {
             } else {
               i--;
               var event = timeline[i];
-              eraseLine();
+              console.eraseLine();
               yield Outputs.event(event);
             }
           case ConsoleControl.cursorRight:
@@ -98,13 +98,13 @@ class TimelineCommand extends Command<String> with Args {
               yield Outputs.endOfList;
             } else {
               var event = timeline[i];
-              eraseLine();
+              console.eraseLine();
               yield Outputs.event(event);
             }
           case ConsoleControl.q:
             return;
           default:
-            eraseLine();
+            console.eraseLine();
             yield Outputs.unknownInput;
             yield Outputs.enterLeftOrRight;
         }

@@ -2,39 +2,7 @@ import 'dart:io';
 
 import 'style_text.dart';
 
-/// Prints [input] to the console, then awaits for a response from [stdin].
-Future<String?> prompt(String input) async {
-  await _delayedPrint(input);
-  return stdin.readLineSync();
-}
-
-Future<void> _delayedPrint(String text, {int duration = 100}) async {
-  return await Future.delayed(
-    Duration(milliseconds: duration),
-    () => stdout.write(text),
-  );
-}
-
-/// Splits strings on `\n` characters, then writes each line to the
-/// console. [duration] defines how many milliseconds there will be
-/// between each line print.
-Future<void> write(String text, {int duration = 100}) async {
-  var lines = text.split('\n');
-  for (var l in lines) {
-    await _delayedPrint('$l \n');
-  }
-}
-
-bool _rawMode = false;
-bool get rawMode => _rawMode;
-set rawMode(bool value) {
-  stdin.lineMode = !value;
-  stdin.echoMode = !value;
-  _rawMode = value;
-}
-
 const ansiEraseInLineAll = '\x1b[2K';
-void eraseLine() => stdout.write(ansiEraseInLineAll);
 
 /// Reads the incoming bytes from stdin, and determines which
 /// [ConsoleControl] key has been entered.
@@ -56,8 +24,81 @@ enum ConsoleControl {
   const ConsoleControl(this.ansiCode, this.codeUnit);
 
   String get execute => '$ansiEscapeLiteral[$ansiCode';
+}
 
-  static Future<ConsoleControl> readKey() async {
+/// [Console] is a singleton. This will always return the same instance.
+Console get console {
+  return Console();
+}
+
+/// Utility class that handles I/O
+class Console {
+  // This class is a singleton
+  Console._();
+  static final Console _console = Console._();
+  factory Console() {
+    return _console;
+  }
+
+  bool _rawMode = false;
+  bool get rawMode => _rawMode;
+  set rawMode(bool value) {
+    stdin.lineMode = !value;
+    stdin.echoMode = !value;
+    _rawMode = value;
+  }
+
+  /// Splits strings on `\n` characters, then writes each line to the
+  /// console. [duration] defines how many milliseconds there will be
+  /// between each line print.
+  Future<void> write(String text, {int duration = 100}) async {
+    var lines = text.split('\n');
+    for (var l in lines) {
+      await _delayedPrint('$l \n');
+    }
+  }
+
+  /// Prints [input] to the console, then awaits for a response from [stdin].
+  Future<String?> prompt(String input) async {
+    await _delayedPrint(input);
+    return stdin.readLineSync();
+  }
+
+  Future<void> _delayedPrint(String text, {int duration = 100}) async {
+    return await Future.delayed(
+      Duration(milliseconds: duration),
+      () => stdout.write(text),
+    );
+  }
+
+  void eraseLine() => stdout.write(ansiEraseInLineAll);
+
+  /// Returns the width of the current console window in characters.
+  int get windowWidth {
+    if (hasTerminal) {
+      return stdout.terminalColumns;
+    } else {
+      // Treat a window that has no terminal as if it is 80x25. This should be
+      // more compatible with CI/CD environments.
+      return 80;
+    }
+  }
+
+  /// Returns the height of the current console window in characters.
+  int get windowHeight {
+    if (hasTerminal) {
+      return stdout.terminalLines;
+    } else {
+      // Treat a window that has no terminal as if it is 80x25. This should be
+      // more compatible with CI/CD environments.
+      return 25;
+    }
+  }
+
+  /// Whether there is a terminal attached to stdout.
+  bool get hasTerminal => stdout.hasTerminal;
+
+  Future<ConsoleControl> readKey() async {
     rawMode = true;
     var codeUnit = 0;
     ConsoleControl key = ConsoleControl.unknown;

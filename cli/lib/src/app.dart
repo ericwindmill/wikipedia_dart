@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:cli/src/console/style_text.dart';
+
 import 'command/command.dart';
 import 'outputs.dart';
 import 'console/io_utils.dart';
@@ -50,15 +52,15 @@ class InteractiveCommandRunner<T> {
       UnmodifiableSetView({..._commands.values});
 
   void run() async {
-    await write('');
-    await write(Outputs.dartTitle);
-    await write(Outputs.wikipediaTitle);
-    await write('');
+    await console.write('');
+    await console.write(Outputs.dartTitle);
+    await console.write(Outputs.wikipediaTitle);
+    await console.write('');
     // print usage to start
     onInput('help');
     await for (var data in stdin) {
       // When control is released back to main input, toggle rawMode off
-      rawMode = false;
+      console.rawMode = false;
       var input = String.fromCharCodes(data).trim();
       await onInput(input);
     }
@@ -69,11 +71,10 @@ class InteractiveCommandRunner<T> {
       var allArgs = input.split(' ');
       var cmd = parse(allArgs.first);
       await for (final message in cmd.run(args: allArgs.sublist(1))) {
-        await write(message);
+        await console.write(message);
       }
     } catch (e) {
-      // TODO: handle inputs
-      write(e.toString());
+      console.write(e.toString().errorText);
     }
   }
 
