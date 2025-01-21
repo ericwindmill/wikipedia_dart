@@ -71,16 +71,16 @@ class TimelineCommand extends Command<String> with Args {
 
       var i = 0;
       var event = timeline[i];
+      console.eraseDisplay();
+      console.resetCursorPosition();
       yield Outputs.event(event);
-      while (i < timeline.length - 1) {
-        yield Outputs.enterLeftOrRight;
-        stdout.write(ConsoleControl.cursorUp.execute);
-
-        // Todo, handle scrolling back
+      yield Outputs.enterLeftOrRight;
+      stdout.write(ConsoleControl.cursorUp.execute);
+      while (i <= timeline.length) {
         var key = await console.readKey();
         switch (key) {
-          case ConsoleControl.cursorLeft:
           case ConsoleControl.cursorUp:
+          case ConsoleControl.cursorLeft:
             if (i <= 0) {
               i = 0;
               yield Outputs.onFirstEvent;
@@ -88,19 +88,34 @@ class TimelineCommand extends Command<String> with Args {
             } else {
               i--;
               var event = timeline[i];
-              console.eraseLine();
+              // erases reminder text
+              console.eraseDisplay();
+              console.resetCursorPosition();
               yield Outputs.event(event);
+              yield Outputs.enterLeftOrRight;
+              stdout.write(ConsoleControl.cursorUp.execute);
             }
-          case ConsoleControl.cursorRight:
           case ConsoleControl.cursorDown:
-            i++;
-            if (i + 1 == timeline.length) {
-              yield Outputs.endOfList;
-            } else {
-              var event = timeline[i];
-              console.eraseLine();
-              yield Outputs.event(event);
+          case ConsoleControl.cursorRight:
+            // break at the end if the user tries to go next
+            if (i == timeline.length) {
+              i++;
+              break;
             }
+            var event = timeline[i];
+            console.eraseDisplay();
+            console.resetCursorPosition();
+            yield Outputs.event(event);
+            // until the last one
+            if (i + 1 < timeline.length) {
+              yield Outputs.enterLeftOrRight;
+              stdout.write(ConsoleControl.cursorUp.execute);
+            } else {
+              // for last event
+              yield Outputs.endOfList.red;
+              yield 'q to return to menu.';
+            }
+            i++;
           case ConsoleControl.q:
             return;
           default:
@@ -114,6 +129,8 @@ class TimelineCommand extends Command<String> with Args {
       return;
     } finally {
       // "return to the menu" (print usage again)
+      console.eraseDisplay();
+      console.resetCursorPosition();
       runner.onInput('help');
     }
   }

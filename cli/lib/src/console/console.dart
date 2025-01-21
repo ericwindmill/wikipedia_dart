@@ -1,30 +1,12 @@
+library;
+
 import 'dart:io';
+import 'dart:math' as math;
 
-import 'style_text.dart';
+part 'ansi.dart';
+part 'table.dart';
 
-const ansiEraseInLineAll = '\x1b[2K';
-
-/// Reads the incoming bytes from stdin, and determines which
-/// [ConsoleControl] key has been entered.
-///
-/// As a demo, this only handles the keys this program cares about.
-/// If you want to handle more key inputs, add keys to the [ConsoleControl]
-/// enum, and then handle parsing them here.
-enum ConsoleControl {
-  cursorLeft('D', 30),
-  cursorRight('C', 29),
-  cursorUp('A', 27),
-  cursorDown('B', 28),
-  b('b', 98),
-  q('q', 113),
-  unknown('', -1);
-
-  final String ansiCode;
-  final int codeUnit;
-  const ConsoleControl(this.ansiCode, this.codeUnit);
-
-  String get execute => '$ansiEscapeLiteral[$ansiCode';
-}
+const ansiEscapeLiteral = '\x1B';
 
 /// [Console] is a singleton. This will always return the same instance.
 Console get console {
@@ -51,10 +33,10 @@ class Console {
   /// Splits strings on `\n` characters, then writes each line to the
   /// console. [duration] defines how many milliseconds there will be
   /// between each line print.
-  Future<void> write(String text, {int duration = 100}) async {
+  Future<void> write(String text, {int duration = 50}) async {
     var lines = text.split('\n');
     for (var l in lines) {
-      await _delayedPrint('$l \n');
+      await _delayedPrint('$l \n', duration: duration);
     }
   }
 
@@ -64,19 +46,24 @@ class Console {
     return stdin.readLineSync();
   }
 
-  Future<void> _delayedPrint(String text, {int duration = 100}) async {
+  Future<void> _delayedPrint(String text, {int duration = 0}) async {
     return await Future.delayed(
       Duration(milliseconds: duration),
       () => stdout.write(text),
     );
   }
 
-  void eraseLine() => stdout.write(ansiEraseInLineAll);
+  void resetCursorPosition() =>
+      stdout.write(ConsoleControl.resetCursorPosition.execute);
+
+  void eraseLine() => stdout.write(ConsoleControl.eraseLine.execute);
+
+  void eraseDisplay() => stdout.write(ConsoleControl.eraseDisplay.execute);
 
   /// Returns the width of the current console window in characters.
   int get windowWidth {
     if (hasTerminal) {
-      return stdout.terminalColumns;
+      return stdout.terminalColumns - 1;
     } else {
       // Treat a window that has no terminal as if it is 80x25. This should be
       // more compatible with CI/CD environments.

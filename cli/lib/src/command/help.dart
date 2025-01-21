@@ -10,106 +10,34 @@ class HelpCommand extends Command<String> {
   @override
   List<String> get aliases => ['h'];
 
-  final int _maxWidth = 80;
-  final StringBuffer _buffer = StringBuffer();
-  final List<String> columns = ['Command', 'Args', 'Descriptions'];
-  final String separator = ' | ';
+  final List<String> _columns = ['Command', 'Args', 'Descriptions'];
 
-  // TODO: create Table class?
   @override
   Stream<String> run({List<String>? args}) async* {
-    // 3 columns: Command, Args, Description
-    List<int> colWidths = _columnWidths();
-    yield '${Outputs.enterACommand} \n'.instructionTextLight;
-
-    yield* _header(colWidths);
+    var table = Table(
+      title: Outputs.enterACommand,
+      border: Border.ascii,
+      titleColor: ConsoleColor.dartPrimaryLight,
+    )..setHeaderRow(_columns);
     for (var c in runner.commands) {
-      var items = _valuesForCommand(c);
-      var nameSplit = items[0].splitLinesByLength(colWidths[0]);
-      var argSplit = [items[1], items[2]];
-      var descSplit = items[3].splitLinesByLength(colWidths[2]);
-      var numLines = max(
-        nameSplit.length,
-        max(descSplit.length, argSplit.length),
-      );
-
-      // Create a single line
-      var cols = <String>[];
-      var i = 0;
-      while (i < numLines) {
-        var nameLine = nameSplit.elementAtOrNull(i) ?? '';
-        cols.add('$nameLine${' ' * (colWidths[i] - nameLine.length)} ');
-        var argLine = argSplit.elementAtOrNull(i) ?? '';
-        cols.add('$argLine${' ' * (colWidths[i] - argLine.length)} ');
-        var descLine = descSplit.elementAtOrNull(i) ?? '';
-        cols.add('$descLine${' ' * (colWidths[i] - descLine.length)} ');
-
-        var isBlankLine = cols.every((element) => element.trim().isEmpty);
-        if (!isBlankLine) {
-          _buffer.writeAll(cols, separator);
-          yield _buffer.toString();
-        }
-
-        _buffer.clear();
-        cols.clear();
-        i++;
-      }
+      table.insertRow(_valuesForCommand(c));
     }
+    yield table.render();
   }
 
   // Returns the pieces of usage, formatted
   // Pieces are [name(s), args, defaultArg, description].
   List<String> _valuesForCommand(Command c) {
-    var buffer = StringBuffer('${c.name}, ')..writeAll(c.aliases, ', ');
-    var colA = buffer.toString();
-    buffer.clear();
-
+    var name = [c.name, ...c.aliases].join(', ');
+    var values = [name];
     if (c is Args) {
-      if (c.required) {
-        buffer.write('[required] ');
-      }
-      buffer.write('${c.argName}=${c.argHelp}');
-      var defaultVal = c.argDefault != null ? 'default: ${c.argDefault}' : '';
-      return [colA, buffer.toString(), defaultVal, c.description];
+      var defaultVal = c.argDefault != null ? ' default:${c.argDefault}' : '';
+      var required = c.required ? 'required' : '';
+      values.add('${c.argName}=${c.argHelp} $required $defaultVal');
+    } else {
+      values.add('');
     }
-
-    return [colA, '', '', c.description];
-  }
-
-  List<int> _columnWidths() {
-    int commandColLength = 0;
-    int argsColLength = 0;
-    int descriptionColLength = 0;
-    for (var c in runner.commands) {
-      var items = _valuesForCommand(c);
-      assert(items.length == columns.length + 1);
-      commandColLength = max(commandColLength, items[0].length);
-
-      /// argsColLength is either the length of the arg, or the default value
-      argsColLength = max(argsColLength, items[1].length);
-      argsColLength = max(argsColLength, items[2].length);
-
-      descriptionColLength = max(descriptionColLength, items[3].length);
-    }
-
-    /// If the sum of the columns > maxWidth, cut description short enough to fit
-    descriptionColLength = min(
-      descriptionColLength,
-      _maxWidth - commandColLength - argsColLength,
-    );
-
-    return [commandColLength, argsColLength, descriptionColLength];
-  }
-
-  Stream<String> _header(List<int> columnWidths) async* {
-    var buffer = StringBuffer();
-    var cols = [];
-
-    for (var i = 0; i < columns.length; i++) {
-      cols.add('${columns[i]}${' ' * (columnWidths[i] - columns[i].length)} ');
-    }
-    buffer.writeAll(cols, ' | ');
-    yield buffer.toString();
-    yield '-' * columnWidths.reduce((start, col) => start + col);
+    values.add(c.description);
+    return values;
   }
 }

@@ -1,12 +1,10 @@
 import 'dart:io';
-import 'dart:math';
-
-import 'package:cli/src/console/io_utils.dart';
+import 'package:cli/src/console/console.dart';
+import 'package:cli/src/style_text.dart';
 import 'package:shared/wikipedia_api.dart';
 
-import '../../wikipedia_cli.dart';
+import '../app.dart';
 import '../outputs.dart';
-import '../console/style_text.dart';
 
 part 'help.dart';
 part 'timeline.dart';

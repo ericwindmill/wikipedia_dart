@@ -4,14 +4,12 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:cli/src/console/style_text.dart';
+import 'package:cli/src/style_text.dart';
 
 import 'command/command.dart';
 import 'outputs.dart';
-import 'console/io_utils.dart';
+import 'console/console.dart';
 
-/// TODO: rewrite this
-/// TODO: add dartdoc everywhere
 /// [InteractiveCommandRunner] establishes a protocol for the
 /// app to communicate with a continuously with an I/O source.
 /// [T] represents the output of [InteractiveCommandRunner] (via [listen]),
@@ -19,30 +17,22 @@ import 'console/io_utils.dart';
 ///
 /// ```dart
 /// main() {
-///  var runner = MyCommandRunner(stdin.listen((data) {
-///       var input = utf8.decode(data).trim().toLowerCase();
-///       onInput(input);
-///    }));
-///
-///
-///  runner.listen((output) {
-///     print(output);
-///  });
-///
+///   var app = InteractiveCommandRunner<String>()
+///     ..addCommand(MyCommand())
+///     ..addCommand(AnotherCommand());
+///   app.run();
 /// }
 /// ```
+/// By default, the [HelpCommand] and [QuitCommand] are added to the runner
 ///
-/// Public API:
-/// * [onInput] handles input from stdin.
-/// * [output]
+/// When [run] is called, the app will start waiting for input from stdin.
+/// On new input from stdin, the input will be parsed into a [Command],
+/// and [Command.run] will be called.
+/// The return value of [Command.run] is written to stdout.
 ///
-/// Implementing classes should override at least:
-/// * [onInput], which is the entrypoint for stdin.
-///
-///
+/// Input can also be added via the [onInput] method.
 class InteractiveCommandRunner<T> {
   InteractiveCommandRunner() {
-    addCommand(TimelineCommand());
     addCommand(HelpCommand());
     addCommand(QuitCommand());
   }
@@ -52,10 +42,7 @@ class InteractiveCommandRunner<T> {
       UnmodifiableSetView({..._commands.values});
 
   void run() async {
-    await console.write('');
-    await console.write(Outputs.dartTitle);
-    await console.write(Outputs.wikipediaTitle);
-    await console.write('');
+    await _titleScreen();
     // print usage to start
     onInput('help');
     await for (var data in stdin) {
@@ -71,7 +58,7 @@ class InteractiveCommandRunner<T> {
       var allArgs = input.split(' ');
       var cmd = parse(allArgs.first);
       await for (final message in cmd.run(args: allArgs.sublist(1))) {
-        await console.write(message);
+        await console.write(message.toString());
       }
     } catch (e) {
       console.write(e.toString().errorText);
@@ -102,5 +89,16 @@ class InteractiveCommandRunner<T> {
   void _quit(int code) {
     // Cancel subscriptions and close streams here
     exit(code);
+  }
+
+  // To make this class generic and extendable, this should be replaced
+  Future<void> _titleScreen() async {
+    await console.write('');
+    await console.write(Outputs.dartTitle, duration: 50);
+    await console.write(Outputs.wikipediaTitle, duration: 50);
+    await console.write('');
+    await console.write('', duration: 2000);
+    console.eraseDisplay();
+    console.resetCursorPosition();
   }
 }

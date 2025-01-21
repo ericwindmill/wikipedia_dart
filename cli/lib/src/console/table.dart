@@ -1,13 +1,8 @@
-import 'dart:math' as math;
-
-import 'package:cli/src/console/style_text.dart';
-import 'package:shared/wikipedia_api.dart';
-
-import 'io_utils.dart';
+part of 'console.dart';
 
 enum Border {
   none('', '', '', '', '', '', '', '', '', '', ''),
-  ascii('-', '-', '-', '-', '-', '-', '+', '-', '-', '|', '|'),
+  ascii('-', '|', '-', '-', '-', '-', '+', '-', '-', '|', '|'),
   fancy('─', '│', '┌', '┐', '└', '┘', '┼', '┴', '┬', '┤', '├');
 
   const Border(
@@ -132,9 +127,10 @@ class Table {
   int _combineWidths(List<int> columnWidths) =>
       columnWidths.reduce((start, colWidth) => start + colWidth);
 
+  /// TODO: Border.none doesn't work
   int _borderWidth() {
     if (!_hasBorder) {
-      return columns + 1;
+      return 0;
     } else {
       return 4 + (3 * (columns - 1));
     }
