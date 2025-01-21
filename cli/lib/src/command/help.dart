@@ -10,14 +10,16 @@ class HelpCommand extends Command<String> {
   @override
   List<String> get aliases => ['h'];
 
-  final List<String> _columns = ['Command', 'Args', 'Descriptions'];
+  final List<String> _columns = ['Command', 'Description', 'Args'];
 
   @override
   Stream<String> run({List<String>? args}) async* {
     var table = Table(
       title: Outputs.enterACommand,
-      border: Border.ascii,
+      border: Border.fancy,
       titleColor: ConsoleColor.dartPrimaryLight,
+      titleTextStyles: [ConsoleTextStyle.bold],
+      headerColor: ConsoleColor.teal,
     )..setHeaderRow(_columns);
     for (var c in runner.commands) {
       table.insertRow(_valuesForCommand(c));
@@ -29,7 +31,7 @@ class HelpCommand extends Command<String> {
   // Pieces are [name(s), args, defaultArg, description].
   List<String> _valuesForCommand(Command c) {
     var name = [c.name, ...c.aliases].join(', ');
-    var values = [name];
+    var values = [name, c.description];
     if (c is Args) {
       var defaultVal = c.argDefault != null ? ' default:${c.argDefault}' : '';
       var required = c.required ? 'required' : '';
@@ -37,7 +39,6 @@ class HelpCommand extends Command<String> {
     } else {
       values.add('');
     }
-    values.add(c.description);
     return values;
   }
 }

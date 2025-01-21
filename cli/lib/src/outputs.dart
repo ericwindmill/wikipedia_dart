@@ -26,8 +26,7 @@ class Outputs {
  ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝
  '''.white;
 
-  static String enterACommand =
-      'Enter a command to continue.'.instructionTextLight;
+  static String enterACommand = 'Enter a command to continue.';
 
   static String invalidArgs(Args arg) {
     var base = 'Invalid args for command.'.errorText;

@@ -62,7 +62,7 @@ enum ConsoleColor {
 
   /// Sets text color and then resets the color change
   String applyForeground(String text) {
-    return '$ansiEscapeLiteral[38;2;$r;$g;${b}m$text$ansiEscapeLiteral[0m';
+    return '$ansiEscapeLiteral[38;2;$r;$g;${b}m$text';
   }
 
   /// Sets background color and then resets the color change

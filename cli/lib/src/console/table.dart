@@ -37,15 +37,19 @@ class Table {
     this.textColor = ConsoleColor.white,
     this.borderColor = ConsoleColor.white,
     this.headerColor = ConsoleColor.white,
+    this.headerTextStyles = const [],
     this.titleColor = ConsoleColor.white,
-    this.border = Border.ascii,
+    this.titleTextStyles = const [],
+    this.border = Border.none,
   });
 
   final String title;
   final ConsoleColor textColor;
   final ConsoleColor borderColor;
   final ConsoleColor headerColor;
+  final List<ConsoleTextStyle> headerTextStyles;
   final ConsoleColor titleColor;
+  final List<ConsoleTextStyle> titleTextStyles;
   final Border border;
 
   int get maxWidth => console.windowWidth;
@@ -91,15 +95,17 @@ class Table {
     var tableWidth = _calculateTableWidth();
     _columnWidths = _calculateColumnWidths();
 
-    if (title != '') {
-      buffer.write(_title(tableWidth));
+    if (_hasTitle) {
+      buffer.write(_renderTitle(tableWidth));
     }
     // Top border (not including title)
     buffer.write(_tableTopBorder());
 
     if (_hasHeader) {
       var currentRow = _table[0];
-      buffer.write(_row(currentRow, textColor: headerColor));
+      buffer.write(
+        _row(currentRow, textColor: headerColor, styles: headerTextStyles),
+      );
       buffer.write(_innerBorderRow());
     }
 
@@ -117,6 +123,7 @@ class Table {
   String toString() => render();
 
   bool get _hasBorder => border != Border.none;
+  bool get _hasTitle => title != '';
 
   int _calculateTableWidth() {
     if (_table[0].isEmpty) return 0;
@@ -127,10 +134,9 @@ class Table {
   int _combineWidths(List<int> columnWidths) =>
       columnWidths.reduce((start, colWidth) => start + colWidth);
 
-  /// TODO: Border.none doesn't work
   int _borderWidth() {
     if (!_hasBorder) {
-      return 0;
+      return columns - 1;
     } else {
       return 4 + (3 * (columns - 1));
     }
@@ -166,7 +172,6 @@ class Table {
       return columnWidths;
     }
 
-    // TODO: There's almost certainly a more elegant way to do this
     // This provides a basis for which columns should be adjusted
     var evenColumnWidth = (maxWidth / columns).floor();
 
@@ -224,7 +229,7 @@ class Table {
   }
 
   String _rowEnd() {
-    if (!_hasBorder) return '';
+    if (!_hasBorder) return '\n';
 
     return ' ${border.verticalLine.applyStyles(foreground: borderColor)}\n';
   }
@@ -235,7 +240,11 @@ class Table {
     return ' ${border.verticalLine.applyStyles(foreground: borderColor)} ';
   }
 
-  String _row(List<Object> row, {ConsoleColor textColor = ConsoleColor.white}) {
+  String _row(
+    List<Object> row, {
+    ConsoleColor textColor = ConsoleColor.white,
+    List<ConsoleTextStyle> styles = const [],
+  }) {
     // row data after being split to fit in column lengths
     var splitEntries = <List<String>>[];
     var i = 0;
@@ -255,7 +264,6 @@ class Table {
     List<String> newRows = List.filled(rowHeight, '');
 
     // grab the first element of each splitEntry to make row one
-
     for (var index = 0; index < newRows.length; index++) {
       var newRowInner = [];
       for (var col = 0; col < columns; col++) {
@@ -263,6 +271,9 @@ class Table {
         var rowValue = '';
         if (index < entry.length) {
           rowValue = entry[index];
+        }
+        for (var style in styles) {
+          rowValue = style.apply(rowValue);
         }
         newRowInner.add(
           _cellEntry(
@@ -293,13 +304,13 @@ class Table {
 
     return [
       borderColor.enableForeground,
-      title != '' ? border.teeRight : border.topLeftCorner,
+      _hasTitle ? border.teeRight : border.topLeftCorner,
       border.horizontalLine,
       _columnWidths
           .map((width) => border.horizontalLine * width)
           .join(delimiter),
       border.horizontalLine,
-      title != '' ? border.teeLeft : border.topRightCorner,
+      _hasTitle ? border.teeLeft : border.topRightCorner,
       ConsoleColor.reset,
       '\n',
     ].join();
@@ -326,22 +337,29 @@ class Table {
     ].join();
   }
 
-  String _title(int tableWidth) {
-    var buffer =
-        StringBuffer()..writeAll([
-          borderColor.enableForeground,
-          border.topLeftCorner,
-          border.horizontalLine * (tableWidth - 2),
-          border.topRightCorner,
-          ConsoleColor.reset,
-          '\n',
-        ]);
+  String _renderTitle(int tableWidth) {
+    var buffer = StringBuffer();
+    String styledTitle = title;
+    for (var style in titleTextStyles) {
+      styledTitle = style.apply(styledTitle);
+    }
+    if (_hasBorder) {
+      buffer.writeAll([
+        borderColor.enableForeground,
+        border.topLeftCorner,
+        border.horizontalLine * (tableWidth - 2),
+        border.topRightCorner,
+        ConsoleColor.reset,
+        '\n',
+      ]);
+    }
     buffer.writeAll([
       _rowStart(),
       titleColor.enableForeground,
-      _cellEntry(title, tableWidth - 4),
+      _cellEntry(styledTitle, tableWidth - 4),
       ConsoleColor.reset,
       _rowEnd(),
+      if (!_hasBorder) '\n',
     ]);
     return buffer.toString();
   }
