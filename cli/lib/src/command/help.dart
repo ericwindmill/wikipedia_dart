@@ -19,11 +19,13 @@ class HelpCommand extends Command<String> {
       border: Border.fancy,
       titleColor: ConsoleColor.dartPrimaryLight,
       titleTextStyles: [ConsoleTextStyle.bold],
-      headerColor: ConsoleColor.teal,
+      headerColor: ConsoleColor.yellow,
     )..setHeaderRow(_columns);
     for (var c in runner.commands) {
       table.insertRow(_valuesForCommand(c));
     }
+    console.resetCursorPosition();
+    console.eraseDisplay();
     yield table.render();
   }
 
@@ -34,7 +36,7 @@ class HelpCommand extends Command<String> {
     var values = [name, c.description];
     if (c is Args) {
       var defaultVal = c.argDefault != null ? ' default:${c.argDefault}' : '';
-      var required = c.required ? 'required' : '';
+      var required = c.argRequired ? 'required' : '';
       values.add('${c.argName}=${c.argHelp} $required $defaultVal');
     } else {
       values.add('');

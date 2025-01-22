@@ -1,36 +1,55 @@
 import 'dart:io';
+import 'dart:math' as math;
 import 'package:cli/src/console/console.dart';
-import 'package:cli/src/style_text.dart';
+import 'package:cli/src/utils/timeout.dart';
 import 'package:shared/wikipedia_api.dart';
 
 import '../app.dart';
 import '../outputs.dart';
+import '../style_text.dart';
 
+part 'article.dart';
 part 'help.dart';
-part 'timeline.dart';
 part 'quit.dart';
+part 'timeline.dart';
 
 sealed class Command<T> {
   String get description;
   String get name;
   List<String> get aliases;
+
   late InteractiveCommandRunner runner;
+
   Stream<T> run({List<String>? args});
 
-  String get usage {
-    var buffer = StringBuffer()..writeAll([name, ...aliases], ', ');
-    return '${buffer.toString()} - $description';
+  @override
+  String toString() {
+    var maxWidth = console.windowWidth;
+    var columns = [
+      math.min(25, (maxWidth * .25).floor()),
+      math.min(25, (maxWidth * .25).floor()),
+      (maxWidth * .5).floor(),
+    ];
+
+    var cmd = [name, ...aliases].join(', ');
+    var buffer = StringBuffer();
+    buffer.write('$cmd${' ' * columns.first} ');
+    buffer.write(' ' * columns[1]);
+    buffer.write(description);
+    return buffer.toString();
   }
 }
 
 mixin Args on Command<String> {
   String get argName;
   String get argHelp;
-  bool get required => false;
+  bool get argRequired => false;
   String? get argDefault;
 
   bool validateArgs(List<String>? args) {
-    if (required && args == null || required && args!.isEmpty) return false;
+    if (argRequired && args == null || argRequired && args!.isEmpty) {
+      return false;
+    }
     for (var arg in args!) {
       if (!arg.contains('=')) return false;
     }
@@ -38,18 +57,19 @@ mixin Args on Command<String> {
   }
 
   @override
-  String get usage {
-    var buffer = StringBuffer('$name, ')..writeAll(aliases, ', ');
+  String toString() {
+    var maxWidth = console.windowWidth;
+    var columns = [
+      math.min(25, (maxWidth * .25).floor()),
+      math.min(25, (maxWidth * .25).floor()),
+      (maxWidth * .5).floor(),
+    ];
 
-    buffer.write(' - $argName=$argHelp ');
-    if (required) {
-      buffer.write(' [required] ');
-    }
-
-    var defaultVal = argDefault != null ? ' default: $argDefault' : '';
-    buffer.write(defaultVal);
-
-    buffer.write('\n$description');
+    var cmd = [name, ...aliases].join(', ');
+    var buffer = StringBuffer();
+    buffer.write('$cmd${' ' * columns.first} ');
+    buffer.write('$argName=$argName${' ' * columns[1]}');
+    buffer.write(description);
     return buffer.toString();
   }
 }

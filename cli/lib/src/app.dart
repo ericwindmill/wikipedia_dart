@@ -42,8 +42,6 @@ class InteractiveCommandRunner<T> {
       UnmodifiableSetView({..._commands.values});
 
   void run() async {
-    await _titleScreen();
-    // print usage to start
     onInput('help');
     await for (var data in stdin) {
       // When control is released back to main input, toggle rawMode off
@@ -89,16 +87,5 @@ class InteractiveCommandRunner<T> {
   void _quit(int code) {
     // Cancel subscriptions and close streams here
     exit(code);
-  }
-
-  // To make this class generic and extendable, this should be replaced
-  Future<void> _titleScreen() async {
-    await console.write('');
-    await console.write(Outputs.dartTitle, duration: 50);
-    await console.write(Outputs.wikipediaTitle, duration: 50);
-    await console.write('');
-    await console.write('', duration: 2000);
-    console.eraseDisplay();
-    console.resetCursorPosition();
   }
 }

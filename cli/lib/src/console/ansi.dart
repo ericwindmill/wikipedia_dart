@@ -33,7 +33,7 @@ enum ConsoleColor {
   red(242, 93, 80),
   white(255, 255, 255),
   teal(28, 218, 197),
-  yellow(255, 242, 117);
+  yellow(249, 248, 196);
 
   final int r;
   final int g;
@@ -136,7 +136,7 @@ extension Ansi on String {
     for (var i = 0; i < words.length; i++) {
       var word = words[i];
       if (strBuffer.length + word.length <= length) {
-        strBuffer.write(word);
+        strBuffer.write(word.trim());
         if (strBuffer.length + 1 <= length) {
           strBuffer.write(' ');
         }
@@ -144,13 +144,13 @@ extension Ansi on String {
       // If the next word surpasses length, start the next line
       if (i + 1 < words.length &&
           words[i + 1].length + strBuffer.length + 1 > length) {
-        output.add(strBuffer.toString());
+        output.add(strBuffer.toString().trim());
         strBuffer.clear();
       }
     }
 
     // Add left overs
-    output.add(strBuffer.toString());
+    output.add(strBuffer.toString().trim());
     return output;
   }
 }

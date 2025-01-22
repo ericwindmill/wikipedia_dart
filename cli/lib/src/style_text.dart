@@ -7,7 +7,7 @@ extension StyleText on String {
   String get displayTextLight =>
       applyStyles(foreground: ConsoleColor.dartPrimaryLight, bold: true);
   String get instructionTextLight =>
-      applyStyles(foreground: ConsoleColor.white, italic: true);
+      applyStyles(foreground: ConsoleColor.yellow, italic: true);
 
   // Text color
   String get red => ConsoleColor.red.applyForeground(this);

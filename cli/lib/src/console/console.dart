@@ -1,5 +1,3 @@
-library;
-
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -25,9 +23,11 @@ class Console {
   bool _rawMode = false;
   bool get rawMode => _rawMode;
   set rawMode(bool value) {
-    stdin.lineMode = !value;
-    stdin.echoMode = !value;
-    _rawMode = value;
+    if (hasTerminal) {
+      stdin.lineMode = !value;
+      stdin.echoMode = !value;
+      _rawMode = value;
+    }
   }
 
   /// Splits strings on `\n` characters, then writes each line to the
