@@ -11,7 +11,14 @@ Console get console {
   return Console();
 }
 
-/// Utility class that handles I/O
+/// Convenience class that represents the current console window.
+///
+/// Use the [Console] to get information about the current window and to read
+/// and write to it.
+///
+/// This is a simplified version of the Console class from the
+/// dart_console package. It includes only whats needed for this demo.
+/// https://pub.dev/packages/dart_console
 class Console {
   // This class is a singleton
   Console._();
@@ -20,8 +27,11 @@ class Console {
     return _console;
   }
 
-  bool _rawMode = false;
+  /// When true, the terminal reads every keystroke without waiting for
+  /// for a 'return' keystroke. And, it doesn't echo keystrokes.
+  /// Useful for games and other interactive terminal experiences.
   bool get rawMode => _rawMode;
+  bool _rawMode = false;
   set rawMode(bool value) {
     if (hasTerminal) {
       stdin.lineMode = !value;
@@ -46,19 +56,19 @@ class Console {
     return stdin.readLineSync();
   }
 
-  Future<void> _delayedPrint(String text, {int duration = 0}) async {
-    return await Future.delayed(
-      Duration(milliseconds: duration),
-      () => stdout.write(text),
-    );
-  }
-
+  /// Set cursor to top-left corner
   void resetCursorPosition() =>
       stdout.write(ConsoleControl.resetCursorPosition.execute);
 
   void eraseLine() => stdout.write(ConsoleControl.eraseLine.execute);
 
   void eraseDisplay() => stdout.write(ConsoleControl.eraseDisplay.execute);
+
+  /// Resets the console screen and positions the cursor in the top-left corner.
+  void newScreen() {
+    eraseDisplay();
+    resetCursorPosition();
+  }
 
   /// Returns the width of the current console window in characters.
   int get windowWidth {
@@ -83,8 +93,15 @@ class Console {
   }
 
   /// Whether there is a terminal attached to stdout.
+  /// Most likely 'false' in CI environments.
   bool get hasTerminal => stdout.hasTerminal;
 
+  /// Reads a keystroke as a series of bytes, outputs which key
+  /// was entered (as a [ConsoleControl]).
+  ///
+  /// As this is a demo, only the keys this program cares about are handled.
+  /// If you want to handle more key inputs, add keys to the [ConsoleControl]
+  /// enum, and then handle parsing them here.
   Future<ConsoleControl> readKey() async {
     rawMode = true;
     var codeUnit = 0;
@@ -103,6 +120,9 @@ class Console {
       // We only care about 'q' and 'Q'
       if (codeUnit == 113 || codeUnit == 81) {
         return ConsoleControl.q;
+      }
+      if (codeUnit == 114 || codeUnit == 82) {
+        return ConsoleControl.r;
       }
     }
 
@@ -124,5 +144,12 @@ class Console {
     }
     rawMode = false;
     return key;
+  }
+
+  Future<void> _delayedPrint(String text, {int duration = 0}) async {
+    return await Future.delayed(
+      Duration(milliseconds: duration),
+      () => stdout.write(text),
+    );
   }
 }

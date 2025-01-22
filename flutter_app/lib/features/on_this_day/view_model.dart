@@ -21,6 +21,12 @@ class OnThisDayViewModel extends ChangeNotifier {
   bool get hasData => _filteredEvents.isNotEmpty;
   bool get hasError => error != null;
 
+  final ScrollController _controller = ScrollController();
+  get scrollController => _controller;
+  get coords {
+    _controller.position;
+  }
+
   /// Be default, all events with dates are selected
   ValueNotifier<Map<EventType, bool>> selectEventTypes = ValueNotifier({
     EventType.holiday: false,

@@ -1,51 +1,34 @@
 part of 'command.dart';
 
-class GetArticleCommand extends Command<String> with Args {
+class GetRandomArticle extends Command<String> {
   @override
-  List<String> get aliases => ['a'];
+  List<String> get aliases => ['r'];
 
   @override
-  String get description =>
-      'Print an article summary from Wikipedia. If no article name is specified, it prints a random article summary.';
+  String get description => 'Print a random article summary from Wikipedia.';
 
   @override
-  String get name => 'article';
-
-  @override
-  String? get argDefault => 'random';
-
-  @override
-  String get argHelp => '"article title"';
-
-  @override
-  bool get argRequired => false;
-
-  @override
-  String get argName => 'title';
-
-  @override
-  bool validateArgs(List<String>? args) {
-    if (!super.validateArgs(args)) {
-      return false;
-    }
-
-    return true;
-  }
+  String get name => 'random';
 
   @override
   Stream<String> run({List<String>? args}) async* {
     try {
-      Summary summary;
-      if ((args != null && args.isNotEmpty) && validateArgs(args)) {
-        var articleTitle = args.first.split('=')[1];
-        summary = await WikipediaApiClient.getArticleSummary(articleTitle);
-      } else {
-        summary = await WikipediaApiClient.getRandomArticle();
-      }
+      Summary summary = await WikipediaApiClient.getRandomArticle();
 
-      yield summary.toString();
-    } on HttpException {
-      yield ('Unable to fetch article from Wikipedia'.errorText);
+      console.newScreen();
+      yield Outputs.summary(summary);
+      yield ''; // new line
+      yield Outputs.articleInstructions;
+      var key = await console.readKey();
+      if (key == ConsoleControl.q) {
+        console.newScreen();
+        console.rawMode = false;
+        runner.onInput('help');
+      } else if (key == ConsoleControl.r) {
+        runner.onInput('r');
+      }
+    } on HttpException catch (e) {
+      yield Outputs.wikipediaHttpError(e);
     } catch (e, s) {
       yield ('\nUnknown error - $e\n'.red);
       yield (s.toString());

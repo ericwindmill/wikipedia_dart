@@ -3,9 +3,9 @@ part of 'console.dart';
 /// Reads the incoming bytes from stdin, and determines which
 /// [ConsoleControl] key has been entered.
 ///
-/// As a demo, this only handles the keys this program cares about.
-/// If you want to handle more key inputs, add keys to the [ConsoleControl]
-/// enum, and then handle parsing them here.
+/// As this is a demo, only the keys this program cares about are included.
+/// If you want to handle more key inputs, add keys to this enum, then handle
+/// them in [Console.readKey].
 enum ConsoleControl {
   cursorLeft('D'),
   cursorRight('C'),
@@ -16,6 +16,7 @@ enum ConsoleControl {
   eraseLine('2K'),
   eraseDisplay('2J'),
   q('q'),
+  r('r'),
   unknown('');
 
   final String ansiCode;
@@ -28,12 +29,28 @@ enum ConsoleControl {
 // If you want to use more colors, add them here.
 /// All colors from Dart's brand styleguide
 enum ConsoleColor {
-  dartPrimaryDark(4, 56, 117),
-  dartPrimaryLight(184, 234, 254),
+  /// Navy blue - #043875
+  dartBlue(4, 56, 117),
+
+  ///True blue - #027dfd2
+  flutterBlue(2, 125, 253),
+
+  /// Sky blue - #b8eafe
+  lightBlue(184, 234, 254),
+
+  /// Accent colors from Dart's brand guidelines
+  /// Warm red - #F25D50
   red(242, 93, 80),
-  white(255, 255, 255),
+
+  /// #1CDAC5
   teal(28, 218, 197),
-  yellow(249, 248, 196);
+
+  /// Light yellow - #F9F8C4
+  yellow(249, 248, 196),
+
+  /// Light grey, good for text, #F8F9FA
+  grey(240, 240, 240),
+  white(255, 255, 255);
 
   final int r;
   final int g;
@@ -89,7 +106,7 @@ enum ConsoleTextStyle {
   }
 }
 
-extension Ansi on String {
+extension AnsiUtils on String {
   String applyStyles({
     ConsoleColor? foreground,
     ConsoleColor? background,

@@ -23,7 +23,6 @@ import 'console/console.dart';
 ///   app.run();
 /// }
 /// ```
-/// By default, the [HelpCommand] and [QuitCommand] are added to the runner
 ///
 /// When [run] is called, the app will start waiting for input from stdin.
 /// On new input from stdin, the input will be parsed into a [Command],
@@ -32,11 +31,6 @@ import 'console/console.dart';
 ///
 /// Input can also be added via the [onInput] method.
 class InteractiveCommandRunner<T> {
-  InteractiveCommandRunner() {
-    addCommand(HelpCommand());
-    addCommand(QuitCommand());
-  }
-
   final Map<String, Command> _commands = {};
   UnmodifiableSetView<Command> get commands =>
       UnmodifiableSetView({..._commands.values});
@@ -44,7 +38,8 @@ class InteractiveCommandRunner<T> {
   void run() async {
     onInput('help');
     await for (var data in stdin) {
-      // When control is released back to main input, toggle rawMode off
+      // When control is released back to main input,
+      // toggle rawMode off
       console.rawMode = false;
       var input = String.fromCharCodes(data).trim();
       await onInput(input);

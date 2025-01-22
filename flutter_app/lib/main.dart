@@ -16,21 +16,56 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  bool isDarkMode = false;
+  ValueNotifier<bool> darkMode = ValueNotifier(false);
+
+  _toggleDarkMode() {
+    darkMode.value = !darkMode.value;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.lightTheme,
-      debugShowCheckedModeBanner: false,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      home: OnThisDayView(
-        viewModel: OnThisDayViewModel(),
-        toggleDarkMode: () {
-          setState(() {
-            isDarkMode = !isDarkMode;
-          });
-        },
+    return ListenableBuilder(
+      listenable: darkMode,
+      builder: (context, _) {
+        return MaterialApp(
+          theme: AppTheme.lightTheme,
+          debugShowCheckedModeBanner: false,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: darkMode.value ? ThemeMode.dark : ThemeMode.light,
+          routes: {
+            '/': (context) => HomeView(toggleDarkMode: _toggleDarkMode),
+            '/timeline':
+                (context) => OnThisDayView(viewModel: OnThisDayViewModel()),
+          },
+        );
+      },
+    );
+  }
+}
+
+class HomeView extends StatelessWidget {
+  const HomeView({super.key, required this.toggleDarkMode});
+
+  final VoidCallback toggleDarkMode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(icon: Icon(Icons.light_mode), onPressed: toggleDarkMode),
+        ],
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text('WIKIPEDIA FLUTTER'),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pushNamed('/timeline'),
+              child: Text('Start'),
+            ),
+          ],
+        ),
       ),
     );
   }

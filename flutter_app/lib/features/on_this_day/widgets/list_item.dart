@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/on_this_day/view_model.dart';
 import 'package:shared/wikipedia_api.dart';
 
+import '../../ui/theme.dart';
 import '../view.dart';
 import 'event_info.dart';
 import 'wiki_page_link.dart';
@@ -35,7 +37,7 @@ class TimelineListItem extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 44,
+                height: 80,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: event.pages.length + 1,
@@ -55,23 +57,8 @@ class TimelineListItem extends StatelessWidget {
   }
 }
 
-class Timeline extends StatefulWidget {
+class Timeline extends StatelessWidget {
   const Timeline({super.key});
-
-  @override
-  State<Timeline> createState() => _TimelineState();
-}
-
-class _TimelineState extends State<Timeline> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +76,7 @@ class TimelinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     var paint =
         Paint()
-          ..color = Colors.blue
+          ..color = AppColors.primary
           ..strokeWidth = 2
           ..strokeCap = StrokeCap.round
           ..style = PaintingStyle.stroke;

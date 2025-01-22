@@ -29,13 +29,13 @@ main() {
         Table(
             border: Border.fancy,
             title: 'Our favorite books',
-            titleColor: ConsoleColor.dartPrimaryLight,
+            titleColor: ConsoleColor.lightBlue,
             titleTextStyles: [
               ConsoleTextStyle.underscore,
               ConsoleTextStyle.italic,
             ],
             textColor: ConsoleColor.teal,
-            borderColor: ConsoleColor.dartPrimaryDark,
+            borderColor: ConsoleColor.dartBlue,
             headerColor: ConsoleColor.yellow,
           )
           ..setHeaderRow(rows[0])

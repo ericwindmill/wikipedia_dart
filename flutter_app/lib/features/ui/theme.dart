@@ -12,7 +12,7 @@ abstract final class AppTheme {
     titleMedium: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w600,
-      color: Colors.blueAccent,
+      color: AppColors.primary,
     ),
     titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
     bodyLarge: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
@@ -73,12 +73,14 @@ abstract final class AppColors {
   ); // Figma rgba(255, 255, 255, 0.3)
   static const blackTransparent = Color(0x4D000000);
   static const red1 = Color(0xFFE74C3C);
+  static const primary = Color.fromRGBO(4, 104, 215, 1);
+  static const primaryLight = Color.fromRGBO(4, 104, 215, .3);
 
   static const lightColorScheme = ColorScheme(
     brightness: Brightness.light,
-    primary: AppColors.black1,
-    onPrimary: AppColors.white1,
-    secondary: AppColors.black1,
+    primary: AppColors.primary,
+    onPrimary: AppColors.black1,
+    secondary: AppColors.primaryLight,
     onSecondary: AppColors.white1,
     surface: Colors.white,
     onSurface: AppColors.black1,
@@ -90,7 +92,7 @@ abstract final class AppColors {
     brightness: Brightness.dark,
     primary: AppColors.white1,
     onPrimary: AppColors.black1,
-    secondary: AppColors.white1,
+    secondary: AppColors.grey2,
     onSecondary: AppColors.black1,
     surface: AppColors.black1,
     onSurface: Colors.white,

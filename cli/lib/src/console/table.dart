@@ -60,12 +60,19 @@ class Table {
   int get columns => _table[0].length;
 
   List<int> _columnWidths = [];
+
   final List<List<Object>> _table = [];
+
   bool _hasHeader = false;
+
+  bool get _hasBorder => border != Border.none;
+
+  bool get _hasTitle => title != '';
 
   void setHeaderRow(List<Object> row) {
     insertRow(row, index: 0);
     _hasHeader = true;
+    assert(tableIntegrity);
   }
 
   void insertRow(List<Object> row, {int? index}) {
@@ -75,6 +82,7 @@ class Table {
       _table.add(row);
     }
     _columnWidths = _calculateColumnWidths();
+    assert(tableIntegrity);
   }
 
   void insertRows(List<List<Object>> newRows, {int? index}) {
@@ -121,9 +129,6 @@ class Table {
 
   @override
   String toString() => render();
-
-  bool get _hasBorder => border != Border.none;
-  bool get _hasTitle => title != '';
 
   int _calculateTableWidth() {
     if (_table[0].isEmpty) return 0;
@@ -199,27 +204,6 @@ class Table {
     }
 
     return columnWidths;
-  }
-
-  // Top, not including above the title
-  String _innerBorderRow() {
-    if (!_hasBorder) return '';
-
-    var delimiter =
-        '${border.horizontalLine}${border.cross}${border.horizontalLine}';
-
-    return [
-      borderColor.enableForeground,
-      border.teeRight,
-      border.horizontalLine,
-      _columnWidths
-          .map((width) => border.horizontalLine * width)
-          .join(delimiter),
-      border.horizontalLine,
-      border.teeLeft,
-      ConsoleColor.reset,
-      '\n',
-    ].join();
   }
 
   String _rowStart() {
@@ -337,6 +321,27 @@ class Table {
     ].join();
   }
 
+  // Top, not including above the title
+  String _innerBorderRow() {
+    if (!_hasBorder) return '';
+
+    var delimiter =
+        '${border.horizontalLine}${border.cross}${border.horizontalLine}';
+
+    return [
+      borderColor.enableForeground,
+      border.teeRight,
+      border.horizontalLine,
+      _columnWidths
+          .map((width) => border.horizontalLine * width)
+          .join(delimiter),
+      border.horizontalLine,
+      border.teeLeft,
+      ConsoleColor.reset,
+      '\n',
+    ].join();
+  }
+
   String _renderTitle(int tableWidth) {
     var buffer = StringBuffer();
     String styledTitle = title;
@@ -362,15 +367,5 @@ class Table {
       if (!_hasBorder) '\n',
     ]);
     return buffer.toString();
-  }
-}
-
-extension Indexed<T> on List<T> {
-  /// Maps each element of the list.
-  /// The [map] function gets both the original [item] and its [index].
-  Iterable<E> mapIndexed<E>(E Function(int index, T item) map) sync* {
-    for (var index = 0; index < length; index++) {
-      yield map(index, this[index]);
-    }
   }
 }

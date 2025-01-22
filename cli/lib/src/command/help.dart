@@ -14,19 +14,15 @@ class HelpCommand extends Command<String> {
 
   @override
   Stream<String> run({List<String>? args}) async* {
-    var table = Table(
-      title: Outputs.enterACommand,
-      border: Border.fancy,
-      titleColor: ConsoleColor.dartPrimaryLight,
-      titleTextStyles: [ConsoleTextStyle.bold],
-      headerColor: ConsoleColor.yellow,
-    )..setHeaderRow(_columns);
+    var table = Table(border: Border.fancy, headerColor: ConsoleColor.lightBlue)
+      ..setHeaderRow(_columns);
     for (var c in runner.commands) {
       table.insertRow(_valuesForCommand(c));
     }
     console.resetCursorPosition();
     console.eraseDisplay();
     yield table.render();
+    yield Outputs.enterACommand;
   }
 
   // Returns the pieces of usage, formatted

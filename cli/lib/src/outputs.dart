@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cli/src/command/command.dart';
 import 'package:cli/src/console/console.dart';
 import 'package:shared/wikipedia_api.dart';
@@ -5,9 +7,6 @@ import 'package:shared/wikipedia_api.dart';
 import 'style_text.dart';
 
 class Outputs {
-  static String inputExists(String name) =>
-      'Input $name already exists.'.errorText;
-
   static final dartTitle =
       '''
             ██████╗  █████╗ ██████╗ ████████╗              
@@ -15,7 +14,7 @@ class Outputs {
             ██║  ██║███████║██████╔╝   ██║                 
             ██║  ██║██╔══██║██╔══██╗   ██║                 
             ██████╔╝██║  ██║██║  ██║   ██║                 
-            ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝'''.displayTextLight;
+            ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝'''.displayText;
   static final wikipediaTitle =
       '''            
 ██╗    ██╗██╗██╗  ██╗██╗██████╗ ███████╗██████╗ ██╗ █████╗ 
@@ -26,7 +25,56 @@ class Outputs {
  ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝
  '''.white;
 
-  static String enterACommand = 'Enter a command to continue.';
+  static String enterACommand = 'Enter a command to continue.'.instructionText;
+
+  // Article related
+
+  static String summary(Summary summary) {
+    return [
+      '${summary.titles.normalized.headerText} - ${summary.description}\n',
+      summary.extract.bodyText.splitLinesByLength(50).join('\n'),
+      '\nRead more: ${summary.url}'.applyStyles(faint: true),
+    ].join('\n');
+  }
+
+  static String articleInstructions =
+      [
+        "'r' for another random article",
+        "'q' to return to menu",
+      ].join('\n').instructionText;
+
+  // Timeline related
+
+  static String onFirstEvent =
+      "On first event, wrapping to end of list".errorText;
+
+  static String endOfList =
+      'End of event list, wrapping to the beginning of list'.errorText;
+
+  static String enterLeftOrRight =
+      ' <- or -> to navigate, q to quit'.instructionText;
+
+  static String eventNumber(int idx, int timelineLength) =>
+      'Event ${idx + 1}/$timelineLength\n'.applyStyles(faint: true);
+
+  static String event(OnThisDayEvent event) {
+    var strBuffer = StringBuffer('\n');
+    strBuffer.write(" * ".headerText);
+    if (event.year != null) {
+      strBuffer.write(event.year.toString().headerText);
+    } else {
+      strBuffer.write('Holiday'.headerText);
+    }
+    strBuffer.write('\n\n');
+    var text = event.text.splitLinesByLength(50);
+    for (var line in text) {
+      strBuffer.write('   $line\n'.bodyText);
+    }
+    return strBuffer.toString();
+  }
+
+  // Error texts
+  static String unknownInput = 'Unknown input.'.errorText;
 
   static String invalidArgs(Args arg) {
     var base = 'Invalid args for command.'.errorText;
@@ -34,30 +82,13 @@ class Outputs {
     return base;
   }
 
-  static String onFirstEvent =
-      "On first event, wrapping to end of list".errorText;
-  static String endOfList =
-      'End of event list, wrapping to the beginning of list'.errorText;
-  static String enterLeftOrRight =
-      ' <- or -> to navigate, q to quit'.instructionTextLight;
-  static String unknownInput = 'Unknown input.'.errorText;
-  static String eventNumber(int idx, int timelineLength) {
-    return 'Event ${idx + 1}/$timelineLength';
-  }
+  static String inputExists(String name) =>
+      'Input $name already exists.'.errorText;
 
-  static String event(OnThisDayEvent event) {
-    var strBuffer = StringBuffer('\n');
-    strBuffer.write(" * ".lightBlue.bold);
-    if (event.year != null) {
-      strBuffer.write(event.year.toString().lightBlue.bold);
-    } else {
-      strBuffer.write('Holiday'.lightBlue.bold);
-    }
-    strBuffer.write('\n\n');
-    var text = event.text.splitLinesByLength(50);
-    for (var line in text) {
-      strBuffer.write('   $line\n'.white);
-    }
-    return strBuffer.toString();
+  static String wikipediaHttpError(HttpException e) {
+    return [
+      'Unable to fetch article from Wikipedia'.errorText,
+      'Message: ${e.message}',
+    ].join('\n');
   }
 }

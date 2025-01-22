@@ -112,6 +112,7 @@ class TimelineCommand extends Command<String> with Args {
       // "return to the menu" (print usage again)
       console.eraseDisplay();
       console.resetCursorPosition();
+      console.rawMode = false;
       runner.onInput('help');
     }
   }
