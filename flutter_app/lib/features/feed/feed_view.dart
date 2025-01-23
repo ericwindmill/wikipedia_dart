@@ -23,9 +23,12 @@ class FeedView extends StatelessWidget {
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Today's Featured Article"),
-            ArticleSummary(summary: viewModel.todaysFeaturedArticle!),
+            _FeedItem(
+              sectionTitle: "Today's featured article",
+              child: ArticleSummary(summary: viewModel.todaysFeaturedArticle!),
+            ),
             Text("On this day"),
             TimelinePreview(events: viewModel.timelinePreview),
             Text('Image of the Day'),
@@ -34,6 +37,23 @@ class FeedView extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _FeedItem extends StatelessWidget {
+  const _FeedItem({super.key, required this.child, required this.sectionTitle});
+
+  final String sectionTitle;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(sectionTitle, style: TextTheme.of(context).titleLarge),
+        Box(child: child),
+      ],
     );
   }
 }

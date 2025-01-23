@@ -26,25 +26,28 @@ class HomeView extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Text(
-              'Welcome to\nDart Wikipedia!',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pushNamed('/timeline'),
-              child: Text('Timeline'),
-            ),
-            ElevatedButton(
-              onPressed:
-                  () => Navigator.of(context).pushNamed('/randomArticle'),
-              child: Text('Random Article'),
-            ),
-            FeedView(viewModel: FeedViewModel()),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text(
+                'Welcome to\nDart Wikipedia!',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pushNamed('/timeline'),
+                child: Text('Timeline'),
+              ),
+              ElevatedButton(
+                onPressed:
+                    () => Navigator.of(context).pushNamed('/randomArticle'),
+                child: Text('Random Article'),
+              ),
+              FeedView(viewModel: FeedViewModel()),
+            ],
+          ),
         ),
       ),
     );
