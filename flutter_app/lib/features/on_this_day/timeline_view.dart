@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'view_model.dart';
+import 'timeline_view_model.dart';
 import 'widgets/filter_dialog.dart';
-import 'widgets/list_item.dart';
+import 'widgets/timeline_list_item.dart';
 
 const double sidebarWidthPercentage = .15;
 const double mainColumnWidthPercentage = .85;
 
-class OnThisDayView extends StatelessWidget {
-  const OnThisDayView({super.key, required this.viewModel});
+class TimelineView extends StatelessWidget {
+  const TimelineView({super.key, required this.viewModel});
 
-  final OnThisDayViewModel viewModel;
+  final TimelineViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +28,9 @@ class OnThisDayView extends StatelessWidget {
 
             var width = MediaQuery.of(context).size.width;
             return CustomScrollView(
-              controller: viewModel.scrollController,
               slivers: [
                 SliverAppBar(
                   automaticallyImplyLeading: false,
-                  actions: [
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: Icon(Icons.close),
-                    ),
-                  ],
                   // TODO: if collapsed, only show filter and date select (also todo, date select)
                   expandedHeight: 240,
                   collapsedHeight: 240,
@@ -49,6 +42,16 @@ class OnThisDayView extends StatelessWidget {
                         left: width * sidebarWidthPercentage / 2,
                         child: CustomPaint(
                           painter: TimelinePainter(dotRadius: 0),
+                        ),
+                      ),
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: IconButton(
+                          icon: Icon(Icons.home_rounded),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
                       ),
                       Positioned(

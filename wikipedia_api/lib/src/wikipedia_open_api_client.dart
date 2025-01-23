@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../wikipedia_api.dart';
+import 'model/feed.dart';
 
 class WikipediaApiClient {
   static Future<Summary> getRandomArticle() async {
@@ -82,6 +83,33 @@ class WikipediaApiClient {
       } else {
         throw HttpException(
           '[WikipediaDart.getTimelineForDate] statusCode=${response.statusCode}, body=${response.body}',
+        );
+      }
+    } on Exception catch (error) {
+      throw Exception("Unexpected error - $error");
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<WikipediaFeed> getWikipediaFeed() async {
+    var date = DateTime.now();
+    var year = date.year;
+    var month = toStringWithPad(date.month);
+    var day = toStringWithPad(date.day);
+    final client = http.Client();
+    try {
+      final url = Uri.https(
+        'en.wikipedia.org',
+        '/api/rest_v1/feed/featured/$year/$month/$day',
+      );
+      final response = await client.get(url);
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        return WikipediaFeed.fromJson(jsonData);
+      } else {
+        throw HttpException(
+          '[WikipediaDart.getWikipediaFeed] statusCode=${response.statusCode}, body=${response.body}',
         );
       }
     } on Exception catch (error) {

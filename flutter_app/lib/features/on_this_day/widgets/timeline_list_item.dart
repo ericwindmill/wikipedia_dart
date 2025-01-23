@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared/wikipedia_api.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 
 import '../../ui/theme.dart';
-import '../view.dart';
+import '../timeline_view.dart';
 import 'event_info.dart';
-import 'wiki_page_link.dart';
+import '../../ui/shared_widgets/wiki_page_link.dart';
 
 class TimelineListItem extends StatelessWidget {
   const TimelineListItem({super.key, required this.event});
@@ -20,7 +20,7 @@ class TimelineListItem extends StatelessWidget {
           top: 0,
           bottom: 0,
           left: width * sidebarWidthPercentage / 2,
-          child: Timeline(),
+          child: _VerticalTimeline(),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
@@ -56,8 +56,8 @@ class TimelineListItem extends StatelessWidget {
   }
 }
 
-class Timeline extends StatelessWidget {
-  const Timeline({super.key});
+class _VerticalTimeline extends StatelessWidget {
+  const _VerticalTimeline({super.key});
 
   @override
   Widget build(BuildContext context) {

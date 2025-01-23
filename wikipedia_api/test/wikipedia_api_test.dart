@@ -1,4 +1,4 @@
-import 'package:shared/wikipedia_api.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -33,6 +33,12 @@ void main() {
         expect(timeline.selected, isNotEmpty);
       },
     );
+
+    test('Fetches the feed', () async {
+      final searchResults = await WikipediaApiClient.getWikipediaFeed();
+      // expect(searchResults.searchTerm, 'dart');
+      // expect(searchResults.results.length, greaterThan(0));
+    });
   });
 
   group('Fetch from wikimedia api', () {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../view_model.dart';
+import '../timeline_view_model.dart';
 
 class FilterDialog extends StatelessWidget {
   const FilterDialog({super.key, required this.viewModel});
 
-  final OnThisDayViewModel viewModel;
+  final TimelineViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {

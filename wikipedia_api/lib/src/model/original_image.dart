@@ -1,5 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
+/// Simple image is like a [Thumbnail], but full size
+/// It doesn't contain any metadata from Wikipedia.
+///
+/// For images with metadata, see [Image]
 @JsonSerializable()
 class OriginalImage {
   /// Returns a new [OriginalImage] instance.

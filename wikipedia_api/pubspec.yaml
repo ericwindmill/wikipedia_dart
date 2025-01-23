@@ -1,5 +1,5 @@
-name: shared
-description: Models for Wikipedia data
+name: wikipedia_api
+description: Shared models and wrapped http calls for Wikipedia clients
 version: 0.0.1
 # repository: https://github.com/my_org/my_repo
 resolution: workspace

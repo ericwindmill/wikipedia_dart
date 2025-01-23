@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cli/src/console/console.dart';
-import 'package:shared/wikipedia_api.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 
 import 'model/command.dart';
 import 'utils/style_text.dart';

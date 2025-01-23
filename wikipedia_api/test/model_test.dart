@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:shared/wikipedia_api.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 import 'package:test/test.dart';
 
 final dartLangSummaryJson = './test/test_data/dart_lang_summary.json';
@@ -10,6 +10,7 @@ final onThisDayPath = './test/test_data/on_this_day_response_example.json';
 final brockPurdyInnerJson = './test/test_data/brock_purdy_inner.json';
 final catExtractJson = './test/test_data/cat_extract.json';
 final openSearchResponse = './test/test_data/open_search_response.json';
+final wikipediaFeedResponse = './test/test_data/wikipedia_feed_response.json';
 
 void main() {
   group("deserialize example JSON responses from wikipedia API", () {
@@ -83,5 +84,12 @@ void main() {
         expect(results.results.length, greaterThan(1));
       },
     );
+
+    test('deserialize WikipediaFeed results from json file', () async {
+      var resultsString = await File(wikipediaFeedResponse).readAsString();
+      var resultsAsMap = jsonDecode(resultsString);
+      final WikipediaFeed feed = WikipediaFeed.fromJson(resultsAsMap);
+      expect(feed, isNotNull);
+    });
   });
 }

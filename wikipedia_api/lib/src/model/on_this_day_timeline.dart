@@ -68,7 +68,7 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
         const [];
 
     final List<OnThisDayEvent> events =
-        (json['deaths'] as List<dynamic>?)
+        (json['events'] as List<dynamic>?)
             ?.map(
               (e) => OnThisDayEvent.fromJson(
                 e as Map<String, dynamic>,

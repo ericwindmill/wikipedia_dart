@@ -3,6 +3,6 @@ publish_to: none
 environment:
   sdk: ^3.6.0
 workspace:
-  - shared
+  - wikipedia_api
   - cli
   - flutter_app

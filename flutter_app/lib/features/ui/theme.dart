@@ -74,7 +74,8 @@ abstract final class AppColors {
   static const blackTransparent = Color(0x4D000000);
   static const red1 = Color(0xFFE74C3C);
   static const primary = Color.fromRGBO(4, 104, 215, 1);
-  static const primaryLight = Color.fromRGBO(4, 104, 215, .3);
+  static const primaryOpaque = Color.fromRGBO(4, 104, 215, .3);
+  static const primaryLight = Color.fromRGBO(214, 226, 243, 1.0);
 
   static const lightColorScheme = ColorScheme(
     brightness: Brightness.light,
@@ -82,7 +83,7 @@ abstract final class AppColors {
     onPrimary: AppColors.black1,
     secondary: AppColors.primaryLight,
     onSecondary: AppColors.white1,
-    surface: Colors.white,
+    surface: AppColors.white1,
     onSurface: AppColors.black1,
     error: Colors.white,
     onError: Colors.red,

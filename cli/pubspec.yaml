@@ -9,8 +9,8 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  shared:
-    path: ../shared
+  wikipedia_api:
+    path: ../wikipedia_api
 
 dev_dependencies:
   lints: ^5.0.0

@@ -1,36 +1,31 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:shared/wikipedia_api.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 
-class OnThisDayViewModel extends ChangeNotifier {
-  OnThisDayViewModel({DateTime? date}) {
-    _date = date ?? DateTime.now();
-    getTimelineForDay(_date!.month, _date!.day);
+class TimelineViewModel<OnThisDayState> extends ChangeNotifier {
+  TimelineViewModel() {
+    getTimelineForDay(_date.month, _date.day);
   }
 
   List<OnThisDayEvent> _filteredEvents = [];
   UnmodifiableListView<OnThisDayEvent> get filteredEvents =>
       UnmodifiableListView(_filteredEvents);
 
-  String? error;
+  final DateTime _date = DateTime.now();
 
   late OnThisDayTimeline _timeline;
-  DateTime? _date;
+
+  String? error;
 
   bool get hasData => _filteredEvents.isNotEmpty;
+
   bool get hasError => error != null;
 
-  final ScrollController _controller = ScrollController();
-  get scrollController => _controller;
-  get coords {
-    _controller.position;
-  }
-
-  /// Be default, all events with dates are selected
+  // Be default, only show 'selected' events
   ValueNotifier<Map<EventType, bool>> selectEventTypes = ValueNotifier({
     EventType.holiday: false,
-    EventType.birthday: true,
+    EventType.birthday: false,
     EventType.death: false,
     EventType.selected: true,
     EventType.event: true,
@@ -39,6 +34,22 @@ class OnThisDayViewModel extends ChangeNotifier {
   void toggleSelectedType(EventType t, bool value) {
     selectEventTypes.value[t] = value;
     notifyListeners();
+  }
+
+  /// Returns the date with the format 'Month DD'
+  String get readableDate {
+    return _date.humanReadable;
+  }
+
+  String get readableYearRange {
+    if (filteredEvents.every((e) => e.type == EventType.holiday)) return '';
+
+    final start =
+        filteredEvents.lastWhere((e) => e.type != EventType.holiday).year!;
+    final end =
+        filteredEvents.firstWhere((e) => e.type != EventType.holiday).year!;
+
+    return '${start.absYear}-${end.absYear}';
   }
 
   void filterEvents() {
@@ -56,23 +67,6 @@ class OnThisDayViewModel extends ChangeNotifier {
     });
 
     notifyListeners();
-  }
-
-  /// Returns the date with the format Month DD
-  String get readableDate {
-    if (_date == null) return '';
-    return _date!.humanReadable;
-  }
-
-  String get readableYearRange {
-    if (_filteredEvents.every((e) => e.type == EventType.holiday)) return '';
-
-    final start =
-        _filteredEvents.lastWhere((e) => e.type != EventType.holiday).year!;
-    final end =
-        _filteredEvents.firstWhere((e) => e.type != EventType.holiday).year!;
-
-    return '${start.absYear}-${end.absYear}';
   }
 
   Future<void> getTimelineForDay(int month, int day) async {

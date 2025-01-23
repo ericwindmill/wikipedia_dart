@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
-import 'features/on_this_day/view.dart';
-import 'features/on_this_day/view_model.dart';
+import 'package:flutter_app/features/random_article/random_article_view.dart';
+import 'package:flutter_app/features/random_article/random_article_view_model.dart';
+import 'features/on_this_day/timeline_view.dart';
+import 'features/on_this_day/timeline_view_model.dart';
 import 'features/ui/theme.dart';
+import 'home.dart';
 
 void main() {
   runApp(const MainApp());
@@ -16,57 +18,27 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  ValueNotifier<bool> darkMode = ValueNotifier(false);
+  bool darkMode = false;
 
-  _toggleDarkMode() {
-    darkMode.value = !darkMode.value;
+  _toggleDarkMode(bool value) {
+    setState(() {
+      darkMode = value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: darkMode,
-      builder: (context, _) {
-        return MaterialApp(
-          theme: AppTheme.lightTheme,
-          debugShowCheckedModeBanner: false,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: darkMode.value ? ThemeMode.dark : ThemeMode.light,
-          routes: {
-            '/': (context) => HomeView(toggleDarkMode: _toggleDarkMode),
-            '/timeline':
-                (context) => OnThisDayView(viewModel: OnThisDayViewModel()),
-          },
-        );
+    return MaterialApp(
+      theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+      routes: {
+        '/timeline': (context) => TimelineView(viewModel: TimelineViewModel()),
+        '/randomArticle':
+            (context) => RandomArticleView(viewModel: RandomArticleViewModel()),
       },
-    );
-  }
-}
-
-class HomeView extends StatelessWidget {
-  const HomeView({super.key, required this.toggleDarkMode});
-
-  final VoidCallback toggleDarkMode;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(icon: Icon(Icons.light_mode), onPressed: toggleDarkMode),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Text('WIKIPEDIA FLUTTER'),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pushNamed('/timeline'),
-              child: Text('Start'),
-            ),
-          ],
-        ),
-      ),
+      home: HomeView(darkMode: darkMode, toggleDarkMode: _toggleDarkMode),
     );
   }
 }
