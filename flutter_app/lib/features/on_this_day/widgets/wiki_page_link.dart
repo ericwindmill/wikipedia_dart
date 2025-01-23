@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared/wikipedia_api.dart';
 
-import '../../ui/theme.dart';
 import '../../ui/theme_extensions/page_link_extension.dart';
 
 class WikiPageDisplay extends StatelessWidget {

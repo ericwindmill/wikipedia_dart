@@ -1,4 +1,6 @@
-part of 'command.dart';
+import '../../wikipedia_cli.dart';
+import '../model/command.dart';
+import '../outputs.dart';
 
 class HelpCommand extends Command<String> {
   @override

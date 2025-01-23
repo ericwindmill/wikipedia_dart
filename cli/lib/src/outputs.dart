@@ -1,20 +1,21 @@
 import 'dart:io';
 
-import 'package:cli/src/command/command.dart';
 import 'package:cli/src/console/console.dart';
 import 'package:shared/wikipedia_api.dart';
 
-import 'style_text.dart';
+import 'model/command.dart';
+import 'utils/style_text.dart';
 
 class Outputs {
+  // DO NOT EDIT THIS -- whitespaces can break the rendering when centered
   static final dartTitle =
       '''
-            ██████╗  █████╗ ██████╗ ████████╗              
-            ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝              
-            ██║  ██║███████║██████╔╝   ██║                 
-            ██║  ██║██╔══██║██╔══██╗   ██║                 
-            ██████╔╝██║  ██║██║  ██║   ██║                 
-            ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝'''.displayText;
+██████╗  █████╗ ██████╗ ████████╗
+██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝
+██║  ██║███████║██████╔╝   ██║   
+██║  ██║██╔══██║██╔══██╗   ██║   
+██████╔╝██║  ██║██║  ██║   ██║   
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   '''.center.displayText;
   static final wikipediaTitle =
       '''            
 ██╗    ██╗██╗██╗  ██╗██╗██████╗ ███████╗██████╗ ██╗ █████╗ 
@@ -22,8 +23,10 @@ class Outputs {
 ██║ █╗ ██║██║█████╔╝ ██║██████╔╝█████╗  ██║  ██║██║███████║
 ██║███╗██║██║██╔═██╗ ██║██╔═══╝ ██╔══╝  ██║  ██║██║██╔══██║
 ╚███╔███╔╝██║██║  ██╗██║██║     ███████╗██████╔╝██║██║  ██║
- ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝
- '''.white;
+ ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝'''.white.center;
+
+  static String narrowWindowTitle =
+      'Welcome to\nDart Wikipedia!'.center.displayText;
 
   static String enterACommand = 'Enter a command to continue.'.instructionText;
 
@@ -31,7 +34,7 @@ class Outputs {
 
   static String summary(Summary summary) {
     return [
-      '${summary.titles.normalized.headerText} - ${summary.description}\n',
+      '\n${summary.titles.normalized.headerText} - ${summary.description}\n',
       summary.extract.bodyText.splitLinesByLength(50).join('\n'),
       '\nRead more: ${summary.url}'.applyStyles(faint: true),
     ].join('\n');

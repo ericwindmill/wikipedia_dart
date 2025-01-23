@@ -4,9 +4,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:cli/src/style_text.dart';
+import 'package:cli/src/utils/style_text.dart';
 
-import 'command/command.dart';
+import 'model/command.dart';
 import 'outputs.dart';
 import 'console/console.dart';
 

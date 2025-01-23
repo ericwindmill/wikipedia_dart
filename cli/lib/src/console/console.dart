@@ -4,7 +4,7 @@ import 'dart:math' as math;
 part 'ansi.dart';
 part 'table.dart';
 
-const ansiEscapeLiteral = '\x1B';
+// Todo - This should probably be a separate library
 
 /// [Console] is a singleton. This will always return the same instance.
 Console get console {

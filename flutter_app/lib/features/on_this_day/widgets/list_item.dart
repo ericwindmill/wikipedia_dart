@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/on_this_day/view_model.dart';
 import 'package:shared/wikipedia_api.dart';
 
 import '../../ui/theme.dart';

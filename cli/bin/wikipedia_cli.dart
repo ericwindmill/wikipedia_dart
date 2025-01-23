@@ -1,4 +1,3 @@
-import 'package:cli/src/command/command.dart';
 import 'package:cli/src/outputs.dart';
 import 'package:cli/wikipedia_cli.dart';
 
@@ -12,8 +11,12 @@ void main(List<String> arguments) async {
 
   console.newScreen();
   await console.write('');
-  await console.write(Outputs.dartTitle);
-  await console.write(Outputs.wikipediaTitle);
+  if (console.windowWidth < Outputs.wikipediaTitle.split('\n').first.length) {
+    await console.write(Outputs.narrowWindowTitle);
+  } else {
+    await console.write(Outputs.dartTitle);
+    await console.write(Outputs.wikipediaTitle);
+  }
   await console.write('');
   await Future.delayed(Duration(seconds: 1), () => '');
   console.newScreen();

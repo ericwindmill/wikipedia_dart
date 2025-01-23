@@ -1,5 +1,7 @@
 part of 'console.dart';
 
+const ansiEscapeLiteral = '\x1B';
+
 /// Reads the incoming bytes from stdin, and determines which
 /// [ConsoleControl] key has been entered.
 ///

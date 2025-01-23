@@ -1,4 +1,6 @@
-import 'console/console.dart';
+import '../console/console.dart';
+
+enum TextAlignment { left, center, right }
 
 extension StyleText on String {
   // For dark-mode themed terminals
@@ -29,4 +31,25 @@ extension StyleText on String {
   String get bold => ConsoleTextStyle.bold.apply(this);
   String get italicize => ConsoleTextStyle.italic.apply(this);
   String get blinking => ConsoleTextStyle.blink.apply(this);
+
+  // Text alignment
+  String get left => align(TextAlignment.left);
+  String get center => align(TextAlignment.center);
+  String get right => align(TextAlignment.right);
+
+  String align(TextAlignment alignment) {
+    var lines = split('\n');
+    return lines
+        .map((line) {
+          var whitespaceLen = console.windowWidth - line.strip.length;
+          var whitespace = ' ' * (whitespaceLen / 2).floor();
+
+          return switch (alignment) {
+            TextAlignment.left => line,
+            TextAlignment.center => '$whitespace$line$whitespace',
+            TextAlignment.right => '$whitespace$whitespace$line',
+          };
+        })
+        .join('\n');
+  }
 }

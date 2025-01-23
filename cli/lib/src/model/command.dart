@@ -1,19 +1,8 @@
-import 'dart:io';
 import 'dart:math' as math;
 import 'package:cli/src/console/console.dart';
-import 'package:cli/src/utils/timeout.dart';
-import 'package:shared/wikipedia_api.dart';
-
 import '../app.dart';
-import '../outputs.dart';
-import '../style_text.dart';
 
-part 'article.dart';
-part 'help.dart';
-part 'quit.dart';
-part 'timeline.dart';
-
-sealed class Command<T> {
+abstract class Command<T> {
   String get description;
   String get name;
   List<String> get aliases;

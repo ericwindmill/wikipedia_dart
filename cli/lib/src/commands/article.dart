@@ -1,4 +1,11 @@
-part of 'command.dart';
+import 'dart:io';
+
+import 'package:cli/src/utils/style_text.dart';
+import 'package:shared/wikipedia_api.dart';
+
+import '../../wikipedia_cli.dart';
+import '../model/command.dart';
+import '../outputs.dart';
 
 class GetRandomArticle extends Command<String> {
   @override

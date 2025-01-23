@@ -1,4 +1,3 @@
-import 'package:cli/src/command/command.dart';
 import 'package:cli/wikipedia_cli.dart';
 import 'package:test/test.dart';
 
