@@ -44,7 +44,7 @@ class TimelineListItem extends StatelessWidget {
                     if (index == 0) {
                       return Container(width: width * sidebarWidthPercentage);
                     }
-                    return WikiPageDisplay(event.pages[index - 1]);
+                    return WikiPageDisplayLink(event.pages[index - 1]);
                   },
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:flutter_app/features/random_article/random_article_view.dart';
 import 'package:flutter_app/features/random_article/random_article_view_model.dart';
 import 'features/on_this_day/timeline_view.dart';
 import 'features/on_this_day/timeline_view_model.dart';
+import 'features/ui/breakpoint.dart';
 import 'features/ui/theme.dart';
 import 'home.dart';
 
@@ -18,7 +19,14 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  late Breakpoint breakpoint;
   bool darkMode = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    breakpoint = Breakpoint.currentDevice(context);
+  }
 
   _toggleDarkMode(bool value) {
     setState(() {
@@ -28,17 +36,22 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.lightTheme,
-      debugShowCheckedModeBanner: false,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
-      routes: {
-        '/timeline': (context) => TimelineView(viewModel: TimelineViewModel()),
-        '/randomArticle':
-            (context) => RandomArticleView(viewModel: RandomArticleViewModel()),
-      },
-      home: HomeView(darkMode: darkMode, toggleDarkMode: _toggleDarkMode),
+    return BreakpointProvider(
+      breakpoint: breakpoint,
+      child: MaterialApp(
+        theme: AppTheme.lightTheme,
+        debugShowCheckedModeBanner: false,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+        routes: {
+          '/timeline':
+              (context) => TimelineView(viewModel: TimelineViewModel()),
+          '/randomArticle':
+              (context) =>
+                  RandomArticleView(viewModel: RandomArticleViewModel()),
+        },
+        home: HomeView(darkMode: darkMode, toggleDarkMode: _toggleDarkMode),
+      ),
     );
   }
 }

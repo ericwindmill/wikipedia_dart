@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
+import '../../ui/theme.dart';
+
 class EventInfo extends StatelessWidget {
   const EventInfo(this.event, {super.key});
 
@@ -11,13 +13,12 @@ class EventInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (event.type != EventType.holiday)
-          Text(event.year!.absYear, style: TextTheme.of(context).titleMedium),
-        if (event.type == EventType.holiday)
-          Text(
-            event.type.humanReadable,
-            style: TextTheme.of(context).titleMedium,
-          ),
+        Text(
+          event.type != EventType.holiday
+              ? event.year!.absYear
+              : event.type.humanReadable,
+          style: AppTheme.timelineEntryTitle,
+        ),
         SizedBox(height: 10),
         Text(event.text, style: TextTheme.of(context).bodyMedium),
         SizedBox(height: 10),

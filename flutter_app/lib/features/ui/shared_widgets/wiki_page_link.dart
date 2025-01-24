@@ -4,8 +4,8 @@ import 'package:wikipedia_api/wikipedia_api.dart';
 import 'article_summary.dart';
 import '../theme_extensions/page_link_extension.dart';
 
-class WikiPageDisplay extends StatelessWidget {
-  const WikiPageDisplay(this.summary, {super.key});
+class WikiPageDisplayLink extends StatelessWidget {
+  const WikiPageDisplayLink(this.summary, {super.key});
 
   final Summary summary;
 

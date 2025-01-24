@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/feed/widgets/timeline_preview.dart';
-import 'package:flutter_app/features/ui/shared_widgets/article_summary.dart';
+import 'package:flutter_app/features/feed/widgets/article_preview.dart';
+import 'package:flutter_app/features/ui/app_localization.dart';
+import 'package:flutter_app/features/ui/breakpoint.dart';
 
+import '../ui/theme.dart';
 import 'feed_view_model.dart';
 
 class FeedView extends StatelessWidget {
@@ -15,25 +17,24 @@ class FeedView extends StatelessWidget {
       listenable: viewModel,
       builder: (context, _) {
         if (viewModel.hasError) {
-          return Center(child: Text(viewModel.error!));
+          return Center(child: Text(viewModel.error));
         }
         if (!viewModel.hasData && !viewModel.hasError) {
           return Center(child: CircularProgressIndicator.adaptive());
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+        return ListView(
           children: [
             _FeedItem(
-              sectionTitle: "Today's featured article",
-              child: ArticleSummary(summary: viewModel.todaysFeaturedArticle!),
+              sectionTitle: AppStrings.todaysFeaturedArticle,
+              child: ArticlePreview(summary: viewModel.todaysFeaturedArticle!),
             ),
-            Text("On this day"),
-            TimelinePreview(events: viewModel.timelinePreview),
-            Text('Image of the Day'),
-            if (viewModel.hasImage)
-              Text(viewModel.feed!.imageOfTheDay!.simpleImage.source),
+
+            // Text("On this day"),
+            // TimelinePreview(events: viewModel.timelinePreview),
+            // Text('Image of the Day'),
+            // if (viewModel.hasImage)
+            //   Text(viewModel.feed!.imageOfTheDay!.simpleImage.source),
           ],
         );
       },
@@ -42,7 +43,7 @@ class FeedView extends StatelessWidget {
 }
 
 class _FeedItem extends StatelessWidget {
-  const _FeedItem({super.key, required this.child, required this.sectionTitle});
+  const _FeedItem({super.key, required this.sectionTitle, required this.child});
 
   final String sectionTitle;
   final Widget child;
@@ -52,7 +53,14 @@ class _FeedItem extends StatelessWidget {
     return Column(
       children: [
         Text(sectionTitle, style: TextTheme.of(context).titleLarge),
-        Box(child: child),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(Dimensions.radius),
+          ),
+          padding: EdgeInsets.all(BreakpointProvider.of(context).padding),
+          child: child,
+        ),
       ],
     );
   }

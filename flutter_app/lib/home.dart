@@ -45,7 +45,7 @@ class HomeView extends StatelessWidget {
                     () => Navigator.of(context).pushNamed('/randomArticle'),
                 child: Text('Random Article'),
               ),
-              FeedView(viewModel: FeedViewModel()),
+              Expanded(child: FeedView(viewModel: FeedViewModel())),
             ],
           ),
         ),

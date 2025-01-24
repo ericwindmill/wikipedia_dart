@@ -4,22 +4,29 @@ import 'theme_extensions/page_link_extension.dart';
 
 /// I copied this from the compass_app. IRL the AppTheme will be much smaller.
 abstract final class AppTheme {
+  static const serifTitle = TextStyle(
+    fontFamily: 'Linux Libertine',
+    fontFamilyFallback: ['Georgia', 'Times', 'Source Serif Pro', 'serif'],
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const timelineEntryTitle = TextStyle(
+    color: AppColors.primary,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+  );
+
   static const _textTheme = TextTheme(
-    headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
-    headlineMedium: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
-    headlineSmall: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
-    titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-    titleMedium: TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
-      color: AppColors.primary,
-    ),
-    titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-    bodyLarge: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+    /// Default text
     bodyMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-    bodySmall: TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
-    labelSmall: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
-    labelLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+
+    /// Used for labels and captions
+    labelMedium: TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w400,
+      color: AppColors.grey3,
+    ),
   );
 
   static const _inputDecorationTheme = InputDecorationTheme(
@@ -33,30 +40,18 @@ abstract final class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
+    textTheme: _textTheme,
     brightness: Brightness.light,
     colorScheme: AppColors.lightColorScheme,
-    textTheme: _textTheme.copyWith(
-      titleSmall: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Colors.black54,
-      ),
-    ),
     inputDecorationTheme: _inputDecorationTheme,
     extensions: [PageLinkTheme(backgroundColor: Colors.grey.shade200)],
   );
 
   static ThemeData darkTheme = ThemeData(
+    textTheme: _textTheme,
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: AppColors.darkColorScheme,
-    textTheme: _textTheme.copyWith(
-      titleSmall: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Colors.white70,
-      ),
-    ),
     inputDecorationTheme: _inputDecorationTheme,
     extensions: [PageLinkTheme(backgroundColor: Colors.grey.shade800)],
   );
@@ -65,9 +60,11 @@ abstract final class AppTheme {
 abstract final class AppColors {
   static const black1 = Color(0xFF101010);
   static const white1 = Color(0xFFFFF7FA);
-  static const grey1 = Color(0xFFF2F2F2);
-  static const grey2 = Color(0xFF4D4D4D);
-  static const grey3 = Color(0xFFA4A4A4);
+  static const grey1 = Color(0xFFF8F8F8);
+  static const grey2 = Color(0xFFEEEEEE);
+  static const grey3 = Color(0xFF4D4D4D);
+  static const grey4 = Color(0xFFA4A4A4);
+  static const lightBackground = Color(0xFFf6f8fc);
   static const whiteTransparent = Color(
     0x4DFFFFFF,
   ); // Figma rgba(255, 255, 255, 0.3)
@@ -79,11 +76,11 @@ abstract final class AppColors {
 
   static const lightColorScheme = ColorScheme(
     brightness: Brightness.light,
-    primary: AppColors.primary,
+    primary: Colors.white,
     onPrimary: AppColors.black1,
     secondary: AppColors.primaryLight,
     onSecondary: AppColors.white1,
-    surface: AppColors.white1,
+    surface: AppColors.lightBackground,
     onSurface: AppColors.black1,
     error: Colors.white,
     onError: Colors.red,
@@ -100,4 +97,10 @@ abstract final class AppColors {
     error: Colors.black,
     onError: AppColors.red1,
   );
+}
+
+abstract final class Dimensions {
+  const Dimensions();
+
+  static const double radius = 4;
 }

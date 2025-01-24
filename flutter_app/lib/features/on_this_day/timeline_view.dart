@@ -64,22 +64,22 @@ class TimelineView extends StatelessWidget {
                             SizedBox(height: 20),
                             Text(
                               'On This Day',
-                              style: Theme.of(context).textTheme.displaySmall,
+                              style: Theme.of(context).textTheme.headlineLarge,
                             ),
                             SizedBox(height: 20),
                             Text(
                               viewModel.readableDate,
-                              style: TextTheme.of(context).titleLarge,
+                              style: TextTheme.of(context).headlineMedium,
                             ),
                             Text(
                               '${viewModel.filteredEvents.length} historic events'
                                   .toUpperCase(),
-                              style: TextTheme.of(context).titleSmall,
+                              style: TextTheme.of(context).titleMedium,
                             ),
                             if (viewModel.readableYearRange != '')
                               Text(
                                 'from ${viewModel.readableYearRange}',
-                                style: TextTheme.of(context).titleSmall,
+                                style: TextTheme.of(context).titleMedium,
                               ),
                             SizedBox(height: 20),
                             IconButton(
