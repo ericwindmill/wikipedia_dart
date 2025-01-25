@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,38 +13,41 @@ class FeedViewModel extends ChangeNotifier {
 
   bool get hasError => error != '';
 
-  List<Summary> get mostRead => feed?.mostRead ?? [];
+  UnmodifiableListView<Summary> get mostRead =>
+      UnmodifiableListView(_feed?.mostRead ?? []);
 
-  WikipediaFeed? feed;
+  UnmodifiableListView<OnThisDayEvent> get timelinePreview =>
+      UnmodifiableListView(_feed?.onThisDayTimeline?.take(2).toList() ?? []);
 
-  Summary? todaysFeaturedArticle;
+  bool get hasImage => _feed?.imageOfTheDay?.originalImage.source != null;
 
-  List<OnThisDayEvent> get timelinePreview => feed?.onThisDayTimeline ?? [];
+  WikipediaImage? get imageOfTheDay => _feed?.imageOfTheDay;
 
-  bool get hasImage => feed?.imageOfTheDay?.simpleImage.source != null;
+  Summary? get todaysFeaturedArticle => _todaysFeaturedArticle;
+
+  String get readableDate => DateTime.now().humanReadable;
+
+  Summary? _todaysFeaturedArticle;
+  WikipediaFeed? _feed;
 
   bool get hasData =>
-      feed != null ||
+      _feed != null ||
       todaysFeaturedArticle != null ||
       timelinePreview.isNotEmpty;
 
   Future<void> getFeed() async {
     try {
-      feed = await WikipediaApiClient.getWikipediaFeed();
-      if (feed == null) throw Exception('_feed is null');
+      _feed = await WikipediaApiClient.getWikipediaFeed();
 
-      todaysFeaturedArticle =
-          feed!.todaysFeaturedArticle ??
+      // As a fallback, show a random article
+      _todaysFeaturedArticle =
+          _feed!.todaysFeaturedArticle ??
           await WikipediaApiClient.getRandomArticle();
 
       notifyListeners();
     } on HttpException catch (e) {
       // TODO - handle exception gracefully
-      print(e);
       error = e.message;
-    } catch (e) {
-      print('unknown error $e');
-      error = e.toString();
     }
   }
 }

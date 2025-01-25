@@ -1,5 +1,3 @@
-import 'package:wikipedia_api/src/model/image.dart';
-
 import '../../wikipedia_api.dart';
 
 class WikipediaFeed {
@@ -40,7 +38,7 @@ class WikipediaFeed {
         json.containsKey('mostread')
             ? (json['mostread'] as Map<String, Object?>)
             : null;
-    var mostRead;
+    List<Summary>? mostRead;
     if (mostReadJson != null) {
       mostRead =
           (mostReadJson['articles'] as List<Object?>)

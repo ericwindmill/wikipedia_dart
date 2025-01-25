@@ -20,13 +20,8 @@ class RandomArticleViewModel extends ChangeNotifier {
       notifyListeners();
     } on HttpException catch (e) {
       // TODO - handle exception gracefully
-      print(e);
       hasData = false;
       error = e.message;
-    } catch (e) {
-      hasData = false;
-      print('unknown error $e');
-      error = e.toString();
     }
   }
 }

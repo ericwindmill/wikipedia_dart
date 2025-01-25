@@ -6,7 +6,11 @@ analyzer:
     strict-inference: true
     strict-raw-types: true
 
+formatter:
+  page_width: 60
+
 linter:
   rules:
     - avoid_dynamic_calls
     - invalid_case_patterns
+    - cancel_subscriptions

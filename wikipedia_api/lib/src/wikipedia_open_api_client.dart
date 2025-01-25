@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../wikipedia_api.dart';
-import 'model/feed.dart';
 
 class WikipediaApiClient {
   static Future<Summary> getRandomArticle() async {

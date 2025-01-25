@@ -11,6 +11,7 @@ final brockPurdyInnerJson = './test/test_data/brock_purdy_inner.json';
 final catExtractJson = './test/test_data/cat_extract.json';
 final openSearchResponse = './test/test_data/open_search_response.json';
 final wikipediaFeedResponse = './test/test_data/wikipedia_feed_response.json';
+final churchImageJson = './test/test_data/church_image.json';
 
 void main() {
   group("deserialize example JSON responses from wikipedia API", () {
@@ -90,6 +91,13 @@ void main() {
       var resultsAsMap = jsonDecode(resultsString);
       final WikipediaFeed feed = WikipediaFeed.fromJson(resultsAsMap);
       expect(feed, isNotNull);
+    });
+
+    test('deserialize image results from json file', () async {
+      var resultsString = await File(churchImageJson).readAsString();
+      var resultsAsMap = jsonDecode(resultsString);
+      final WikipediaImage image = WikipediaImage.fromJson(resultsAsMap);
+      expect(image, isNotNull);
     });
   });
 }

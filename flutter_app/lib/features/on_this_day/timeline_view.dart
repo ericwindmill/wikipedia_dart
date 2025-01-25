@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 
-import 'timeline_view_model.dart';
-import 'widgets/filter_dialog.dart';
-import 'widgets/timeline_list_item.dart';
-
-const double sidebarWidthPercentage = .15;
-const double mainColumnWidthPercentage = .85;
+import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
+import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
 
 class TimelineView extends StatelessWidget {
   const TimelineView({super.key, required this.viewModel});
@@ -26,12 +24,14 @@ class TimelineView extends StatelessWidget {
               return Center(child: CircularProgressIndicator.adaptive());
             }
 
-            var width = MediaQuery.of(context).size.width;
             return CustomScrollView(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
               slivers: [
                 SliverAppBar(
                   automaticallyImplyLeading: false,
-                  // TODO: if collapsed, only show filter and date select (also todo, date select)
+                  // TODO: if collapsed, only show filter and date select
+                  // (also todo, date select)
                   expandedHeight: 240,
                   collapsedHeight: 240,
                   flexibleSpace: Stack(
@@ -39,7 +39,7 @@ class TimelineView extends StatelessWidget {
                       Positioned(
                         top: 0,
                         bottom: 0,
-                        left: width * sidebarWidthPercentage / 2,
+                        left: sidebarWidth / 2,
                         child: CustomPaint(
                           painter: TimelinePainter(dotRadius: 0),
                         ),
@@ -56,7 +56,7 @@ class TimelineView extends StatelessWidget {
                       ),
                       Positioned(
                         top: 20,
-                        left: width * sidebarWidthPercentage,
+                        left: sidebarWidth,
                         right: 20,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +88,20 @@ class TimelineView extends StatelessWidget {
                                   () async => await showAdaptiveDialog(
                                     context: context,
                                     builder: (context) {
-                                      return FilterDialog(viewModel: viewModel);
+                                      return FilterDialog<EventType>(
+                                        options:
+                                            viewModel.selectEventTypes.value,
+                                        onSelectItem: (
+                                          bool? checked,
+                                          EventType type,
+                                        ) {
+                                          viewModel.toggleSelectedType(
+                                            type,
+                                            checked ?? false,
+                                          );
+                                        },
+                                        onSubmit: viewModel.filterEvents,
+                                      );
                                     },
                                   ),
                             ),

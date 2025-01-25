@@ -1,10 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/widgets/article_preview.dart';
-import 'package:flutter_app/features/ui/app_localization.dart';
-import 'package:flutter_app/features/ui/breakpoint.dart';
+import 'package:flutter_app/ui/shared_widgets/image_modal_view.dart';
+import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
+import 'package:flutter_app/ui/theme/breakpoint.dart';
 
-import '../ui/theme.dart';
-import 'feed_view_model.dart';
+import 'package:flutter_app/routes.dart';
+import 'package:flutter_app/ui/app_localization.dart';
+import 'package:flutter_app/ui/shared_widgets/image.dart';
+import 'package:flutter_app/features/feed/feed_view_model.dart';
+import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
 
 class FeedView extends StatelessWidget {
   const FeedView({super.key, required this.viewModel});
@@ -16,52 +21,78 @@ class FeedView extends StatelessWidget {
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, _) {
+        /// TODO
         if (viewModel.hasError) {
           return Center(child: Text(viewModel.error));
         }
         if (!viewModel.hasData && !viewModel.hasError) {
-          return Center(child: CircularProgressIndicator.adaptive());
+          return Center(
+            child: Center(child: CircularProgressIndicator.adaptive()),
+          );
         }
 
-        return ListView(
-          children: [
-            _FeedItem(
-              sectionTitle: AppStrings.todaysFeaturedArticle,
-              child: ArticlePreview(summary: viewModel.todaysFeaturedArticle!),
-            ),
-
-            // Text("On this day"),
-            // TimelinePreview(events: viewModel.timelinePreview),
-            // Text('Image of the Day'),
-            // if (viewModel.hasImage)
-            //   Text(viewModel.feed!.imageOfTheDay!.simpleImage.source),
-          ],
+        return Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: BreakpointProvider.of(context).margin,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
+              Text(AppStrings.today, style: TextTheme.of(context).titleLarge),
+              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
+              FeedItem(
+                sectionTitle: AppStrings.todaysFeaturedArticle,
+                child: ArticlePreview(
+                  summary: viewModel.todaysFeaturedArticle!,
+                ),
+              ),
+              if (viewModel.hasImage)
+                SizedBox(height: BreakpointProvider.of(context).spacing * 4),
+              if (viewModel.hasImage)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) {
+                          return ImageModalView(viewModel.imageOfTheDay!);
+                        },
+                      ),
+                    );
+                  },
+                  child: FeedItem(
+                    sectionTitle: 'Image of the Day',
+                    subtitle: 'By ${viewModel.imageOfTheDay!.artist}',
+                    child: RoundedImage(
+                      source: viewModel.imageOfTheDay!.originalImage.source,
+                      height: 240,
+                      width: BreakpointProvider.appWidth(context),
+                    ),
+                  ),
+                ),
+              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
+              FeedItem(
+                sectionTitle: AppStrings.onThisDay,
+                subtitle: viewModel.readableDate,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(Routes.timeline);
+                  },
+                  child: Column(
+                    children: [
+                      TimelineCap(),
+                      for (var event in viewModel.timelinePreview)
+                        TimelineListItem(showPageLinks: false, event: event),
+                      TimelineCap(position: CapPosition.bottom),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
-    );
-  }
-}
-
-class _FeedItem extends StatelessWidget {
-  const _FeedItem({super.key, required this.sectionTitle, required this.child});
-
-  final String sectionTitle;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(sectionTitle, style: TextTheme.of(context).titleLarge),
-        Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(Dimensions.radius),
-          ),
-          padding: EdgeInsets.all(BreakpointProvider.of(context).padding),
-          child: child,
-        ),
-      ],
     );
   }
 }

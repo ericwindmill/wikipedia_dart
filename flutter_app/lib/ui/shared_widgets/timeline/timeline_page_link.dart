@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-import 'article_summary.dart';
-import '../theme_extensions/page_link_extension.dart';
+import 'package:flutter_app/ui/theme/page_link_extension.dart';
 
-class WikiPageDisplayLink extends StatelessWidget {
-  const WikiPageDisplayLink(this.summary, {super.key});
+class TimelinePageLink extends StatelessWidget {
+  const TimelinePageLink(this.summary, {super.key});
 
   final Summary summary;
 
@@ -16,7 +15,7 @@ class WikiPageDisplayLink extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return Scaffold(body: ArticleSummary(summary: summary));
+              return Scaffold(body: Text(summary.titles.normalized));
             },
           ),
         );

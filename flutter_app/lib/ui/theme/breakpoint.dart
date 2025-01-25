@@ -83,7 +83,7 @@ class Breakpoint {
 
   /// Returns true if the current platform is Desktop.
   /// On web, returns true if the browser is running on a Desktop OS.
-  static isDesktop(BuildContext context) {
+  static bool isDesktop(BuildContext context) {
     return desktop.contains(Theme.of(context).platform);
   }
 
@@ -110,6 +110,12 @@ class BreakpointProvider extends InheritedWidget {
         context.dependOnInheritedWidgetOfExactType<BreakpointProvider>();
     assert(result != null, 'No BreakpointProvider found in context');
     return result!.breakpoint;
+  }
+
+  /// Returns the width of app content, accounting for margins
+  static double appWidth(BuildContext context) {
+    var breakpoint = of(context);
+    return MediaQuery.of(context).size.width - (breakpoint.margin * 2);
   }
 
   @override

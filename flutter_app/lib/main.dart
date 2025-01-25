@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/random_article/random_article_view.dart';
-import 'package:flutter_app/features/random_article/random_article_view_model.dart';
-import 'features/on_this_day/timeline_view.dart';
-import 'features/on_this_day/timeline_view_model.dart';
-import 'features/ui/breakpoint.dart';
-import 'features/ui/theme.dart';
-import 'home.dart';
+import 'package:flutter_app/features/feed/feed_view.dart';
+import 'package:flutter_app/features/feed/feed_view_model.dart';
+import 'package:flutter_app/routes.dart';
+import 'package:flutter_app/ui/theme/breakpoint.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
 
 void main() {
   runApp(const MainApp());
@@ -28,9 +26,9 @@ class _MainAppState extends State<MainApp> {
     breakpoint = Breakpoint.currentDevice(context);
   }
 
-  _toggleDarkMode(bool value) {
+  void _toggleDarkMode() {
     setState(() {
-      darkMode = value;
+      darkMode = !darkMode;
     });
   }
 
@@ -43,14 +41,32 @@ class _MainAppState extends State<MainApp> {
         debugShowCheckedModeBanner: false,
         darkTheme: AppTheme.darkTheme,
         themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
-        routes: {
-          '/timeline':
-              (context) => TimelineView(viewModel: TimelineViewModel()),
-          '/randomArticle':
-              (context) =>
-                  RandomArticleView(viewModel: RandomArticleViewModel()),
-        },
-        home: HomeView(darkMode: darkMode, toggleDarkMode: _toggleDarkMode),
+        routes: routes,
+        home: Builder(
+          builder: (context) {
+            return Scaffold(
+              appBar: AppBar(
+                surfaceTintColor: Colors.white,
+                centerTitle: false,
+                title: Text(
+                  'Dart Wikipedia',
+                  style: AppTheme.serifTitle.copyWith(fontSize: 30),
+                ),
+                actions: [
+                  IconButton(
+                    icon: Icon(darkMode ? Icons.light_mode : Icons.dark_mode),
+                    onPressed: () => _toggleDarkMode(),
+                  ),
+                ],
+              ),
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: FeedView(viewModel: FeedViewModel()),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

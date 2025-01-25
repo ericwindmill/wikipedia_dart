@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -78,7 +79,7 @@ class TimelineViewModel<OnThisDayState> extends ChangeNotifier {
 
       filterEvents();
       notifyListeners();
-    } catch (e) {
+    } on HttpException catch (e) {
       debugPrint(e.toString());
       error = 'failed to fetch timeline data';
       notifyListeners();
