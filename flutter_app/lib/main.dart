@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'features/feed/feed_view.dart';
-import 'features/feed/feed_view_model.dart';
-import 'routes.dart';
-import 'ui/theme/breakpoint.dart';
-import 'ui/theme/theme.dart';
+import 'package:flutter_app/features/feed/feed_view.dart';
+import 'package:flutter_app/features/feed/feed_view_model.dart';
+import 'package:flutter_app/routes.dart';
+import 'package:flutter_app/ui/theme/breakpoint.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
 
 void main() {
   runApp(const MainApp());

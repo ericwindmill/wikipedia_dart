@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
+import 'package:flutter_app/ui/theme/breakpoint.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
-
-import '../../theme/breakpoint.dart';
-import '../../theme/theme.dart';
-import 'timeline.dart';
 
 class TimelineListItem extends StatelessWidget {
   const TimelineListItem({

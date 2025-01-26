@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import '../app.dart';
-import '../console/console.dart';
+import 'package:cli/src/app.dart';
+import 'package:cli/src/console/console.dart';
 
 abstract class Command<T> {
   String get description;

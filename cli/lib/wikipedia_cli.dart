@@ -11,8 +11,8 @@
 ///   the business logic for this app.
 library;
 
-import 'src/model/command.dart' show Args, Command;
-import 'wikipedia_cli.dart'
+import 'package:cli/src/model/command.dart' show Args, Command;
+import 'package:cli/wikipedia_cli.dart'
     show Console, InteractiveCommandRunner;
 
 export 'src/app.dart';

@@ -9,7 +9,7 @@ class FilterDialog<T> extends StatefulWidget {
   });
 
   final Map<T, bool> options;
-  final void Function(bool?, T) onSelectItem;
+  final void Function({required T value, bool? isChecked}) onSelectItem;
   final VoidCallback onSubmit;
 
   @override
@@ -29,7 +29,10 @@ class _FilterDialogState<T> extends State<FilterDialog<T>> {
             value: widget.options[option],
             onChanged: (bool? value) {
               setState(() {
-                widget.onSelectItem(value, widget.options[idx] as T);
+                widget.onSelectItem(
+                  isChecked: value,
+                  value: widget.options[idx] as T,
+                );
               });
             },
           );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/dimensions.dart';
+import 'package:flutter_app/ui/theme/dimensions.dart';
 
 class RoundedImage extends StatelessWidget {
   RoundedImage({

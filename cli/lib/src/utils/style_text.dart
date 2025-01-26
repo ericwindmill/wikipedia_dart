@@ -1,4 +1,4 @@
-import '../console/console.dart';
+import 'package:cli/src/console/console.dart';
 
 enum TextAlignment { left, center, right }
 

@@ -8,8 +8,6 @@ class ImageModalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Stack(children: <Widget>[]),
-    );
+    return const Scaffold(body: Stack());
   }
 }

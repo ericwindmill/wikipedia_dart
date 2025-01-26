@@ -1,4 +1,4 @@
-import '../model/command.dart';
+import 'package:cli/src/model/command.dart';
 
 class QuitCommand extends Command<String> {
   @override

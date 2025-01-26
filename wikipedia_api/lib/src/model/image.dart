@@ -1,5 +1,5 @@
-import 'original_image.dart';
-import 'thumbnail.dart';
+import 'package:wikipedia_api/src/model/original_image.dart';
+import 'package:wikipedia_api/src/model/thumbnail.dart';
 
 /// Contains images of different sizes and metadata
 class WikipediaImage {

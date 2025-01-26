@@ -33,8 +33,8 @@ class TimelineViewModel extends ChangeNotifier {
         EventType.event: true,
       });
 
-  void toggleSelectedType(EventType t, bool value) {
-    selectEventTypes.value[t] = value;
+  void toggleSelectedType({required bool isChecked, required EventType type}) {
+    selectEventTypes.value[type] = isChecked;
     notifyListeners();
   }
 
@@ -52,15 +52,11 @@ class TimelineViewModel extends ChangeNotifier {
 
     final int start =
         filteredEvents
-            .lastWhere(
-              (OnThisDayEvent e) => e.type != EventType.holiday,
-            )
+            .lastWhere((OnThisDayEvent e) => e.type != EventType.holiday)
             .year!;
     final int end =
         filteredEvents
-            .firstWhere(
-              (OnThisDayEvent e) => e.type != EventType.holiday,
-            )
+            .firstWhere((OnThisDayEvent e) => e.type != EventType.holiday)
             .year!;
 
     return '${start.absYear}-${end.absYear}';
@@ -73,10 +69,7 @@ class TimelineViewModel extends ChangeNotifier {
           return selectedTypes[event.type]!;
         }).toList();
 
-    _filteredEvents.sort((
-      OnThisDayEvent eventA,
-      OnThisDayEvent eventB,
-    ) {
+    _filteredEvents.sort((OnThisDayEvent eventA, OnThisDayEvent eventB) {
       // Sorts all holidays to the end
       if (eventA.type == EventType.holiday) return -1;
       if (eventB.type == EventType.holiday) return 1;

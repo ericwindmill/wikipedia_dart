@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:cli/src/console/console.dart';
+import 'package:cli/src/model/command.dart';
+import 'package:cli/src/utils/style_text.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
-
-import 'console/console.dart';
-import 'model/command.dart';
-import 'utils/style_text.dart';
 
 class Outputs {
   // DO NOT EDIT THIS -- whitespaces can break the rendering when centered

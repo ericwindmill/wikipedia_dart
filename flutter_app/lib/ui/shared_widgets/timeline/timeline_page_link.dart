@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/theme/page_link_extension.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
-
-import '../../theme/page_link_extension.dart';
 
 class TimelinePageLink extends StatelessWidget {
   const TimelinePageLink(this.summary, {super.key});
@@ -15,9 +14,7 @@ class TimelinePageLink extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (BuildContext context) {
-              return Scaffold(
-                body: Text(summary.titles.normalized),
-              );
+              return Scaffold(body: Text(summary.titles.normalized));
             },
           ),
         );
@@ -27,48 +24,31 @@ class TimelinePageLink extends StatelessWidget {
         child: Container(
           height: 70,
           width: 220,
-          padding: const EdgeInsets.symmetric(
-            vertical: 5,
-            horizontal: 8,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(4),
-            ),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
             color:
-                Theme.of(context)
-                    .extension<PageLinkTheme>()
-                    ?.backgroundColor ??
+                Theme.of(context).extension<PageLinkTheme>()?.backgroundColor ??
                 Colors.white70,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 5.0,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         summary.titles.normalized,
                         overflow: TextOverflow.ellipsis,
-                        style:
-                            Theme.of(
-                              context,
-                            ).textTheme.bodyMedium,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
                         summary.description ?? '',
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
-                        style:
-                            Theme.of(
-                              context,
-                            ).textTheme.labelSmall,
+                        style: Theme.of(context).textTheme.labelSmall,
                       ),
                     ],
                   ),
@@ -78,10 +58,7 @@ class TimelinePageLink extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(1),
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(
-                          context,
-                        ).colorScheme.secondary,
+                    color: Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: ClipRRect(

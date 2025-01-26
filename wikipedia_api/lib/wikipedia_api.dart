@@ -3,7 +3,7 @@
 /// expose static methods that fetch select data from Wikipedia's APIs
 library;
 
-import 'wikipedia_api.dart'
+import 'package:wikipedia_api/wikipedia_api.dart'
     show WikimediaApiClient, WikipediaApiClient;
 
 export 'src/model/article.dart';

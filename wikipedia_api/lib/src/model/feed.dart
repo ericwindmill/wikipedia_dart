@@ -1,4 +1,4 @@
-import '../../wikipedia_api.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 
 class WikipediaFeed {
   WikipediaFeed({

@@ -2,8 +2,8 @@ import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'event_type.dart';
-import 'on_this_day_event.dart';
+import 'package:wikipedia_api/src/model/event_type.dart';
+import 'package:wikipedia_api/src/model/on_this_day_event.dart';
 
 @JsonSerializable(explicitToJson: true)
 class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {

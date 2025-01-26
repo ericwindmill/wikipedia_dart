@@ -1,10 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-import '../../theme/breakpoint.dart';
-import '../../theme/theme.dart';
-import 'timeline.dart';
+import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
+import 'package:flutter_app/ui/theme/breakpoint.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
 
 class TimelinePainter extends CustomPainter {
   TimelinePainter({this.dotRadius = 4});

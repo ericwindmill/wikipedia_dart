@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'page_link_extension.dart';
+import 'package:flutter_app/ui/theme/page_link_extension.dart';
 
 /// I copied this from the compass_app. IRL the AppTheme will be much smaller.
 abstract final class AppTheme {
@@ -82,8 +81,6 @@ abstract final class AppColors {
   static const ColorScheme lightColorScheme = ColorScheme.light(
     primary: AppColors.primary,
     primaryContainer: Colors.white,
-    surface: Colors.white,
-    onSurface: Colors.black,
     shadow: Colors.black12,
   );
 
@@ -91,6 +88,5 @@ abstract final class AppColors {
     primary: AppColors.primary,
     primaryContainer: AppColors.containerOnDark,
     surface: Colors.black,
-    onSurface: Colors.white,
   );
 }

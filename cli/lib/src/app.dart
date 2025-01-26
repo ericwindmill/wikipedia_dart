@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
-import 'console/console.dart';
-import 'model/command.dart';
-import 'outputs.dart';
+import 'package:cli/src/console/console.dart';
+import 'package:cli/src/model/command.dart';
+import 'package:cli/src/outputs.dart';
 
 /// [InteractiveCommandRunner] establishes a protocol for the
 /// app to communicate with a continuously with an I/O source.

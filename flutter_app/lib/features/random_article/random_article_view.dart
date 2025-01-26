@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'random_article_view_model.dart';
+import 'package:flutter_app/features/random_article/random_article_view_model.dart';
 
 class RandomArticleView extends StatelessWidget {
   const RandomArticleView({

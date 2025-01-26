@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/feed/feed_view_model.dart';
+import 'package:flutter_app/features/feed/widgets/article_preview.dart';
+import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
+import 'package:flutter_app/routes.dart';
+import 'package:flutter_app/ui/app_localization.dart';
+import 'package:flutter_app/ui/shared_widgets/image.dart';
+import 'package:flutter_app/ui/shared_widgets/image_modal_view.dart';
+import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
+import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
-
-import '../../routes.dart';
-import '../../ui/app_localization.dart';
-import '../../ui/shared_widgets/image.dart';
-import '../../ui/shared_widgets/image_modal_view.dart';
-import '../../ui/shared_widgets/timeline/timeline.dart';
-import '../../ui/theme/breakpoint.dart';
-import 'feed_view_model.dart';
-import 'widgets/article_preview.dart';
-import 'widgets/feed_item_container.dart';
 
 class FeedView extends StatelessWidget {
   const FeedView({required this.viewModel, super.key});

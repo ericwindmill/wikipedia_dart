@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
+import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
+import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
-
-import '../../ui/shared_widgets/filter_dialog.dart';
-import '../../ui/shared_widgets/timeline/timeline.dart';
-import 'timeline_view_model.dart';
 
 class TimelineView extends StatelessWidget {
   const TimelineView({required this.viewModel, super.key});
@@ -21,9 +20,7 @@ class TimelineView extends StatelessWidget {
               return Center(child: Text(viewModel.error!));
             }
             if (!viewModel.hasData && !viewModel.hasError) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
+              return const Center(child: CircularProgressIndicator.adaptive());
             }
 
             return CustomScrollView(
@@ -61,64 +58,48 @@ class TimelineView extends StatelessWidget {
                         left: sidebarWidth,
                         right: 20,
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             const SizedBox(height: 20),
                             Text(
                               'On This Day',
-                              style:
-                                  Theme.of(
-                                    context,
-                                  ).textTheme.headlineLarge,
+                              style: Theme.of(context).textTheme.headlineLarge,
                             ),
                             const SizedBox(height: 20),
                             Text(
                               viewModel.readableDate,
-                              style:
-                                  TextTheme.of(
-                                    context,
-                                  ).headlineMedium,
+                              style: TextTheme.of(context).headlineMedium,
                             ),
                             Text(
                               '${viewModel.filteredEvents.length} '
                                       'historic events'
                                   .toUpperCase(),
-                              style:
-                                  TextTheme.of(context).titleMedium,
+                              style: TextTheme.of(context).titleMedium,
                             ),
                             if (viewModel.readableYearRange != '')
                               Text(
                                 'from ${viewModel.readableYearRange}',
-                                style:
-                                    TextTheme.of(context).titleMedium,
+                                style: TextTheme.of(context).titleMedium,
                               ),
                             const SizedBox(height: 20),
                             IconButton(
-                              icon: const Icon(
-                                Icons.filter_alt_outlined,
-                              ),
+                              icon: const Icon(Icons.filter_alt_outlined),
                               onPressed:
                                   () async => showAdaptiveDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return FilterDialog<EventType>(
                                         options:
-                                            viewModel
-                                                .selectEventTypes
-                                                .value,
-                                        onSelectItem: (
-                                          bool? checked,
-                                          EventType type,
-                                        ) {
-                                          viewModel
-                                              .toggleSelectedType(
-                                                type,
-                                                checked ?? false,
-                                              );
-                                        },
-                                        onSubmit:
-                                            viewModel.filterEvents,
+                                            viewModel.selectEventTypes.value,
+                                        onSelectItem:
+                                            ({
+                                              required EventType value,
+                                              bool? isChecked,
+                                            }) => viewModel.toggleSelectedType(
+                                              isChecked: isChecked ?? false,
+                                              type: value,
+                                            ),
+                                        onSubmit: viewModel.filterEvents,
                                       );
                                     },
                                   ),

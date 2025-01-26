@@ -1,10 +1,9 @@
+import 'package:cli/src/model/command.dart';
+import 'package:cli/src/outputs.dart';
+import 'package:cli/src/utils/style_text.dart';
+import 'package:cli/src/utils/timeout.dart';
+import 'package:cli/wikipedia_cli.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
-
-import '../../wikipedia_cli.dart';
-import '../model/command.dart';
-import '../outputs.dart';
-import '../utils/style_text.dart';
-import '../utils/timeout.dart';
 
 class TimelineCommand extends Command<String> with Args {
   @override

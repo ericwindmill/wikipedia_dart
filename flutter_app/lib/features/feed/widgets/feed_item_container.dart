@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../ui/theme/breakpoint.dart';
+import 'package:flutter_app/ui/theme/breakpoint.dart';
 
-import '../../../ui/theme/dimensions.dart';
+import 'package:flutter_app/ui/theme/dimensions.dart';
 
 class FeedItem extends StatelessWidget {
   const FeedItem({

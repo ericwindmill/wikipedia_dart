@@ -1,6 +1,6 @@
-import '../../wikipedia_cli.dart';
-import '../model/command.dart';
-import '../outputs.dart';
+import 'package:cli/src/model/command.dart';
+import 'package:cli/src/outputs.dart';
+import 'package:cli/wikipedia_cli.dart';
 
 class HelpCommand extends Command<String> {
   @override

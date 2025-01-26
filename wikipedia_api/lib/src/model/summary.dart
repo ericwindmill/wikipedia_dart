@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../wikipedia_api.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 
 @JsonSerializable()
 class Summary {
