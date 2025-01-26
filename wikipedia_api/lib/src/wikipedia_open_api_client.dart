@@ -15,10 +15,9 @@ class WikipediaApiClient {
       );
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        return Summary.fromJson(
-          jsonData as Map<String, Object?>,
-        );
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        return Summary.fromJson(jsonData);
       } else {
         throw HttpException(
           '[WikipediaDart.getRandomArticle] '
@@ -33,9 +32,7 @@ class WikipediaApiClient {
   }
 
   // The title must match exactly
-  static Future<Summary> getArticleSummary(
-    String articleTitle,
-  ) async {
+  static Future<Summary> getArticleSummary(String articleTitle) async {
     final http.Client client = http.Client();
     try {
       final Uri url = Uri.https(
@@ -44,10 +41,9 @@ class WikipediaApiClient {
       );
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        return Summary.fromJson(
-          jsonData as Map<String, Object?>,
-        );
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        return Summary.fromJson(jsonData);
       } else {
         throw HttpException(
           '[WikipediaDart.getArticleSummary] '
@@ -61,7 +57,7 @@ class WikipediaApiClient {
     }
   }
 
-  /// [month] and [date] should be 2 digits, padded with a 0 if necessary.
+  /// [month] and [day] should be 2 digits, padded with a 0 if necessary.
   static Future<OnThisDayTimeline> getTimelineForDate({
     required int month,
     required int day,
@@ -69,15 +65,12 @@ class WikipediaApiClient {
     EventType? type,
   }) async {
     if (!verifyMonthAndDate(month: month, day: day)) {
-      throw Exception(
-        'Month and date must be valid combination.',
-      );
+      throw Exception('Month and date must be valid combination.');
     }
 
     final String strMonth = toStringWithPad(month);
     final String strDay = toStringWithPad(day);
-    final String strType =
-        type == null ? 'all' : type.apiStr;
+    final String strType = type == null ? 'all' : type.apiStr;
 
     final http.Client client = http.Client();
     try {
@@ -88,10 +81,9 @@ class WikipediaApiClient {
 
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        return OnThisDayTimeline.fromJson(
-          jsonData as Map<String, Object?>,
-        );
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        return OnThisDayTimeline.fromJson(jsonData);
       } else {
         throw HttpException(
           '[WikipediaDart.getTimelineForDate] '
@@ -118,10 +110,9 @@ class WikipediaApiClient {
       );
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        return WikipediaFeed.fromJson(
-          jsonData as Map<String, Object?>,
-        );
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        return WikipediaFeed.fromJson(jsonData);
       } else {
         throw HttpException(
           '[WikipediaDart.getWikipediaFeed] '

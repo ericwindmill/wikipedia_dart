@@ -11,7 +11,7 @@ class TimelineViewModel extends ChangeNotifier {
 
   List<OnThisDayEvent> _filteredEvents = <OnThisDayEvent>[];
   UnmodifiableListView<OnThisDayEvent> get filteredEvents =>
-      UnmodifiableListView(_filteredEvents);
+      UnmodifiableListView<OnThisDayEvent>(_filteredEvents);
 
   final DateTime _date = DateTime.now();
 
@@ -25,7 +25,7 @@ class TimelineViewModel extends ChangeNotifier {
 
   // Be default, only show 'selected' events
   ValueNotifier<Map<EventType, bool>> selectEventTypes =
-      ValueNotifier(<EventType, bool>{
+      ValueNotifier<Map<EventType, bool>>(<EventType, bool>{
         EventType.holiday: false,
         EventType.birthday: false,
         EventType.death: false,
@@ -53,15 +53,13 @@ class TimelineViewModel extends ChangeNotifier {
     final int start =
         filteredEvents
             .lastWhere(
-              (OnThisDayEvent e) =>
-                  e.type != EventType.holiday,
+              (OnThisDayEvent e) => e.type != EventType.holiday,
             )
             .year!;
     final int end =
         filteredEvents
             .firstWhere(
-              (OnThisDayEvent e) =>
-                  e.type != EventType.holiday,
+              (OnThisDayEvent e) => e.type != EventType.holiday,
             )
             .year!;
 
@@ -69,8 +67,7 @@ class TimelineViewModel extends ChangeNotifier {
   }
 
   void filterEvents() {
-    final Map<EventType, bool> selectedTypes =
-        selectEventTypes.value;
+    final Map<EventType, bool> selectedTypes = selectEventTypes.value;
     _filteredEvents =
         _timeline.all.where((OnThisDayEvent event) {
           return selectedTypes[event.type]!;
@@ -91,11 +88,10 @@ class TimelineViewModel extends ChangeNotifier {
 
   Future<void> getTimelineForDay(int month, int day) async {
     try {
-      _timeline =
-          await WikipediaApiClient.getTimelineForDate(
-            month: month,
-            day: day,
-          );
+      _timeline = await WikipediaApiClient.getTimelineForDate(
+        month: month,
+        day: day,
+      );
 
       filterEvents();
       notifyListeners();

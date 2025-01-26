@@ -5,12 +5,11 @@ import 'dart:io';
 import 'console/console.dart';
 import 'model/command.dart';
 import 'outputs.dart';
-import 'utils/style_text.dart';
 
 /// [InteractiveCommandRunner] establishes a protocol for the
 /// app to communicate with a continuously with an I/O source.
-/// [T] represents the output of [InteractiveCommandRunner] (via [listen]),
-/// and enforces proper return type of [Command.run]
+/// [T] represents the output of [InteractiveCommandRunner],
+/// and enforces proper return type of [Command.run].
 ///
 /// ```dart
 /// main() {
@@ -27,7 +26,7 @@ import 'utils/style_text.dart';
 /// The return value of [Command.run] is written to stdout.
 ///
 /// Input can also be added via the [onInput] method.
-class InteractiveCommandRunner<T> {
+class InteractiveCommandRunner<T> extends Stream<T> {
   final Map<String, Command<T>> _commands =
       <String, Command<T>>{};
 
@@ -52,13 +51,15 @@ class InteractiveCommandRunner<T> {
     try {
       final List<String> allArgs = input.split(' ');
       final Command<T> cmd = parse(allArgs.first);
-      await for (final message in cmd.run(
+
+      // ignore: prefer_foreach
+      await for (final T message in cmd.run(
         args: allArgs.sublist(1),
       )) {
-        await console.write(message.toString());
+        _streamController.add(message);
       }
-    } catch (e) {
-      console.write(e.toString().errorText);
+    } catch (e, s) {
+      _streamController.addError(e, s);
     }
   }
 
@@ -89,5 +90,25 @@ class InteractiveCommandRunner<T> {
   void _quit(int code) {
     // Cancel subscriptions and close streams here
     exit(code);
+  }
+
+  final StreamController<T> _streamController =
+      StreamController<T>();
+  Stream<T> get _stream => _streamController.stream;
+
+  /// This is the output of the class
+  @override
+  StreamSubscription<T> listen(
+    void Function(T event)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    return _stream.listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
   }
 }

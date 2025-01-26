@@ -76,25 +76,4 @@ class WikipediaImage {
         ),
     };
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is WikipediaImage &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          artist == other.artist &&
-          description == other.description &&
-          caption == other.caption &&
-          originalImage == other.originalImage &&
-          thumbnail == other.thumbnail;
-
-  @override
-  int get hashCode =>
-      title.hashCode ^
-      artist.hashCode ^
-      description.hashCode ^
-      caption.hashCode ^
-      originalImage.hashCode ^
-      thumbnail.hashCode;
 }

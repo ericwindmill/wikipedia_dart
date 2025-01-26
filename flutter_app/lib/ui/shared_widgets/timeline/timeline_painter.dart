@@ -21,7 +21,7 @@ class TimelinePainter extends CustomPainter {
 
     const double dotLocation = 10.0;
 
-    const Offset topLineStart = Offset(0, 0);
+    const Offset topLineStart = Offset.zero;
     final Offset topLineEnd = Offset(
       0,
       dotLocation - dotRadius,
@@ -32,9 +32,10 @@ class TimelinePainter extends CustomPainter {
       dotLocation + dotRadius,
     );
     final Offset bottomLineEnd = Offset(0, size.height);
-    canvas.drawLine(topLineStart, topLineEnd, paint);
-    canvas.drawCircle(dotOffset, dotRadius, paint);
-    canvas.drawLine(bottomLineStart, bottomLineEnd, paint);
+    canvas
+      ..drawLine(topLineStart, topLineEnd, paint)
+      ..drawCircle(dotOffset, dotRadius, paint)
+      ..drawLine(bottomLineStart, bottomLineEnd, paint);
   }
 
   @override

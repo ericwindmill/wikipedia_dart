@@ -13,7 +13,7 @@ void main() {
       const int length = 50;
       const int wordCount = 11;
       const String word = '1234567890';
-      final String sentence = List.generate(
+      final String sentence = List<String>.generate(
         wordCount,
         (int idx) => word,
       ).join(' ');

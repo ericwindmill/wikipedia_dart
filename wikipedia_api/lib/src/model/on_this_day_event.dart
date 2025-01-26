@@ -37,17 +37,6 @@ class OnThisDayEvent {
       year != null ? DateTime.now().year - year! : -1;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is OnThisDayEvent &&
-          runtimeType == other.runtimeType &&
-          text == other.text &&
-          type != type;
-
-  @override
-  int get hashCode => text.hashCode ^ pages.hashCode;
-
-  @override
   String toString() =>
       'OnThisDayInner[text=$text, type=${type.name}]';
 

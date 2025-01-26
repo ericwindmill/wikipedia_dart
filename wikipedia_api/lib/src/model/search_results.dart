@@ -36,16 +36,6 @@ class SearchResults {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SearchResults &&
-          runtimeType == other.runtimeType &&
-          results == other.results;
-
-  @override
-  int get hashCode => results.hashCode;
-
-  @override
   String toString() {
     final StringBuffer pretty = StringBuffer();
     for (final SearchResult result in results) {

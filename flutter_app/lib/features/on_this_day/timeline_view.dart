@@ -32,8 +32,8 @@ class TimelineView extends StatelessWidget {
               slivers: <Widget>[
                 SliverAppBar(
                   automaticallyImplyLeading: false,
-                  // TODO: if collapsed, only show filter and date select
-                  // (also todo, date select)
+                  // TODO(ewindmill): if collapsed, only show filter
+                  //  and date select
                   expandedHeight: 240,
                   collapsedHeight: 240,
                   flexibleSpace: Stack(
@@ -43,18 +43,14 @@ class TimelineView extends StatelessWidget {
                         bottom: 0,
                         left: sidebarWidth / 2,
                         child: CustomPaint(
-                          painter: TimelinePainter(
-                            dotRadius: 0,
-                          ),
+                          painter: TimelinePainter(dotRadius: 0),
                         ),
                       ),
                       Positioned(
                         top: 10,
                         right: 10,
                         child: IconButton(
-                          icon: const Icon(
-                            Icons.home_rounded,
-                          ),
+                          icon: const Icon(Icons.home_rounded),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -89,19 +85,13 @@ class TimelineView extends StatelessWidget {
                                       'historic events'
                                   .toUpperCase(),
                               style:
-                                  TextTheme.of(
-                                    context,
-                                  ).titleMedium,
+                                  TextTheme.of(context).titleMedium,
                             ),
-                            if (viewModel
-                                    .readableYearRange !=
-                                '')
+                            if (viewModel.readableYearRange != '')
                               Text(
                                 'from ${viewModel.readableYearRange}',
                                 style:
-                                    TextTheme.of(
-                                      context,
-                                    ).titleMedium,
+                                    TextTheme.of(context).titleMedium,
                               ),
                             const SizedBox(height: 20),
                             IconButton(
@@ -111,12 +101,8 @@ class TimelineView extends StatelessWidget {
                               onPressed:
                                   () async => showAdaptiveDialog(
                                     context: context,
-                                    builder: (
-                                      BuildContext context,
-                                    ) {
-                                      return FilterDialog<
-                                        EventType
-                                      >(
+                                    builder: (BuildContext context) {
+                                      return FilterDialog<EventType>(
                                         options:
                                             viewModel
                                                 .selectEventTypes
@@ -128,13 +114,11 @@ class TimelineView extends StatelessWidget {
                                           viewModel
                                               .toggleSelectedType(
                                                 type,
-                                                checked ??
-                                                    false,
+                                                checked ?? false,
                                               );
                                         },
                                         onSubmit:
-                                            viewModel
-                                                .filterEvents,
+                                            viewModel.filterEvents,
                                       );
                                     },
                                   ),
@@ -146,12 +130,8 @@ class TimelineView extends StatelessWidget {
                   ),
                 ),
                 SliverList.builder(
-                  itemCount:
-                      viewModel.filteredEvents.length,
-                  itemBuilder: (
-                    BuildContext context,
-                    int index,
-                  ) {
+                  itemCount: viewModel.filteredEvents.length,
+                  itemBuilder: (BuildContext context, int index) {
                     final OnThisDayEvent event =
                         viewModel.filteredEvents[index];
                     return TimelineListItem(event: event);

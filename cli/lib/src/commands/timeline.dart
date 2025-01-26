@@ -40,10 +40,11 @@ class TimelineCommand extends Command<String> with Args {
     // Args are null checked in super
     if (args!.length > 1) return false;
     if (!args.first.contains('/')) return false;
-    final dateNums = args.first.split('/');
+    final List<String> dateNums = args.first.split('/');
     if (dateNums.length != 2) return false;
-    if (dateNums.any((String n) => n.length > 2))
+    if (dateNums.any((String n) => n.length > 2)) {
       return false;
+    }
     final int? month = int.tryParse(dateNums.first);
     final int? day = int.tryParse(dateNums.last);
 
@@ -79,7 +80,11 @@ class TimelineCommand extends Command<String> with Args {
 
       int i = 0;
       while (i < timeline.length) {
-        assert(i >= 0 && i < timeline.length);
+        assert(
+          i >= 0 && i < timeline.length,
+          'This method increments and decrements `i`, but i should always be '
+          'a valid index of timeline ,',
+        );
         yield _renderEvent(timeline, i);
 
         // Handle next action
@@ -106,7 +111,11 @@ class TimelineCommand extends Command<String> with Args {
             }
           case ConsoleControl.q:
             return;
-          default:
+          case ConsoleControl.resetCursorPosition:
+          case ConsoleControl.eraseLine:
+          case ConsoleControl.eraseDisplay:
+          case ConsoleControl.r:
+          case ConsoleControl.unknown:
             console.eraseDisplay();
             console.resetCursorPosition();
             yield Outputs.unknownInput;
@@ -118,10 +127,11 @@ class TimelineCommand extends Command<String> with Args {
       return;
     } finally {
       // "return to the menu" (print usage again)
-      console.eraseDisplay();
-      console.resetCursorPosition();
-      console.rawMode = false;
-      runner.onInput('help');
+      console
+        ..eraseDisplay()
+        ..resetCursorPosition()
+        ..rawMode = false;
+      await runner.onInput('help');
     }
   }
 
@@ -129,8 +139,9 @@ class TimelineCommand extends Command<String> with Args {
     OnThisDayTimeline timeline,
     int index,
   ) {
-    console.eraseDisplay();
-    console.resetCursorPosition();
+    console
+      ..eraseDisplay()
+      ..resetCursorPosition();
     return <String>[
       Outputs.event(timeline[index]),
       Outputs.eventNumber(index, timeline.length),

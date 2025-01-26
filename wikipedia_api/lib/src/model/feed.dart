@@ -21,12 +21,14 @@ class WikipediaFeed {
             : null;
     final List<OnThisDayEvent>? timeline =
         json.containsKey('onthisday')
-            ? (json['onthisday'] as List<dynamic>?)
+            ? (json['onthisday']
+                    as List<Map<String, Object?>>?)
                 ?.map(
-                  (e) => OnThisDayEvent.fromJson(
-                    e as Map<String, dynamic>,
-                    EventType.birthday,
-                  ),
+                  (Map<String, Object?> e) =>
+                      OnThisDayEvent.fromJson(
+                        e,
+                        EventType.birthday,
+                      ),
                 )
                 .toList()
             : null;

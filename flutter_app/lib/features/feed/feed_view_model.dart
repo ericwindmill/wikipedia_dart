@@ -14,21 +14,20 @@ class FeedViewModel extends ChangeNotifier {
   bool get hasError => error != '';
 
   UnmodifiableListView<Summary> get mostRead =>
-      UnmodifiableListView(_feed?.mostRead ?? <Summary>[]);
+      UnmodifiableListView<Summary>(_feed?.mostRead ?? <Summary>[]);
 
-  UnmodifiableListView<OnThisDayEvent>
-  get timelinePreview => UnmodifiableListView(
-    _feed?.onThisDayTimeline?.take(2).toList() ??
-        <OnThisDayEvent>[],
-  );
+  UnmodifiableListView<OnThisDayEvent> get timelinePreview =>
+      UnmodifiableListView<OnThisDayEvent>(
+        _feed?.onThisDayTimeline?.take(2).toList() ??
+            <OnThisDayEvent>[],
+      );
 
   bool get hasImage =>
       _feed?.imageOfTheDay?.originalImage.source != null;
 
   WikipediaImage? get imageOfTheDay => _feed?.imageOfTheDay;
 
-  Summary? get todaysFeaturedArticle =>
-      _todaysFeaturedArticle;
+  Summary? get todaysFeaturedArticle => _todaysFeaturedArticle;
 
   String get readableDate => DateTime.now().humanReadable;
 
@@ -51,7 +50,7 @@ class FeedViewModel extends ChangeNotifier {
 
       notifyListeners();
     } on HttpException catch (e) {
-      // TODO - handle exception gracefully
+      // TODO(ewindmill): handle exception gracefully
       error = e.message;
     }
   }

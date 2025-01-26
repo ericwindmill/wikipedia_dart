@@ -3,7 +3,6 @@ import 'dart:ui' show Image;
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../wikipedia_api.dart' show Thumbnail;
-
 import 'thumbnail.dart' show Thumbnail;
 
 /// Simple image is like a [Thumbnail], but full size
@@ -36,8 +35,7 @@ class OriginalImage {
     };
   }
 
-  /// Returns a new [Thumbnail] instance and imports its values from
-  /// [value] if it's a [Map], null otherwise.
+  /// Returns a new [Thumbnail] instance
   // ignore: prefer_constructors_over_static_methods
   static OriginalImage fromJson(Map<String, Object?> json) {
     if (json case {
@@ -55,19 +53,6 @@ class OriginalImage {
       'Could not deserialize OriginalImage, json=$json',
     );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is OriginalImage &&
-          runtimeType == other.runtimeType &&
-          source == other.source &&
-          width == other.width &&
-          height == other.height;
-
-  @override
-  int get hashCode =>
-      source.hashCode ^ width.hashCode ^ height.hashCode;
 
   @override
   String toString() =>

@@ -25,10 +25,11 @@ abstract class Command<T> {
       name,
       ...aliases,
     ].join(', ');
-    final StringBuffer buffer = StringBuffer();
-    buffer.write('$cmd${' ' * columns.first} ');
-    buffer.write(' ' * columns[1]);
-    buffer.write(description);
+    final StringBuffer buffer =
+        StringBuffer()
+          ..write('$cmd${' ' * columns.first} ')
+          ..write(' ' * columns[1])
+          ..write(description);
     return buffer.toString();
   }
 }
@@ -63,10 +64,11 @@ mixin Args on Command<String> {
       name,
       ...aliases,
     ].join(', ');
-    final StringBuffer buffer = StringBuffer();
-    buffer.write('$cmd${' ' * columns.first} ');
-    buffer.write('$argName=$argName${' ' * columns[1]}');
-    buffer.write(description);
+    final StringBuffer buffer =
+        StringBuffer()
+          ..write('$cmd${' ' * columns.first} ')
+          ..write('$argName=$argName${' ' * columns[1]}')
+          ..write(description);
     return buffer.toString();
   }
 }

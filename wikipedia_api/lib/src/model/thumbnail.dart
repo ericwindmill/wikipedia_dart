@@ -26,8 +26,7 @@ class Thumbnail {
     };
   }
 
-  /// Returns a new [Thumbnail] instance and imports its values from
-  /// [value] if it's a [Map], null otherwise.
+  /// Returns a new [Thumbnail] instance
   static Thumbnail fromJson(Map<String, Object?> json) {
     if (json case {
       'source': final String source,
@@ -44,19 +43,6 @@ class Thumbnail {
       'Could not deserialize Thumbnail, json=$json',
     );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Thumbnail &&
-          runtimeType == other.runtimeType &&
-          source == other.source &&
-          width == other.width &&
-          height == other.height;
-
-  @override
-  int get hashCode =>
-      source.hashCode ^ width.hashCode ^ height.hashCode;
 
   @override
   String toString() =>

@@ -13,8 +13,7 @@ class FilterDialog<T> extends StatefulWidget {
   final VoidCallback onSubmit;
 
   @override
-  State<FilterDialog<T>> createState() =>
-      _FilterDialogState();
+  State<FilterDialog<T>> createState() => _FilterDialogState<T>();
 }
 
 class _FilterDialogState<T> extends State<FilterDialog<T>> {
@@ -23,17 +22,14 @@ class _FilterDialogState<T> extends State<FilterDialog<T>> {
     return SimpleDialog(
       title: const Text('Filters'),
       children: <Widget>[
-        ...List.generate(widget.options.length, (int idx) {
-          final option = widget.options.keys.elementAt(idx);
+        ...List<Widget>.generate(widget.options.length, (int idx) {
+          final T option = widget.options.keys.elementAt(idx);
           return CheckboxListTile.adaptive(
             title: Text(option.toString()),
             value: widget.options[option],
             onChanged: (bool? value) {
               setState(() {
-                widget.onSelectItem(
-                  value,
-                  widget.options[idx] as T,
-                );
+                widget.onSelectItem(value, widget.options[idx] as T);
               });
             },
           );

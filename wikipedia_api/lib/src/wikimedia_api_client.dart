@@ -7,29 +7,26 @@ import 'model/article.dart';
 import 'model/search_results.dart';
 
 class WikimediaApiClient {
-  static Future<List<Article>> getArticleByTitle(
-    String title,
-  ) async {
+  static Future<List<Article>> getArticleByTitle(String title) async {
     final http.Client client = http.Client();
     try {
-      final Uri
-      url = Uri.https('en.wikipedia.org', '/w/api.php', <
-        String,
-        Object?
-      >{
-        // order matters - explaintext must come after prop
-        'action': 'query',
-        'format': 'json',
-        'titles': title.trim(),
-        'prop': 'extracts',
-        'explaintext': '',
-      });
+      final Uri url = Uri.https(
+        'en.wikipedia.org',
+        '/w/api.php',
+        <String, Object?>{
+          // order matters - explaintext must come after prop
+          'action': 'query',
+          'format': 'json',
+          'titles': title.trim(),
+          'prop': 'extracts',
+          'explaintext': '',
+        },
+      );
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        return Article.listFromJson(
-          jsonData as Map<String, Object?>,
-        );
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        return Article.listFromJson(jsonData);
       } else {
         throw HttpException(
           '[WikimediaApiClient.getArticleByTitle] '
@@ -43,9 +40,7 @@ class WikimediaApiClient {
     }
   }
 
-  static Future<SearchResults> search(
-    String searchTerm,
-  ) async {
+  static Future<SearchResults> search(String searchTerm) async {
     final http.Client client = http.Client();
     try {
       final Uri url = Uri.https(
@@ -59,10 +54,9 @@ class WikimediaApiClient {
       );
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        return SearchResults.fromJson(
-          jsonData as List<Object?>,
-        );
+        final List<Object?> jsonData =
+            jsonDecode(response.body) as List<Object?>;
+        return SearchResults.fromJson(jsonData);
       } else {
         throw HttpException(
           '[WikimediaApiClient.getArticleByTitle] '

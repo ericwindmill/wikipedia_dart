@@ -22,7 +22,7 @@ class FeedView extends StatelessWidget {
     return ListenableBuilder(
       listenable: viewModel,
       builder: (BuildContext context, _) {
-        /// TODO
+        // TODO(ewindmill): handle errors
         if (viewModel.hasError) {
           return Center(child: Text(viewModel.error));
         }
@@ -73,8 +73,8 @@ class FeedView extends StatelessWidget {
                 ),
               if (viewModel.hasImage)
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
+                  onTap: () async {
+                    await Navigator.of(context).push(
                       CupertinoPageRoute<void>(
                         fullscreenDialog: true,
                         builder: (BuildContext context) {
@@ -111,8 +111,8 @@ class FeedView extends StatelessWidget {
                 sectionTitle: AppStrings.onThisDay,
                 subtitle: viewModel.readableDate,
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(
+                  onTap: () async {
+                    await Navigator.of(
                       context,
                     ).pushNamed(Routes.timeline);
                   },

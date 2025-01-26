@@ -28,8 +28,9 @@ class HelpCommand extends Command<String> {
     for (final Command<String> c in runner.commands) {
       table.insertRow(_valuesForCommand(c));
     }
-    console.resetCursorPosition();
-    console.eraseDisplay();
+    console
+      ..resetCursorPosition()
+      ..eraseDisplay();
     yield table.render();
     yield Outputs.enterACommand;
   }

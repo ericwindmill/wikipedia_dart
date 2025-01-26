@@ -30,11 +30,12 @@ class GetRandomArticle extends Command<String> {
       yield Outputs.articleInstructions;
       final ConsoleControl key = await console.readKey();
       if (key == ConsoleControl.q) {
-        console.newScreen();
-        console.rawMode = false;
-        runner.onInput('help');
+        console
+          ..newScreen()
+          ..rawMode = false;
+        await runner.onInput('help');
       } else if (key == ConsoleControl.r) {
-        runner.onInput('r');
+        await runner.onInput('r');
       }
     } on HttpException catch (e) {
       yield Outputs.wikipediaHttpError(e);

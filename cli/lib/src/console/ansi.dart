@@ -21,8 +21,9 @@ enum ConsoleControl {
   r('r'),
   unknown('');
 
-  final String ansiCode;
   const ConsoleControl(this.ansiCode);
+
+  final String ansiCode;
 
   String get execute => '$ansiEscapeLiteral[$ansiCode';
 }
@@ -52,13 +53,23 @@ enum ConsoleColor {
 
   /// Light grey, good for text, #F8F9FA
   grey(240, 240, 240),
+
+  ///
   white(255, 255, 255);
+
+  const ConsoleColor(this.r, this.g, this.b);
 
   final int r;
   final int g;
   final int b;
 
-  const ConsoleColor(this.r, this.g, this.b);
+  /// Change text color for all future output (until reset)
+  /// ```dart
+  /// print('hello'); // prints in terminal default color
+  /// print('AnsiColor.red.enableForeground');
+  /// print('hello'); // prints in red color
+  /// ```
+  String get enableForeground => '$ansiEscapeLiteral[38;2;$r;$g;${b}m';
 
   /// Change text color for all future output (until reset)
   /// ```dart
@@ -66,17 +77,7 @@ enum ConsoleColor {
   /// print('AnsiColor.red.enableForeground');
   /// print('hello'); // prints in red color
   /// ```
-  String get enableForeground =>
-      '$ansiEscapeLiteral[38;2;$r;$g;${b}m';
-
-  /// Change text color for all future output (until reset)
-  /// ```dart
-  /// print('hello'); // prints in terminal default color
-  /// print('AnsiColor.red.enableForeground');
-  /// print('hello'); // prints in red color
-  /// ```
-  String get enableBackground =>
-      '$ansiEscapeLiteral[48;2;$r;$g;${b}m';
+  String get enableBackground => '$ansiEscapeLiteral[48;2;$r;$g;${b}m';
 
   /// Reset text and background color to terminal defaults
   static String get reset => '$ansiEscapeLiteral[0m';
@@ -102,8 +103,9 @@ enum ConsoleTextStyle {
   invisible(7),
   strikethru(8);
 
-  final int ansiCode;
   const ConsoleTextStyle(this.ansiCode);
+
+  final int ansiCode;
 
   String apply(String text) {
     return '$ansiEscapeLiteral[$ansiCode;m$text';
@@ -125,23 +127,11 @@ extension AnsiUtils on String {
   }) {
     final List<int> styles = <int>[];
     if (foreground != null) {
-      styles.addAll(<int>[
-        38,
-        2,
-        foreground.r,
-        foreground.g,
-        foreground.b,
-      ]);
+      styles.addAll(<int>[38, 2, foreground.r, foreground.g, foreground.b]);
     }
 
     if (background != null) {
-      styles.addAll(<int>[
-        48,
-        2,
-        background.r,
-        background.g,
-        background.b,
-      ]);
+      styles.addAll(<int>[48, 2, background.r, background.g, background.b]);
     }
 
     if (bold) styles.add(1);
@@ -156,17 +146,9 @@ extension AnsiUtils on String {
   }
 
   String get strip {
-    return replaceAll(
-          RegExp(
-            r'\x1b\[[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e]',
-          ),
-          '',
-        )
+    return replaceAll(RegExp(r'\x1b\[[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e]'), '')
         .replaceAll(RegExp(r'\x1b[PX^_].*?\x1b\\'), '')
-        .replaceAll(
-          RegExp(r'\x1b\][^\a]*(?:\a|\x1b\\)'),
-          '',
-        )
+        .replaceAll(RegExp(r'\x1b\][^\a]*(?:\a|\x1b\\)'), '')
         .replaceAll(RegExp(r'\x1b[\[\]A-Z\\^_@]'), '');
   }
 
@@ -184,8 +166,7 @@ extension AnsiUtils on String {
       }
       // If the next word surpasses length, start the next line
       if (i + 1 < words.length &&
-          words[i + 1].length + strBuffer.length + 1 >
-              length) {
+          words[i + 1].length + strBuffer.length + 1 > length) {
         output.add(strBuffer.toString().trim());
         strBuffer.clear();
       }

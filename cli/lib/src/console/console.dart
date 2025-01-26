@@ -157,7 +157,7 @@ class Console {
     String text, {
     int duration = 0,
   }) async {
-    return Future.delayed(
+    return Future<void>.delayed(
       Duration(milliseconds: duration),
       () => stdout.write(text),
     );

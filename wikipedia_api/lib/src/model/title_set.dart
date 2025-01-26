@@ -39,21 +39,6 @@ class TitlesSet {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TitlesSet &&
-          runtimeType == other.runtimeType &&
-          canonical == other.canonical &&
-          normalized == other.normalized &&
-          display == other.display;
-
-  @override
-  int get hashCode =>
-      canonical.hashCode ^
-      normalized.hashCode ^
-      display.hashCode;
-
-  @override
   String toString() =>
       'TitlesSet['
       'canonical=$canonical, '

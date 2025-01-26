@@ -71,8 +71,8 @@ class Outputs {
       );
 
   static String event(OnThisDayEvent event) {
-    final StringBuffer strBuffer = StringBuffer('\n');
-    strBuffer.write(' * '.headerText);
+    final StringBuffer strBuffer = StringBuffer('\n')
+      ..write(' * '.headerText);
     if (event.year != null) {
       strBuffer.write(event.year.toString().headerText);
     } else {

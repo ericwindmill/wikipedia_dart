@@ -161,34 +161,6 @@ class Summary {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Summary &&
-          runtimeType == other.runtimeType &&
-          titles == other.titles &&
-          pageid == other.pageid &&
-          extract == other.extract &&
-          extractHtml == other.extractHtml &&
-          thumbnail == other.thumbnail &&
-          originalImage == other.originalImage &&
-          lang == other.lang &&
-          dir == other.dir &&
-          description == other.description;
-
-  @override
-  int get hashCode {
-    return titles.hashCode ^
-        pageid.hashCode ^
-        extract.hashCode ^
-        extractHtml.hashCode ^
-        thumbnail.hashCode ^
-        originalImage.hashCode ^
-        lang.hashCode ^
-        dir.hashCode ^
-        description.hashCode;
-  }
-
-  @override
   String toString() =>
       'Summary['
       'titles=$titles, '

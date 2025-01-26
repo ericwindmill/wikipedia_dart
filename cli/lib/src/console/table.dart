@@ -96,7 +96,10 @@ class Table {
   void setHeaderRow(List<Object> row) {
     insertRow(row, index: 0);
     _hasHeader = true;
-    assert(tableIntegrity);
+    assert(
+      tableIntegrity,
+      'Each row in a table should have the same number of columns.',
+    );
   }
 
   void insertRow(List<Object> row, {int? index}) {
@@ -106,7 +109,10 @@ class Table {
       _table.add(row);
     }
     _columnWidths = _calculateColumnWidths();
-    assert(tableIntegrity);
+    assert(
+      tableIntegrity,
+      'Each row in a table should have the same number of columns.',
+    );
   }
 
   void insertRows(
@@ -140,14 +146,15 @@ class Table {
 
     if (_hasHeader) {
       final List<Object> currentRow = _table[0];
-      buffer.write(
-        _row(
-          currentRow,
-          textColor: headerColor,
-          styles: headerTextStyles,
-        ),
-      );
-      buffer.write(_innerBorderRow());
+      buffer
+        ..write(
+          _row(
+            currentRow,
+            textColor: headerColor,
+            styles: headerTextStyles,
+          ),
+        )
+        ..write(_innerBorderRow());
     }
 
     for (int i = 1; i <= rows; i++) {
@@ -186,7 +193,7 @@ class Table {
 
   List<int> _calculateColumnWidths() {
     // for every column, look at each value in the column and take the max
-    final List<int> widths = List.generate(columns, (
+    final List<int> widths = List<int>.generate(columns, (
       int col,
     ) {
       int maxWidth = 0;
@@ -306,7 +313,10 @@ class Table {
     for (final List<String> row in splitEntries) {
       rowHeight = math.max(rowHeight, row.length);
     }
-    final List<String> newRows = List.filled(rowHeight, '');
+    final List<String> newRows = List<String>.filled(
+      rowHeight,
+      '',
+    );
 
     // grab the first element of each splitEntry to make row one
     for (int index = 0; index < newRows.length; index++) {
