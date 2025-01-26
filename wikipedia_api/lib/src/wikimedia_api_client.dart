@@ -7,10 +7,16 @@ import 'model/article.dart';
 import 'model/search_results.dart';
 
 class WikimediaApiClient {
-  static Future<List<Article>> getArticleByTitle(String title) async {
-    final client = http.Client();
+  static Future<List<Article>> getArticleByTitle(
+    String title,
+  ) async {
+    final http.Client client = http.Client();
     try {
-      final url = Uri.https('en.wikipedia.org', '/w/api.php', {
+      final Uri
+      url = Uri.https('en.wikipedia.org', '/w/api.php', <
+        String,
+        Object?
+      >{
         // order matters - explaintext must come after prop
         'action': 'query',
         'format': 'json',
@@ -18,42 +24,53 @@ class WikimediaApiClient {
         'prop': 'extracts',
         'explaintext': '',
       });
-      final response = await client.get(url);
+      final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        return Article.listFromJson(jsonData);
+        return Article.listFromJson(
+          jsonData as Map<String, Object?>,
+        );
       } else {
         throw HttpException(
-          '[WikimediaApiClient.getArticleByTitle] statusCode=${response.statusCode}, body=${response.body}',
+          '[WikimediaApiClient.getArticleByTitle] '
+          'statusCode=${response.statusCode}, body=${response.body}',
         );
       }
     } on Exception catch (error) {
-      throw Exception("Unexpected error - $error");
+      throw Exception('Unexpected error - $error');
     } finally {
       client.close();
     }
   }
 
-  static Future<SearchResults> search(String searchTerm) async {
-    final client = http.Client();
+  static Future<SearchResults> search(
+    String searchTerm,
+  ) async {
+    final http.Client client = http.Client();
     try {
-      final url = Uri.https('en.wikipedia.org', '/w/api.php', {
-        // order matters - explaintext must come after prop
-        'action': 'opensearch',
-        'format': 'json',
-        'search': searchTerm,
-      });
-      final response = await client.get(url);
+      final Uri url = Uri.https(
+        'en.wikipedia.org',
+        '/w/api.php',
+        <String, Object?>{
+          'action': 'opensearch',
+          'format': 'json',
+          'search': searchTerm,
+        },
+      );
+      final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        return SearchResults.fromJson(jsonData);
+        return SearchResults.fromJson(
+          jsonData as List<Object?>,
+        );
       } else {
         throw HttpException(
-          '[WikimediaApiClient.getArticleByTitle] statusCode=${response.statusCode}, body=${response.body}',
+          '[WikimediaApiClient.getArticleByTitle] '
+          'statusCode=${response.statusCode}, body=${response.body}',
         );
       }
     } on Exception catch (error) {
-      throw Exception("Unexpected error - $error");
+      throw Exception('Unexpected error - $error');
     } finally {
       client.close();
     }

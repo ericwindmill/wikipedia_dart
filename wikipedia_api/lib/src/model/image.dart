@@ -1,15 +1,8 @@
-import 'package:wikipedia_api/src/model/original_image.dart';
-import 'package:wikipedia_api/src/model/thumbnail.dart';
+import 'original_image.dart';
+import 'thumbnail.dart';
 
 /// Contains images of different sizes and metadata
 class WikipediaImage {
-  final String title;
-  final OriginalImage originalImage;
-  final String? artist;
-  final String? description;
-  final String? caption;
-  final Thumbnail? thumbnail;
-
   WikipediaImage({
     required this.title,
     required this.originalImage,
@@ -19,46 +12,68 @@ class WikipediaImage {
 
     this.thumbnail,
   });
+  final String title;
+  final OriginalImage originalImage;
+  final String? artist;
+  final String? description;
+  final String? caption;
+  final Thumbnail? thumbnail;
 
-  static WikipediaImage fromJson(Map<String, Object?> json) {
+  static WikipediaImage fromJson(
+    Map<String, Object?> json,
+  ) {
     return switch (json) {
       {
-        'title': String title,
-        'thumbnail': Map<String, Object?> thumbnail,
-        'image': Map<String, Object?> originalImage,
-        'artist': {'text': String artistName},
-        'description': {'text': String description},
-        'structured': {'captions': {'en': String caption}},
+        'title': final String title,
+        'thumbnail': final Map<String, Object?> thumbnail,
+        'image': final Map<String, Object?> originalImage,
+        'artist': {'text': final String artistName},
+        'description': {'text': final String description},
+        'structured': {
+          'captions': {'en': final String caption},
+        },
       } =>
         WikipediaImage(
           title: title,
           artist: artistName,
           description: description,
           caption: caption,
-          originalImage: OriginalImage.fromJson(originalImage),
+          originalImage: OriginalImage.fromJson(
+            originalImage,
+          ),
           thumbnail: Thumbnail.fromJson(thumbnail),
         ),
       {
-        'title': String title,
-        'thumbnail': Map<String, Object?> thumbnail,
-        'image': Map<String, Object?> originalImage,
-        'artist': {'text': String artistName},
-        'description': {'text': String description},
+        'title': final String title,
+        'thumbnail': final Map<String, Object?> thumbnail,
+        'image': final Map<String, Object?> originalImage,
+        'artist': {'text': final String artistName},
+        'description': {'text': final String description},
       } =>
         WikipediaImage(
           title: title,
           artist: artistName,
           description: description,
-          originalImage: OriginalImage.fromJson(originalImage),
+          originalImage: OriginalImage.fromJson(
+            originalImage,
+          ),
           thumbnail: Thumbnail.fromJson(thumbnail),
         ),
       // minimum required image properties
-      {'title': String title, 'image': Map<String, Object?> originalImage} =>
+      {
+        'title': final String title,
+        'image': final Map<String, Object?> originalImage,
+      } =>
         WikipediaImage(
           title: title,
-          originalImage: OriginalImage.fromJson(originalImage),
+          originalImage: OriginalImage.fromJson(
+            originalImage,
+          ),
         ),
-      _ => throw FormatException('Could not deserialize Image, json=$json'),
+      _ =>
+        throw FormatException(
+          'Could not deserialize Image, json=$json',
+        ),
     };
   }
 

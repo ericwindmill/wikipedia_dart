@@ -2,8 +2,32 @@ part of 'console.dart';
 
 enum Border {
   none('', '', '', '', '', '', '', '', '', '', ''),
-  ascii('-', '|', '-', '-', '-', '-', '+', '-', '-', '|', '|'),
-  fancy('─', '│', '┌', '┐', '└', '┘', '┼', '┴', '┬', '┤', '├');
+  ascii(
+    '-',
+    '|',
+    '-',
+    '-',
+    '-',
+    '-',
+    '+',
+    '-',
+    '-',
+    '|',
+    '|',
+  ),
+  fancy(
+    '─',
+    '│',
+    '┌',
+    '┐',
+    '└',
+    '┘',
+    '┼',
+    '┴',
+    '┬',
+    '┤',
+    '├',
+  );
 
   const Border(
     this.horizontalLine,
@@ -37,9 +61,9 @@ class Table {
     this.textColor = ConsoleColor.white,
     this.borderColor = ConsoleColor.white,
     this.headerColor = ConsoleColor.white,
-    this.headerTextStyles = const [],
+    this.headerTextStyles = const <ConsoleTextStyle>[],
     this.titleColor = ConsoleColor.white,
-    this.titleTextStyles = const [],
+    this.titleTextStyles = const <ConsoleTextStyle>[],
     this.border = Border.none,
   });
 
@@ -59,9 +83,9 @@ class Table {
   /// The length of one row
   int get columns => _table[0].length;
 
-  List<int> _columnWidths = [];
+  List<int> _columnWidths = <int>[];
 
-  final List<List<Object>> _table = [];
+  final List<List<Object>> _table = <List<Object>>[];
 
   bool _hasHeader = false;
 
@@ -85,22 +109,27 @@ class Table {
     assert(tableIntegrity);
   }
 
-  void insertRows(List<List<Object>> newRows, {int? index}) {
-    var i = index ?? rows;
-    for (var row in newRows) {
+  void insertRows(
+    List<List<Object>> newRows, {
+    int? index,
+  }) {
+    int i = index ?? rows;
+    for (final List<Object> row in newRows) {
       insertRow(row, index: i);
       i++;
     }
   }
 
   bool get tableIntegrity {
-    return _table.every((row) => row.length == columns) &&
+    return _table.every(
+          (List<Object> row) => row.length == columns,
+        ) &&
         columns == _columnWidths.length;
   }
 
   String render() {
-    StringBuffer buffer = StringBuffer();
-    var tableWidth = _calculateTableWidth();
+    final StringBuffer buffer = StringBuffer();
+    final int tableWidth = _calculateTableWidth();
     _columnWidths = _calculateColumnWidths();
 
     if (_hasTitle) {
@@ -110,14 +139,18 @@ class Table {
     buffer.write(_tableTopBorder());
 
     if (_hasHeader) {
-      var currentRow = _table[0];
+      final List<Object> currentRow = _table[0];
       buffer.write(
-        _row(currentRow, textColor: headerColor, styles: headerTextStyles),
+        _row(
+          currentRow,
+          textColor: headerColor,
+          styles: headerTextStyles,
+        ),
       );
       buffer.write(_innerBorderRow());
     }
 
-    for (var i = 1; i <= rows; i++) {
+    for (int i = 1; i <= rows; i++) {
       buffer.write(_row(_table[i], textColor: textColor));
       if (i < rows) buffer.write(_innerBorderRow());
     }
@@ -132,12 +165,16 @@ class Table {
 
   int _calculateTableWidth() {
     if (_table[0].isEmpty) return 0;
-    var widths = _combineWidths(_calculateColumnWidths());
+    final int widths = _combineWidths(
+      _calculateColumnWidths(),
+    );
     return widths + _borderWidth();
   }
 
   int _combineWidths(List<int> columnWidths) =>
-      columnWidths.reduce((start, colWidth) => start + colWidth);
+      columnWidths.reduce(
+        (int start, int colWidth) => start + colWidth,
+      );
 
   int _borderWidth() {
     if (!_hasBorder) {
@@ -149,10 +186,15 @@ class Table {
 
   List<int> _calculateColumnWidths() {
     // for every column, look at each value in the column and take the max
-    var widths = List.generate(columns, (col) {
+    final List<int> widths = List.generate(columns, (
+      int col,
+    ) {
       int maxWidth = 0;
-      for (var row in _table) {
-        maxWidth = math.max(maxWidth, row[col].toString().length);
+      for (final List<Object> row in _table) {
+        maxWidth = math.max(
+          maxWidth,
+          row[col].toString().length,
+        );
       }
       return maxWidth;
     }, growable: false);
@@ -167,9 +209,12 @@ class Table {
   // the width of a column if every column had an equal width.
   // i.e. Wide columns have a greater length, while narrow columns
   // have a less than or equivalent length.
-  List<int> _adjustColumnWidthsForWindowSize(List<int> columnWidths) {
-    var borderLength = _borderWidth();
-    var tableWidth = _combineWidths(columnWidths) + borderLength;
+  List<int> _adjustColumnWidthsForWindowSize(
+    List<int> columnWidths,
+  ) {
+    final int borderLength = _borderWidth();
+    final int tableWidth =
+        _combineWidths(columnWidths) + borderLength;
     if (tableWidth <= maxWidth) return columnWidths;
 
     if (columnWidths.length == 1) {
@@ -178,28 +223,42 @@ class Table {
     }
 
     // This provides a basis for which columns should be adjusted
-    var evenColumnWidth = (maxWidth / columns).floor();
+    final int evenColumnWidth =
+        (maxWidth / columns).floor();
 
     // separate long columns and short columns
-    var wideColumnLengths =
-        columnWidths.where((colLength) => colLength > evenColumnWidth).toList();
-    var narrowColumnLengths =
+    final List<int> wideColumnLengths =
         columnWidths
-            .where((colLength) => colLength <= evenColumnWidth)
+            .where(
+              (int colLength) =>
+                  colLength > evenColumnWidth,
+            )
+            .toList();
+    final List<int> narrowColumnLengths =
+        columnWidths
+            .where(
+              (int colLength) =>
+                  colLength <= evenColumnWidth,
+            )
             .toList();
 
     // find the total available width, which is the table width
     // (the combined short column width)
-    var totalAvailableWidth =
-        maxWidth - borderLength - _combineWidths(narrowColumnLengths);
+    final int totalAvailableWidth =
+        maxWidth -
+        borderLength -
+        _combineWidths(narrowColumnLengths);
 
     // (divide that available width among the width columns)
-    var wideColumnIndexes = wideColumnLengths.map(
-      (colLength) => columnWidths.indexOf(colLength),
-    );
-    var newLongColumnLength =
-        (totalAvailableWidth / wideColumnIndexes.length).floor();
-    for (var col in wideColumnIndexes) {
+    final Iterable<int> wideColumnIndexes =
+        wideColumnLengths.map(
+          (int colLength) =>
+              columnWidths.indexOf(colLength),
+        );
+    final int newLongColumnLength =
+        (totalAvailableWidth / wideColumnIndexes.length)
+            .floor();
+    for (final int col in wideColumnIndexes) {
       columnWidths[col] = newLongColumnLength;
     }
 
@@ -227,36 +286,38 @@ class Table {
   String _row(
     List<Object> row, {
     ConsoleColor textColor = ConsoleColor.white,
-    List<ConsoleTextStyle> styles = const [],
+    List<ConsoleTextStyle> styles =
+        const <ConsoleTextStyle>[],
   }) {
     // row data after being split to fit in column lengths
-    var splitEntries = <List<String>>[];
-    var i = 0;
+    final List<List<String>> splitEntries =
+        <List<String>>[];
+    int i = 0;
     while (i < row.length) {
-      var entry = row[i].toString();
-      var colLength = _columnWidths[i];
+      final String entry = row[i].toString();
+      final int colLength = _columnWidths[i];
       splitEntries.add(entry.splitLinesByLength(colLength));
       i++;
     }
 
     // This method will return a string that could represent more than one
     // row, if any entries are longer then their allowed column width
-    var rowHeight = 1;
-    for (var row in splitEntries) {
+    int rowHeight = 1;
+    for (final List<String> row in splitEntries) {
       rowHeight = math.max(rowHeight, row.length);
     }
-    List<String> newRows = List.filled(rowHeight, '');
+    final List<String> newRows = List.filled(rowHeight, '');
 
     // grab the first element of each splitEntry to make row one
-    for (var index = 0; index < newRows.length; index++) {
-      var newRowInner = [];
-      for (var col = 0; col < columns; col++) {
-        var entry = splitEntries[col];
-        var rowValue = '';
+    for (int index = 0; index < newRows.length; index++) {
+      final List<String> newRowInner = <String>[];
+      for (int col = 0; col < columns; col++) {
+        final List<String> entry = splitEntries[col];
+        String rowValue = '';
         if (index < entry.length) {
           rowValue = entry[index];
         }
-        for (var style in styles) {
+        for (final ConsoleTextStyle style in styles) {
           rowValue = style.apply(rowValue);
         }
         newRowInner.add(
@@ -268,14 +329,18 @@ class Table {
       }
 
       newRows[index] =
-          [_rowStart(), newRowInner.join(_rowDelimiter()), _rowEnd()].join();
+          <String>[
+            _rowStart(),
+            newRowInner.join(_rowDelimiter()),
+            _rowEnd(),
+          ].join();
     }
 
     return newRows.join();
   }
 
   String _cellEntry(String value, int columnWidth) {
-    var numSpaces = columnWidth - value.strip.length;
+    final int numSpaces = columnWidth - value.strip.length;
     return '$value${' ' * numSpaces}';
   }
 
@@ -286,15 +351,21 @@ class Table {
     delimiter =
         '${border.horizontalLine}${border.teeDown}${border.horizontalLine}';
 
-    return [
+    return <String>[
       borderColor.enableForeground,
-      _hasTitle ? border.teeRight : border.topLeftCorner,
+      if (_hasTitle)
+        border.teeRight
+      else
+        border.topLeftCorner,
       border.horizontalLine,
       _columnWidths
-          .map((width) => border.horizontalLine * width)
+          .map((int width) => border.horizontalLine * width)
           .join(delimiter),
       border.horizontalLine,
-      _hasTitle ? border.teeLeft : border.topRightCorner,
+      if (_hasTitle)
+        border.teeLeft
+      else
+        border.topRightCorner,
       ConsoleColor.reset,
       '\n',
     ].join();
@@ -307,12 +378,12 @@ class Table {
     delimiter =
         '${border.horizontalLine}${border.teeUp}${border.horizontalLine}';
 
-    return [
+    return <String>[
       borderColor.enableForeground,
       border.bottomLeftCorner,
       border.horizontalLine,
       _columnWidths
-          .map((width) => border.horizontalLine * width)
+          .map((int width) => border.horizontalLine * width)
           .join(delimiter),
       border.horizontalLine,
       border.bottomRightCorner,
@@ -325,15 +396,15 @@ class Table {
   String _innerBorderRow() {
     if (!_hasBorder) return '';
 
-    var delimiter =
+    final String delimiter =
         '${border.horizontalLine}${border.cross}${border.horizontalLine}';
 
-    return [
+    return <String>[
       borderColor.enableForeground,
       border.teeRight,
       border.horizontalLine,
       _columnWidths
-          .map((width) => border.horizontalLine * width)
+          .map((int width) => border.horizontalLine * width)
           .join(delimiter),
       border.horizontalLine,
       border.teeLeft,
@@ -343,13 +414,13 @@ class Table {
   }
 
   String _renderTitle(int tableWidth) {
-    var buffer = StringBuffer();
+    final StringBuffer buffer = StringBuffer();
     String styledTitle = title;
-    for (var style in titleTextStyles) {
+    for (final ConsoleTextStyle style in titleTextStyles) {
       styledTitle = style.apply(styledTitle);
     }
     if (_hasBorder) {
-      buffer.writeAll([
+      buffer.writeAll(<String>[
         borderColor.enableForeground,
         border.topLeftCorner,
         border.horizontalLine * (tableWidth - 2),
@@ -358,7 +429,7 @@ class Table {
         '\n',
       ]);
     }
-    buffer.writeAll([
+    buffer.writeAll(<String>[
       _rowStart(),
       titleColor.enableForeground,
       _cellEntry(styledTitle, tableWidth - 4),

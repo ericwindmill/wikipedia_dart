@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/ui/theme/dimensions.dart';
+import '../theme/dimensions.dart';
 
 class RoundedImage extends StatelessWidget {
   RoundedImage({
-    super.key,
     required this.source,
+    super.key,
     this.height,
     this.width,
     BorderRadius? borderRadius,
     this.fit = BoxFit.cover,
-  }) : radius = borderRadius ?? BorderRadius.circular(Dimensions.radius);
+  }) : radius =
+           borderRadius ??
+           BorderRadius.circular(Dimensions.radius);
 
   final String source;
   final BoxFit fit;
@@ -22,7 +24,12 @@ class RoundedImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: radius,
-      child: Image.network(source, height: height, width: width, fit: fit),
+      child: Image.network(
+        source,
+        height: height,
+        width: width,
+        fit: fit,
+      ),
     );
   }
 }

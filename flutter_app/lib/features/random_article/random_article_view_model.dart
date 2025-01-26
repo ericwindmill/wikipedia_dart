@@ -15,7 +15,8 @@ class RandomArticleViewModel extends ChangeNotifier {
 
   Future<void> getRandomArticle() async {
     try {
-      articleSummary = await WikipediaApiClient.getRandomArticle();
+      articleSummary =
+          await WikipediaApiClient.getRandomArticle();
       hasData = true;
       notifyListeners();
     } on HttpException catch (e) {

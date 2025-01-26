@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-class TimelineViewModel<OnThisDayState> extends ChangeNotifier {
+class TimelineViewModel extends ChangeNotifier {
   TimelineViewModel() {
     getTimelineForDay(_date.month, _date.day);
   }
 
-  List<OnThisDayEvent> _filteredEvents = [];
+  List<OnThisDayEvent> _filteredEvents = <OnThisDayEvent>[];
   UnmodifiableListView<OnThisDayEvent> get filteredEvents =>
       UnmodifiableListView(_filteredEvents);
 
@@ -24,13 +24,14 @@ class TimelineViewModel<OnThisDayState> extends ChangeNotifier {
   bool get hasError => error != null;
 
   // Be default, only show 'selected' events
-  ValueNotifier<Map<EventType, bool>> selectEventTypes = ValueNotifier({
-    EventType.holiday: false,
-    EventType.birthday: false,
-    EventType.death: false,
-    EventType.selected: true,
-    EventType.event: true,
-  });
+  ValueNotifier<Map<EventType, bool>> selectEventTypes =
+      ValueNotifier(<EventType, bool>{
+        EventType.holiday: false,
+        EventType.birthday: false,
+        EventType.death: false,
+        EventType.selected: true,
+        EventType.event: true,
+      });
 
   void toggleSelectedType(EventType t, bool value) {
     selectEventTypes.value[t] = value;
@@ -43,24 +44,42 @@ class TimelineViewModel<OnThisDayState> extends ChangeNotifier {
   }
 
   String get readableYearRange {
-    if (filteredEvents.every((e) => e.type == EventType.holiday)) return '';
+    if (filteredEvents.every(
+      (OnThisDayEvent e) => e.type == EventType.holiday,
+    )) {
+      return '';
+    }
 
-    final start =
-        filteredEvents.lastWhere((e) => e.type != EventType.holiday).year!;
-    final end =
-        filteredEvents.firstWhere((e) => e.type != EventType.holiday).year!;
+    final int start =
+        filteredEvents
+            .lastWhere(
+              (OnThisDayEvent e) =>
+                  e.type != EventType.holiday,
+            )
+            .year!;
+    final int end =
+        filteredEvents
+            .firstWhere(
+              (OnThisDayEvent e) =>
+                  e.type != EventType.holiday,
+            )
+            .year!;
 
     return '${start.absYear}-${end.absYear}';
   }
 
   void filterEvents() {
-    var selectedTypes = selectEventTypes.value;
+    final Map<EventType, bool> selectedTypes =
+        selectEventTypes.value;
     _filteredEvents =
-        _timeline.all.where((event) {
+        _timeline.all.where((OnThisDayEvent event) {
           return selectedTypes[event.type]!;
         }).toList();
 
-    _filteredEvents.sort((eventA, eventB) {
+    _filteredEvents.sort((
+      OnThisDayEvent eventA,
+      OnThisDayEvent eventB,
+    ) {
       // Sorts all holidays to the end
       if (eventA.type == EventType.holiday) return -1;
       if (eventB.type == EventType.holiday) return 1;
@@ -72,10 +91,11 @@ class TimelineViewModel<OnThisDayState> extends ChangeNotifier {
 
   Future<void> getTimelineForDay(int month, int day) async {
     try {
-      _timeline = await WikipediaApiClient.getTimelineForDate(
-        month: month,
-        day: day,
-      );
+      _timeline =
+          await WikipediaApiClient.getTimelineForDate(
+            month: month,
+            day: day,
+          );
 
       filterEvents();
       notifyListeners();

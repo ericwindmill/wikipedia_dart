@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/random_article/random_article_view_model.dart';
+import 'random_article_view_model.dart';
 
 class RandomArticleView extends StatelessWidget {
-  const RandomArticleView({super.key, required this.viewModel});
+  const RandomArticleView({
+    required this.viewModel,
+    super.key,
+  });
 
   final RandomArticleViewModel viewModel;
 
@@ -10,15 +13,17 @@ class RandomArticleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: viewModel,
-      builder: (context, _) {
+      builder: (BuildContext context, _) {
         if (viewModel.hasError) {
           return Center(child: Text(viewModel.error));
         }
         if (!viewModel.hasData && !viewModel.hasError) {
-          return Center(child: CircularProgressIndicator.adaptive());
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
         }
 
-        return Scaffold();
+        return const Scaffold();
       },
     );
   }

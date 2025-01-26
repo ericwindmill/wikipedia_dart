@@ -5,7 +5,7 @@ class QuitCommand extends Command<String> {
   String get name => 'quit';
 
   @override
-  List<String> get aliases => ['q', 'exit'];
+  List<String> get aliases => <String>['q', 'exit'];
 
   @override
   String get description => 'Exits the program.';

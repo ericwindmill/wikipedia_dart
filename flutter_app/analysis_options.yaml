@@ -1,12 +1,1 @@
-include: package:flutter_lints/flutter.yaml
-
-analyzer:
-  language:
-    strict-casts: true
-    strict-inference: true
-    strict-raw-types: true
-
-linter:
-  rules:
-    - avoid_dynamic_calls
-    - invalid_case_patterns
+include: ../analysis_options.yaml

@@ -19,20 +19,6 @@ enum BreakpointWidth {
 /// Flutter Adaptive Scaffold package, made by the Flutter team.
 /// https://pub.dev/packages/flutter_adaptive_scaffold
 class Breakpoint {
-  final TargetPlatform platform;
-
-  final BreakpointWidth width;
-
-  /// Margin for screens and other large views that run against the edges of
-  /// of the viewport
-  final double margin;
-
-  /// Padding within an element
-  final double padding;
-
-  /// Padding between elements, such as two items in a column
-  final double spacing;
-
   Breakpoint({
     required this.platform,
     required this.width,
@@ -41,13 +27,18 @@ class Breakpoint {
     required this.spacing,
   });
 
-  factory Breakpoint.currentDevice(
-    BuildContext context,
-  ) => switch (MediaQuery.of(context).size.width) {
-    >= 0 && < 600 => Breakpoint.small(platform: Theme.of(context).platform),
-    >= 600 && < 840 => Breakpoint.medium(platform: Theme.of(context).platform),
-    _ => Breakpoint.large(platform: Theme.of(context).platform),
-  };
+  factory Breakpoint.currentDevice(BuildContext context) =>
+      switch (MediaQuery.of(context).size.width) {
+        >= 0 && < 600 => Breakpoint.small(
+          platform: Theme.of(context).platform,
+        ),
+        >= 600 && < 840 => Breakpoint.medium(
+          platform: Theme.of(context).platform,
+        ),
+        _ => Breakpoint.large(
+          platform: Theme.of(context).platform,
+        ),
+      };
 
   const Breakpoint.small({required this.platform})
     : width = BreakpointWidth.small,
@@ -66,20 +57,36 @@ class Breakpoint {
       margin = 24,
       spacing = 24,
       padding = 16;
+  final TargetPlatform platform;
 
-  /// A set of [TargetPlatform]s that the [Breakpoint] will be active on desktop.
-  static const Set<TargetPlatform> desktop = <TargetPlatform>{
-    TargetPlatform.linux,
-    TargetPlatform.macOS,
-    TargetPlatform.windows,
-  };
+  final BreakpointWidth width;
+
+  /// Margin for screens and other large views that run against the edges of
+  /// of the viewport
+  final double margin;
+
+  /// Padding within an element
+  final double padding;
+
+  /// Padding between elements, such as two items in a column
+  final double spacing;
+
+  /// A set of [TargetPlatform]s that the [Breakpoint] will be active
+  /// on desktop.
+  static const Set<TargetPlatform> desktop =
+      <TargetPlatform>{
+        TargetPlatform.linux,
+        TargetPlatform.macOS,
+        TargetPlatform.windows,
+      };
 
   /// A set of [TargetPlatform]s that the [Breakpoint] will be active on mobile.
-  static const Set<TargetPlatform> mobile = <TargetPlatform>{
-    TargetPlatform.android,
-    TargetPlatform.fuchsia,
-    TargetPlatform.iOS,
-  };
+  static const Set<TargetPlatform> mobile =
+      <TargetPlatform>{
+        TargetPlatform.android,
+        TargetPlatform.fuchsia,
+        TargetPlatform.iOS,
+      };
 
   /// Returns true if the current platform is Desktop.
   /// On web, returns true if the browser is running on a Desktop OS.
@@ -98,24 +105,31 @@ class Breakpoint {
 
 class BreakpointProvider extends InheritedWidget {
   const BreakpointProvider({
-    super.key,
     required super.child,
     required this.breakpoint,
+    super.key,
   });
 
   final Breakpoint breakpoint;
 
   static Breakpoint of(BuildContext context) {
     final BreakpointProvider? result =
-        context.dependOnInheritedWidgetOfExactType<BreakpointProvider>();
-    assert(result != null, 'No BreakpointProvider found in context');
+        context
+            .dependOnInheritedWidgetOfExactType<
+              BreakpointProvider
+            >();
+    assert(
+      result != null,
+      'No BreakpointProvider found in context',
+    );
     return result!.breakpoint;
   }
 
   /// Returns the width of app content, accounting for margins
   static double appWidth(BuildContext context) {
-    var breakpoint = of(context);
-    return MediaQuery.of(context).size.width - (breakpoint.margin * 2);
+    final Breakpoint breakpoint = of(context);
+    return MediaQuery.of(context).size.width -
+        (breakpoint.margin * 2);
   }
 
   @override
@@ -126,8 +140,8 @@ class BreakpointProvider extends InheritedWidget {
 
 class BreakpointAwareWidget extends StatefulWidget {
   const BreakpointAwareWidget({
-    super.key,
     required this.child,
+    super.key,
     Widget? mdChild,
     Widget? lgChild,
   }) : mediumChild = mdChild ?? child,
@@ -138,10 +152,12 @@ class BreakpointAwareWidget extends StatefulWidget {
   final Widget largeChild;
 
   @override
-  State<BreakpointAwareWidget> createState() => _BreakpointAwareLayoutState();
+  State<BreakpointAwareWidget> createState() =>
+      _BreakpointAwareLayoutState();
 }
 
-class _BreakpointAwareLayoutState extends State<BreakpointAwareWidget> {
+class _BreakpointAwareLayoutState
+    extends State<BreakpointAwareWidget> {
   late Breakpoint breakpoint;
 
   @override
@@ -159,13 +175,16 @@ class _BreakpointAwareLayoutState extends State<BreakpointAwareWidget> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: ((context, constraints) {
+      builder: (
+        BuildContext context,
+        BoxConstraints constraints,
+      ) {
         return switch (breakpoint.width) {
           BreakpointWidth.small => widget.child,
           BreakpointWidth.medium => widget.mediumChild,
           BreakpointWidth.large => widget.largeChild,
         };
-      }),
+      },
     );
   }
 }

@@ -1,4 +1,10 @@
+import 'dart:ui' show Image;
+
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../wikipedia_api.dart' show Thumbnail;
+
+import 'thumbnail.dart' show Thumbnail;
 
 /// Simple image is like a [Thumbnail], but full size
 /// It doesn't contain any metadata from Wikipedia.
@@ -23,7 +29,11 @@ class OriginalImage {
   int height;
 
   Map<String, Object?> toJson() {
-    return {'source': source, 'width': width, 'height': height};
+    return <String, Object?>{
+      'source': source,
+      'width': width,
+      'height': height,
+    };
   }
 
   /// Returns a new [Thumbnail] instance and imports its values from
@@ -31,13 +41,19 @@ class OriginalImage {
   // ignore: prefer_constructors_over_static_methods
   static OriginalImage fromJson(Map<String, Object?> json) {
     if (json case {
-      'source': String source,
-      'height': int height,
-      'width': int width,
+      'source': final String source,
+      'height': final int height,
+      'width': final int width,
     }) {
-      return OriginalImage(source: source, width: width, height: height);
+      return OriginalImage(
+        source: source,
+        width: width,
+        height: height,
+      );
     }
-    throw FormatException('Could not deserialize OriginalImage, json=$json');
+    throw FormatException(
+      'Could not deserialize OriginalImage, json=$json',
+    );
   }
 
   @override
@@ -50,7 +66,8 @@ class OriginalImage {
           height == other.height;
 
   @override
-  int get hashCode => source.hashCode ^ width.hashCode ^ height.hashCode;
+  int get hashCode =>
+      source.hashCode ^ width.hashCode ^ height.hashCode;
 
   @override
   String toString() =>

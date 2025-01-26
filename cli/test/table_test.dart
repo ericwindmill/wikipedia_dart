@@ -1,21 +1,27 @@
+// ignore_for_file: lines_longer_than_80_chars
 import 'package:cli/src/console/console.dart';
 import 'package:test/test.dart';
 
-var rows = [
-  ['Name', 'Age', 'Favorite book', 'Favorite passage'],
-  [
+List<List<String>> rows = <List<String>>[
+  <String>[
+    'Name',
+    'Age',
+    'Favorite book',
+    'Favorite passage',
+  ],
+  <String>[
     'Carrot',
     '3',
     'The Catcher In the Rye',
     "I'm quite illiterate, but I read a lot.",
   ],
-  [
+  <String>[
     'Phoebe',
     '5',
     'A Brave New World',
     "But I don't want comfort. I want God, I want poetry, I want real danger, I want freedom, I want goodness. I want sin.",
   ],
-  [
+  <String>[
     'Butter',
     '8',
     'The Bell Jar',
@@ -23,14 +29,14 @@ var rows = [
   ],
 ];
 
-main() {
+void main() {
   test('Prints simple table with fancy border', () {
-    var table =
+    final Table table =
         Table(
             border: Border.fancy,
             title: 'Our favorite books',
             titleColor: ConsoleColor.lightBlue,
-            titleTextStyles: [
+            titleTextStyles: <ConsoleTextStyle>[
               ConsoleTextStyle.underscore,
               ConsoleTextStyle.italic,
             ],
@@ -42,8 +48,9 @@ main() {
           ..insertRow(rows[1])
           ..insertRow(rows[2])
           ..insertRow(rows[3]);
-    var output = table.render();
-
-    print(output);
+    final String output = table.render();
+    expect(table.columns, 4);
+    expect(table.rows, 4);
+    expect(output, isNotNull);
   });
 }

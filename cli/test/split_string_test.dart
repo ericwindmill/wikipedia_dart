@@ -1,26 +1,32 @@
 import 'package:cli/src/console/console.dart';
 import 'package:test/test.dart';
 
-main() {
+void main() {
   group('String splitLinesByLength', () {
     test('String.splitByLines', () {
-      var lines = "Short string".splitLinesByLength(50);
+      final List<String> lines = 'Short string'
+          .splitLinesByLength(50);
       expect(lines.length, 1);
     });
 
     test('String.splitByLines', () {
-      var length = 50;
-      var wordCount = 11;
-      var word = "1234567890";
-      var sentence = List.generate(wordCount, (idx) => word).join(' ');
+      const int length = 50;
+      const int wordCount = 11;
+      const String word = '1234567890';
+      final String sentence = List.generate(
+        wordCount,
+        (int idx) => word,
+      ).join(' ');
 
-      var lines = sentence.splitLinesByLength(length);
-      var numLinesShouldBe = (sentence.length / length).ceil();
+      final List<String> lines = sentence
+          .splitLinesByLength(length);
+      final int numLinesShouldBe =
+          (sentence.length / length).ceil();
       expect(lines.length, numLinesShouldBe);
 
       int numWords = 0;
-      for (var line in lines) {
-        var words = line.split(' ');
+      for (final String line in lines) {
+        final List<String> words = line.split(' ');
         numWords += words.length;
       }
 

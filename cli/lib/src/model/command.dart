@@ -1,27 +1,31 @@
 import 'dart:math' as math;
-import 'package:cli/src/console/console.dart';
+
 import '../app.dart';
+import '../console/console.dart';
 
 abstract class Command<T> {
   String get description;
   String get name;
   List<String> get aliases;
 
-  late InteractiveCommandRunner runner;
+  late InteractiveCommandRunner<T> runner;
 
   Stream<T> run({List<String>? args});
 
   @override
   String toString() {
-    var maxWidth = console.windowWidth;
-    var columns = [
+    final int maxWidth = console.windowWidth;
+    final List<int> columns = <int>[
       math.min(25, (maxWidth * .25).floor()),
       math.min(25, (maxWidth * .25).floor()),
       (maxWidth * .5).floor(),
     ];
 
-    var cmd = [name, ...aliases].join(', ');
-    var buffer = StringBuffer();
+    final String cmd = <String>[
+      name,
+      ...aliases,
+    ].join(', ');
+    final StringBuffer buffer = StringBuffer();
     buffer.write('$cmd${' ' * columns.first} ');
     buffer.write(' ' * columns[1]);
     buffer.write(description);
@@ -36,10 +40,11 @@ mixin Args on Command<String> {
   String? get argDefault;
 
   bool validateArgs(List<String>? args) {
-    if (argRequired && args == null || argRequired && args!.isEmpty) {
+    if (argRequired && args == null ||
+        argRequired && args!.isEmpty) {
       return false;
     }
-    for (var arg in args!) {
+    for (final String arg in args!) {
       if (!arg.contains('=')) return false;
     }
     return true;
@@ -47,15 +52,18 @@ mixin Args on Command<String> {
 
   @override
   String toString() {
-    var maxWidth = console.windowWidth;
-    var columns = [
+    final int maxWidth = console.windowWidth;
+    final List<int> columns = <int>[
       math.min(25, (maxWidth * .25).floor()),
       math.min(25, (maxWidth * .25).floor()),
       (maxWidth * .5).floor(),
     ];
 
-    var cmd = [name, ...aliases].join(', ');
-    var buffer = StringBuffer();
+    final String cmd = <String>[
+      name,
+      ...aliases,
+    ].join(', ');
+    final StringBuffer buffer = StringBuffer();
     buffer.write('$cmd${' ' * columns.first} ');
     buffer.write('$argName=$argName${' ' * columns[1]}');
     buffer.write(description);

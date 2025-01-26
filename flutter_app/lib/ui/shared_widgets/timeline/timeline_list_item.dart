@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-import 'package:flutter_app/ui/theme/breakpoint.dart';
-import 'package:flutter_app/ui/theme/theme.dart';
-import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
+import '../../theme/breakpoint.dart';
+import '../../theme/theme.dart';
+import 'timeline.dart';
 
 class TimelineListItem extends StatelessWidget {
   const TimelineListItem({
-    super.key,
     required this.event,
+    super.key,
     this.showPageLinks = true,
     this.contentPadding = EdgeInsets.zero,
   });
@@ -19,9 +19,11 @@ class TimelineListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = BreakpointProvider.appWidth(context);
+    final double width = BreakpointProvider.appWidth(
+      context,
+    );
     return Stack(
-      children: [
+      children: <Widget>[
         Positioned(
           top: 0,
           bottom: 0,
@@ -29,15 +31,16 @@ class TimelineListItem extends StatelessWidget {
           child: CustomPaint(painter: TimelinePainter()),
         ),
         Column(
-          children: [
+          children: <Widget>[
             Row(
-              children: [
-                SizedBox(width: sidebarWidth),
+              children: <Widget>[
+                const SizedBox(width: sidebarWidth),
                 SizedBox(
                   width: width - sidebarWidth,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: <Widget>[
                       Text(
                         event.type != EventType.holiday
                             ? event.year!.absYear
@@ -45,10 +48,15 @@ class TimelineListItem extends StatelessWidget {
                         style: AppTheme.timelineEntryTitle,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                        ),
                         child: Text(
                           event.text,
-                          style: TextTheme.of(context).bodyMedium,
+                          style:
+                              TextTheme.of(
+                                context,
+                              ).bodyMedium,
                         ),
                       ),
                     ],
@@ -62,11 +70,16 @@ class TimelineListItem extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: event.pages.length + 1,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (
+                    BuildContext context,
+                    int index,
+                  ) {
                     if (index == 0) {
                       return Container(width: sidebarWidth);
                     }
-                    return TimelinePageLink(event.pages[index - 1]);
+                    return TimelinePageLink(
+                      event.pages[index - 1],
+                    );
                   },
                 ),
               ),

@@ -14,16 +14,21 @@ class FeedViewModel extends ChangeNotifier {
   bool get hasError => error != '';
 
   UnmodifiableListView<Summary> get mostRead =>
-      UnmodifiableListView(_feed?.mostRead ?? []);
+      UnmodifiableListView(_feed?.mostRead ?? <Summary>[]);
 
-  UnmodifiableListView<OnThisDayEvent> get timelinePreview =>
-      UnmodifiableListView(_feed?.onThisDayTimeline?.take(2).toList() ?? []);
+  UnmodifiableListView<OnThisDayEvent>
+  get timelinePreview => UnmodifiableListView(
+    _feed?.onThisDayTimeline?.take(2).toList() ??
+        <OnThisDayEvent>[],
+  );
 
-  bool get hasImage => _feed?.imageOfTheDay?.originalImage.source != null;
+  bool get hasImage =>
+      _feed?.imageOfTheDay?.originalImage.source != null;
 
   WikipediaImage? get imageOfTheDay => _feed?.imageOfTheDay;
 
-  Summary? get todaysFeaturedArticle => _todaysFeaturedArticle;
+  Summary? get todaysFeaturedArticle =>
+      _todaysFeaturedArticle;
 
   String get readableDate => DateTime.now().humanReadable;
 

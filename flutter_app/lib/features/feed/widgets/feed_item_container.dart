@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/theme/breakpoint.dart';
+import '../../../ui/theme/breakpoint.dart';
 
-import 'package:flutter_app/ui/theme/dimensions.dart';
+import '../../../ui/theme/dimensions.dart';
 
 class FeedItem extends StatelessWidget {
   const FeedItem({
-    super.key,
     required this.sectionTitle,
-    this.subtitle,
     required this.child,
+    super.key,
+    this.subtitle,
   });
 
   final String sectionTitle;
@@ -19,16 +19,30 @@ class FeedItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(sectionTitle, style: TextTheme.of(context).titleMedium),
+      children: <Widget>[
+        Text(
+          sectionTitle,
+          style: TextTheme.of(context).titleMedium,
+        ),
         if (subtitle != null)
-          Text(subtitle!, style: TextTheme.of(context).labelMedium),
-        SizedBox(height: BreakpointProvider.of(context).spacing * 2),
+          Text(
+            subtitle!,
+            style: TextTheme.of(context).labelMedium,
+          ),
+        SizedBox(
+          height:
+              BreakpointProvider.of(context).spacing * 2,
+        ),
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(Dimensions.radius),
-            boxShadow: [
+            color:
+                Theme.of(
+                  context,
+                ).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(
+              Dimensions.radius,
+            ),
+            boxShadow: const <BoxShadow>[
               BoxShadow(
                 spreadRadius: 1,
                 blurRadius: 8,

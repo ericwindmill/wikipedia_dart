@@ -4,8 +4,6 @@ import 'dart:math' as math;
 part 'ansi.dart';
 part 'table.dart';
 
-// Todo - This should probably be a separate library
-
 /// [Console] is a singleton. This will always return the same instance.
 Console get console {
   return Console();
@@ -20,12 +18,13 @@ Console get console {
 /// dart_console package. It includes only whats needed for this demo.
 /// https://pub.dev/packages/dart_console
 class Console {
-  // This class is a singleton
-  Console._();
-  static final Console _console = Console._();
   factory Console() {
     return _console;
   }
+
+  Console._();
+
+  static final Console _console = Console._();
 
   /// When true, the terminal reads every keystroke without waiting for
   /// for a 'return' keystroke. And, it doesn't echo keystrokes.
@@ -43,9 +42,12 @@ class Console {
   /// Splits strings on `\n` characters, then writes each line to the
   /// console. [duration] defines how many milliseconds there will be
   /// between each line print.
-  Future<void> write(String text, {int duration = 50}) async {
-    var lines = text.split('\n');
-    for (var l in lines) {
+  Future<void> write(
+    String text, {
+    int duration = 50,
+  }) async {
+    final List<String> lines = text.split('\n');
+    for (final String l in lines) {
       await _delayedPrint('$l \n', duration: duration);
     }
   }
@@ -57,12 +59,15 @@ class Console {
   }
 
   /// Set cursor to top-left corner
-  void resetCursorPosition() =>
-      stdout.write(ConsoleControl.resetCursorPosition.execute);
+  void resetCursorPosition() => stdout.write(
+    ConsoleControl.resetCursorPosition.execute,
+  );
 
-  void eraseLine() => stdout.write(ConsoleControl.eraseLine.execute);
+  void eraseLine() =>
+      stdout.write(ConsoleControl.eraseLine.execute);
 
-  void eraseDisplay() => stdout.write(ConsoleControl.eraseDisplay.execute);
+  void eraseDisplay() =>
+      stdout.write(ConsoleControl.eraseDisplay.execute);
 
   /// Resets the console screen and positions the cursor in the top-left corner.
   void newScreen() {
@@ -104,7 +109,7 @@ class Console {
   /// enum, and then handle parsing them here.
   Future<ConsoleControl> readKey() async {
     rawMode = true;
-    var codeUnit = 0;
+    int codeUnit = 0;
     ConsoleControl key = ConsoleControl.unknown;
 
     // Get first code unit
@@ -116,7 +121,9 @@ class Console {
     }
 
     // handle A-Za-z
-    if (codeUnit >= 65 && codeUnit < 91 || codeUnit >= 97 || codeUnit < 123) {
+    if (codeUnit >= 65 && codeUnit < 91 ||
+        codeUnit >= 97 ||
+        codeUnit < 123) {
       // We only care about 'q' and 'Q'
       if (codeUnit == 113 || codeUnit == 81) {
         return ConsoleControl.q;
@@ -129,7 +136,7 @@ class Console {
     // handle escape
     if (codeUnit == 0x1b) {
       codeUnit = stdin.readByteSync();
-      var nextChar = String.fromCharCode(codeUnit);
+      String nextChar = String.fromCharCode(codeUnit);
       if (nextChar == '[') {
         codeUnit = stdin.readByteSync();
         nextChar = String.fromCharCode(codeUnit);
@@ -146,8 +153,11 @@ class Console {
     return key;
   }
 
-  Future<void> _delayedPrint(String text, {int duration = 0}) async {
-    return await Future.delayed(
+  Future<void> _delayedPrint(
+    String text, {
+    int duration = 0,
+  }) async {
+    return Future.delayed(
       Duration(milliseconds: duration),
       () => stdout.write(text),
     );

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PageLinkTheme extends ThemeExtension<PageLinkTheme> {
-  final Color backgroundColor;
-
   PageLinkTheme({required this.backgroundColor});
+  final Color backgroundColor;
 
   @override
   ThemeExtension<PageLinkTheme> copyWith({
@@ -11,7 +10,8 @@ class PageLinkTheme extends ThemeExtension<PageLinkTheme> {
     Color? textColor,
   }) {
     return PageLinkTheme(
-      backgroundColor: backgroundColor ?? this.backgroundColor,
+      backgroundColor:
+          backgroundColor ?? this.backgroundColor,
     );
   }
 
@@ -25,7 +25,11 @@ class PageLinkTheme extends ThemeExtension<PageLinkTheme> {
     }
     return PageLinkTheme(
       backgroundColor:
-          Color.lerp(backgroundColor, other.backgroundColor, t) ??
+          Color.lerp(
+            backgroundColor,
+            other.backgroundColor,
+            t,
+          ) ??
           backgroundColor,
     );
   }

@@ -1,17 +1,17 @@
-import 'package:cli/src/utils/style_text.dart';
-import 'package:cli/src/utils/timeout.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 import '../../wikipedia_cli.dart';
 import '../model/command.dart';
 import '../outputs.dart';
+import '../utils/style_text.dart';
+import '../utils/timeout.dart';
 
 class TimelineCommand extends Command<String> with Args {
   @override
   String get name => 'timeline';
 
   @override
-  List<String> get aliases => ['t'];
+  List<String> get aliases => <String>['t'];
 
   @override
   String get description =>
@@ -28,9 +28,9 @@ class TimelineCommand extends Command<String> with Args {
 
   @override
   String get argDefault {
-    var today = DateTime.now();
-    var month = today.month.toString();
-    var day = today.day.toString();
+    final DateTime today = DateTime.now();
+    final String month = today.month.toString();
+    final String day = today.day.toString();
     return '$month/$day';
   }
 
@@ -40,11 +40,12 @@ class TimelineCommand extends Command<String> with Args {
     // Args are null checked in super
     if (args!.length > 1) return false;
     if (!args.first.contains('/')) return false;
-    var dateNums = args.first.split('/');
+    final dateNums = args.first.split('/');
     if (dateNums.length != 2) return false;
-    if (dateNums.any((n) => n.length > 2)) return false;
-    var month = int.tryParse(dateNums.first);
-    var day = int.tryParse(dateNums.last);
+    if (dateNums.any((String n) => n.length > 2))
+      return false;
+    final int? month = int.tryParse(dateNums.first);
+    final int? day = int.tryParse(dateNums.last);
 
     if (month == null || day == null) return false;
     return verifyMonthAndDate(month: month, day: day);
@@ -52,9 +53,9 @@ class TimelineCommand extends Command<String> with Args {
 
   @override
   Stream<String> run({List<String>? args}) async* {
-    var month = '';
-    var day = '';
-    var date = argDefault;
+    String month = '';
+    String day = '';
+    String date = argDefault;
 
     // If the user specified a date, use it.
     if (args != null && args.isNotEmpty) {
@@ -69,19 +70,20 @@ class TimelineCommand extends Command<String> with Args {
     [month, day] = date.split('/');
 
     try {
-      final timeline = await WikipediaApiClient.getTimelineForDate(
-        month: int.parse(month),
-        day: int.parse(day),
-        type: EventType.selected,
-      );
+      final OnThisDayTimeline timeline =
+          await WikipediaApiClient.getTimelineForDate(
+            month: int.parse(month),
+            day: int.parse(day),
+            type: EventType.selected,
+          );
 
-      var i = 0;
+      int i = 0;
       while (i < timeline.length) {
         assert(i >= 0 && i < timeline.length);
         yield _renderEvent(timeline, i);
 
         // Handle next action
-        var key = await console.readKey();
+        final ConsoleControl key = await console.readKey();
         switch (key) {
           case ConsoleControl.cursorUp:
           case ConsoleControl.cursorLeft:
@@ -123,10 +125,13 @@ class TimelineCommand extends Command<String> with Args {
     }
   }
 
-  String _renderEvent(OnThisDayTimeline timeline, int index) {
+  String _renderEvent(
+    OnThisDayTimeline timeline,
+    int index,
+  ) {
     console.eraseDisplay();
     console.resetCursorPosition();
-    return [
+    return <String>[
       Outputs.event(timeline[index]),
       Outputs.eventNumber(index, timeline.length),
       Outputs.enterLeftOrRight,

@@ -20,20 +20,12 @@ class TitlesSet {
   /// the title as it should be displayed to the user
   String display;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'canonical': canonical,
-      'normalized': normalized,
-      'display': display,
-    };
-  }
-
   /// Returns a new [TitlesSet] instance and imports its values from a JSON map
   static TitlesSet fromJson(Map<String, Object?> json) {
     if (json case {
-      'canonical': String canonical,
-      'normalized': String normalized,
-      'display': String display,
+      'canonical': final String canonical,
+      'normalized': final String normalized,
+      'display': final String display,
     }) {
       return TitlesSet(
         canonical: canonical,
@@ -41,7 +33,9 @@ class TitlesSet {
         display: display,
       );
     }
-    throw FormatException('Could not deserialize TitleSet, json=$json');
+    throw FormatException(
+      'Could not deserialize TitleSet, json=$json',
+    );
   }
 
   @override
@@ -55,9 +49,15 @@ class TitlesSet {
 
   @override
   int get hashCode =>
-      canonical.hashCode ^ normalized.hashCode ^ display.hashCode;
+      canonical.hashCode ^
+      normalized.hashCode ^
+      display.hashCode;
 
   @override
   String toString() =>
-      'TitlesSet[canonical=$canonical, normalized=$normalized, display=$display]';
+      'TitlesSet['
+      'canonical=$canonical, '
+      'normalized=$normalized, '
+      'display=$display'
+      ']';
 }

@@ -6,15 +6,16 @@ import 'event_type.dart';
 import 'on_this_day_event.dart';
 
 @JsonSerializable(explicitToJson: true)
-class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
+class OnThisDayTimeline
+    extends IterableMixin<OnThisDayEvent> {
   /// Returns a new [OnThisDayTimeline] instance.
   OnThisDayTimeline({
-    this.all = const [],
-    this.births = const [],
-    this.deaths = const [],
-    this.events = const [],
-    this.holidays = const [],
-    this.selected = const [],
+    this.all = const <OnThisDayEvent>[],
+    this.births = const <OnThisDayEvent>[],
+    this.deaths = const <OnThisDayEvent>[],
+    this.events = const <OnThisDayEvent>[],
+    this.holidays = const <OnThisDayEvent>[],
+    this.selected = const <OnThisDayEvent>[],
   });
 
   final List<OnThisDayEvent> all;
@@ -32,19 +33,11 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
   @override
   Iterator<OnThisDayEvent> get iterator => all.iterator;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'births': [for (var b in births) b.toJson()],
-      'deaths': [for (var b in deaths) b.toJson()],
-      'holidays': [for (var b in events) b.toJson()],
-      'events': [for (var b in holidays) b.toJson()],
-      'selected': [for (var b in selected) b.toJson()],
-    };
-  }
-
   /// Returns a new [OnThisDayTimeline] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
-  static OnThisDayTimeline fromJson(Map<String, Object?> json) {
+  static OnThisDayTimeline fromJson(
+    Map<String, Object?> json,
+  ) {
     final List<OnThisDayEvent> births =
         (json['births'] as List<dynamic>?)
             ?.map(
@@ -54,7 +47,7 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
               ),
             )
             .toList() ??
-        const [];
+        const <OnThisDayEvent>[];
 
     final List<OnThisDayEvent> deaths =
         (json['deaths'] as List<dynamic>?)
@@ -65,7 +58,7 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
               ),
             )
             .toList() ??
-        const [];
+        const <OnThisDayEvent>[];
 
     final List<OnThisDayEvent> events =
         (json['events'] as List<dynamic>?)
@@ -76,7 +69,7 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
               ),
             )
             .toList() ??
-        const [];
+        const <OnThisDayEvent>[];
 
     final List<OnThisDayEvent> holidays =
         (json['holidays'] as List<dynamic>?)
@@ -87,7 +80,7 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
               ),
             )
             .toList() ??
-        const [];
+        const <OnThisDayEvent>[];
 
     final List<OnThisDayEvent> selected =
         (json['selected'] as List<dynamic>?)
@@ -98,9 +91,9 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
               ),
             )
             .toList() ??
-        const [];
+        const <OnThisDayEvent>[];
 
-    List<OnThisDayEvent> all = [
+    final List<OnThisDayEvent> all = <OnThisDayEvent>[
       ...births,
       ...deaths,
       ...events,
@@ -108,7 +101,10 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
       ...selected,
     ];
 
-    all.sort((eventA, eventB) {
+    all.sort((
+      OnThisDayEvent eventA,
+      OnThisDayEvent eventB,
+    ) {
       // Sorts all holidays to the end
       if (eventA.type == EventType.holiday) return -1;
       if (eventB.type == EventType.holiday) return 1;
@@ -150,5 +146,11 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
 
   @override
   String toString() =>
-      'OnThisDayResponse[births=$births, deaths=$deaths, events=$events, holidays=$holidays, selected=$selected]';
+      'OnThisDayResponse['
+      'births=$births, '
+      'deaths=$deaths, '
+      'events=$events, '
+      'holidays=$holidays, '
+      'selected=$selected'
+      ']';
 }

@@ -1,24 +1,25 @@
 import '../../wikipedia_api.dart';
 
 class WikipediaFeed {
-  final Summary? todaysFeaturedArticle;
-  final List<OnThisDayEvent>? onThisDayTimeline;
-  final List<Summary>? mostRead;
-  final WikipediaImage? imageOfTheDay;
-
   WikipediaFeed({
     required this.todaysFeaturedArticle,
     required this.onThisDayTimeline,
     required this.mostRead,
     required this.imageOfTheDay,
   });
+  final Summary? todaysFeaturedArticle;
+  final List<OnThisDayEvent>? onThisDayTimeline;
+  final List<Summary>? mostRead;
+  final WikipediaImage? imageOfTheDay;
 
   static WikipediaFeed fromJson(Map<String, Object?> json) {
-    var featured =
+    final Summary? featured =
         json.containsKey('tfa')
-            ? Summary.fromJson(json['tfa'] as Map<String, Object?>)
+            ? Summary.fromJson(
+              json['tfa']! as Map<String, Object?>,
+            )
             : null;
-    var timeline =
+    final List<OnThisDayEvent>? timeline =
         json.containsKey('onthisday')
             ? (json['onthisday'] as List<dynamic>?)
                 ?.map(
@@ -29,21 +30,25 @@ class WikipediaFeed {
                 )
                 .toList()
             : null;
-    var image =
+    final WikipediaImage? image =
         json.containsKey('image')
-            ? WikipediaImage.fromJson(json['image'] as Map<String, Object?>)
+            ? WikipediaImage.fromJson(
+              json['image']! as Map<String, Object?>,
+            )
             : null;
 
-    var mostReadJson =
+    final Map<String, Object?>? mostReadJson =
         json.containsKey('mostread')
-            ? (json['mostread'] as Map<String, Object?>)
+            ? (json['mostread']! as Map<String, Object?>)
             : null;
     List<Summary>? mostRead;
     if (mostReadJson != null) {
       mostRead =
-          (mostReadJson['articles'] as List<Object?>)
+          (mostReadJson['articles']! as List<Object?>)
               .map(
-                (article) => Summary.fromJson(article as Map<String, Object?>),
+                (Object? article) => Summary.fromJson(
+                  article! as Map<String, Object?>,
+                ),
               )
               .toList();
     }

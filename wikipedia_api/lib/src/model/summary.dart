@@ -10,11 +10,12 @@ class Summary {
     required this.pageid,
     required this.extract,
     required this.extractHtml,
+    required this.lang,
+    required this.dir,
     this.thumbnail,
     this.originalImage,
     this.url,
-    required this.lang,
-    required this.dir,
+
     this.description,
   });
 
@@ -47,28 +48,24 @@ class Summary {
   /// Wikidata description for the page
   String? description;
 
-  Map<String, dynamic> toJson() {
-    return {};
-  }
-
-  /// Returns a new [Summary] instance and imports its values from
-  /// [value] if it's a [Map], null otherwise.
+  /// Returns a new [Summary] instance
   static Summary fromJson(Map<String, Object?> json) {
     return switch (json) {
       {
-        'titles': Map<String, Object?> titles,
-        'pageid': int pageid,
-        'extract': String extract,
-        'extract_html': String extractHtml,
-        'lang': String lang,
-        'dir': String dir,
+        'titles': final Map<String, Object?> titles,
+        'pageid': final int pageid,
+        'extract': final String extract,
+        'extract_html': final String extractHtml,
+        'lang': final String lang,
+        'dir': final String dir,
         'content_urls': {
-          'desktop': {'page': String url},
+          'desktop': {'page': final String url},
           'mobile': {'page': String _},
         },
-        'description': String description,
-        'thumbnail': Map<String, Object?> thumbnail,
-        'originalimage': Map<String, Object?> originalImage,
+        'description': final String description,
+        'thumbnail': final Map<String, Object?> thumbnail,
+        'originalimage':
+            final Map<String, Object?> originalImage,
       } =>
         Summary(
           titles: TitlesSet.fromJson(titles),
@@ -76,23 +73,26 @@ class Summary {
           extract: extract,
           extractHtml: extractHtml,
           thumbnail: Thumbnail.fromJson(thumbnail),
-          originalImage: OriginalImage.fromJson(originalImage),
+          originalImage: OriginalImage.fromJson(
+            originalImage,
+          ),
           lang: lang,
           dir: dir,
           url: url,
           description: description,
         ),
       {
-        'titles': Map<String, Object?> titles,
-        'pageid': int pageid,
-        'extract': String extract,
-        'extract_html': String extractHtml,
-        'lang': String lang,
-        'dir': String dir,
-        'thumbnail': Map<String, Object?> thumbnail,
-        'originalimage': Map<String, Object?> originalImage,
+        'titles': final Map<String, Object?> titles,
+        'pageid': final int pageid,
+        'extract': final String extract,
+        'extract_html': final String extractHtml,
+        'lang': final String lang,
+        'dir': final String dir,
+        'thumbnail': final Map<String, Object?> thumbnail,
+        'originalimage':
+            final Map<String, Object?> originalImage,
         'content_urls': {
-          'desktop': {'page': String url},
+          'desktop': {'page': final String url},
           'mobile': {'page': String _},
         },
       } =>
@@ -102,21 +102,23 @@ class Summary {
           extract: extract,
           extractHtml: extractHtml,
           thumbnail: Thumbnail.fromJson(thumbnail),
-          originalImage: OriginalImage.fromJson(originalImage),
+          originalImage: OriginalImage.fromJson(
+            originalImage,
+          ),
           lang: lang,
           dir: dir,
           url: url,
         ),
       {
-        'titles': Map<String, Object?> titles,
-        'pageid': int pageid,
-        'extract': String extract,
-        'extract_html': String extractHtml,
-        'lang': String lang,
-        'dir': String dir,
-        'description': String description,
+        'titles': final Map<String, Object?> titles,
+        'pageid': final int pageid,
+        'extract': final String extract,
+        'extract_html': final String extractHtml,
+        'lang': final String lang,
+        'dir': final String dir,
+        'description': final String description,
         'content_urls': {
-          'desktop': {'page': String url},
+          'desktop': {'page': final String url},
           'mobile': {'page': String _},
         },
       } =>
@@ -131,14 +133,14 @@ class Summary {
           url: url,
         ),
       {
-        'titles': Map<String, Object?> titles,
-        'pageid': int pageid,
-        'extract': String extract,
-        'extract_html': String extractHtml,
-        'lang': String lang,
-        'dir': String dir,
+        'titles': final Map<String, Object?> titles,
+        'pageid': final int pageid,
+        'extract': final String extract,
+        'extract_html': final String extractHtml,
+        'lang': final String lang,
+        'dir': final String dir,
         'content_urls': {
-          'desktop': {'page': String url},
+          'desktop': {'page': final String url},
           'mobile': {'page': String _},
         },
       } =>
@@ -151,7 +153,10 @@ class Summary {
           dir: dir,
           url: url,
         ),
-      _ => throw FormatException('Could not deserialize Summary, json=$json'),
+      _ =>
+        throw FormatException(
+          'Could not deserialize Summary, json=$json',
+        ),
     };
   }
 
@@ -171,18 +176,29 @@ class Summary {
           description == other.description;
 
   @override
-  int get hashCode =>
-      titles.hashCode ^
-      pageid.hashCode ^
-      extract.hashCode ^
-      extractHtml.hashCode ^
-      thumbnail.hashCode ^
-      originalImage.hashCode ^
-      lang.hashCode ^
-      dir.hashCode ^
-      description.hashCode;
+  int get hashCode {
+    return titles.hashCode ^
+        pageid.hashCode ^
+        extract.hashCode ^
+        extractHtml.hashCode ^
+        thumbnail.hashCode ^
+        originalImage.hashCode ^
+        lang.hashCode ^
+        dir.hashCode ^
+        description.hashCode;
+  }
 
   @override
   String toString() =>
-      'Summary[titles=$titles, pageid=$pageid, extract=$extract, extractHtml=$extractHtml, thumbnail=${thumbnail ?? 'null'}, originalImage=${originalImage ?? 'null'}, lang=$lang, dir=$dir, description=$description]';
+      'Summary['
+      'titles=$titles, '
+      'pageid=$pageid, '
+      'extract=$extract, '
+      'extractHtml=$extractHtml, '
+      'thumbnail=${thumbnail ?? 'null'}, '
+      'originalImage=${originalImage ?? 'null'}, '
+      'lang=$lang, '
+      'dir=$dir, '
+      'description=$description'
+      ']';
 }

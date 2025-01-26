@@ -7,47 +7,55 @@ import '../wikipedia_api.dart';
 
 class WikipediaApiClient {
   static Future<Summary> getRandomArticle() async {
-    final client = http.Client();
+    final http.Client client = http.Client();
     try {
-      final url = Uri.https(
+      final Uri url = Uri.https(
         'en.wikipedia.org',
         '/api/rest_v1/page/random/summary',
       );
-      final response = await client.get(url);
+      final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        return Summary.fromJson(jsonData);
+        return Summary.fromJson(
+          jsonData as Map<String, Object?>,
+        );
       } else {
         throw HttpException(
-          '[WikipediaDart.getRandomArticle] statusCode=${response.statusCode}, body=${response.body}',
+          '[WikipediaDart.getRandomArticle] '
+          'statusCode=${response.statusCode}, body=${response.body}',
         );
       }
     } on Exception catch (error) {
-      throw Exception("Unexpected error - $error");
+      throw Exception('Unexpected error - $error');
     } finally {
       client.close();
     }
   }
 
   // The title must match exactly
-  static Future<Summary> getArticleSummary(String articleTitle) async {
-    final client = http.Client();
+  static Future<Summary> getArticleSummary(
+    String articleTitle,
+  ) async {
+    final http.Client client = http.Client();
     try {
-      final url = Uri.https(
+      final Uri url = Uri.https(
         'en.wikipedia.org',
         '/api/rest_v1/page/summary/$articleTitle',
       );
-      final response = await client.get(url);
+      final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        return Summary.fromJson(jsonData);
+        return Summary.fromJson(
+          jsonData as Map<String, Object?>,
+        );
       } else {
         throw HttpException(
-          '[WikipediaDart.getArticleSummary] statusCode=${response.statusCode}, body=${response.body}',
+          '[WikipediaDart.getArticleSummary] '
+          'statusCode=${response.statusCode}, body=${response.body}',
         );
       }
     } on Exception catch (error) {
-      throw Exception("Unexpected error - $error");
+      throw Exception('Unexpected error - $error');
     } finally {
       client.close();
     }
@@ -61,58 +69,67 @@ class WikipediaApiClient {
     EventType? type,
   }) async {
     if (!verifyMonthAndDate(month: month, day: day)) {
-      throw Exception('Month and date must be valid combination.');
+      throw Exception(
+        'Month and date must be valid combination.',
+      );
     }
 
-    var strMonth = toStringWithPad(month);
-    var strDay = toStringWithPad(day);
-    var strType = type == null ? 'all' : type.apiStr;
+    final String strMonth = toStringWithPad(month);
+    final String strDay = toStringWithPad(day);
+    final String strType =
+        type == null ? 'all' : type.apiStr;
 
-    final client = http.Client();
+    final http.Client client = http.Client();
     try {
-      final url = Uri.https(
+      final Uri url = Uri.https(
         'en.wikipedia.org',
         '/api/rest_v1/feed/onthisday/$strType/$strMonth/$strDay',
       );
 
-      final response = await client.get(url);
+      final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        return OnThisDayTimeline.fromJson(jsonData);
+        return OnThisDayTimeline.fromJson(
+          jsonData as Map<String, Object?>,
+        );
       } else {
         throw HttpException(
-          '[WikipediaDart.getTimelineForDate] statusCode=${response.statusCode}, body=${response.body}',
+          '[WikipediaDart.getTimelineForDate] '
+          'statusCode=${response.statusCode}, body=${response.body}',
         );
       }
     } on Exception catch (error) {
-      throw Exception("Unexpected error - $error");
+      throw Exception('Unexpected error - $error');
     } finally {
       client.close();
     }
   }
 
   static Future<WikipediaFeed> getWikipediaFeed() async {
-    var date = DateTime.now();
-    var year = date.year;
-    var month = toStringWithPad(date.month);
-    var day = toStringWithPad(date.day);
-    final client = http.Client();
+    final DateTime date = DateTime.now();
+    final int year = date.year;
+    final String month = toStringWithPad(date.month);
+    final String day = toStringWithPad(date.day);
+    final http.Client client = http.Client();
     try {
-      final url = Uri.https(
+      final Uri url = Uri.https(
         'en.wikipedia.org',
         '/api/rest_v1/feed/featured/$year/$month/$day',
       );
-      final response = await client.get(url);
+      final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        return WikipediaFeed.fromJson(jsonData);
+        return WikipediaFeed.fromJson(
+          jsonData as Map<String, Object?>,
+        );
       } else {
         throw HttpException(
-          '[WikipediaDart.getWikipediaFeed] statusCode=${response.statusCode}, body=${response.body}',
+          '[WikipediaDart.getWikipediaFeed] '
+          'statusCode=${response.statusCode}, body=${response.body}',
         );
       }
     } on Exception catch (error) {
-      throw Exception("Unexpected error - $error");
+      throw Exception('Unexpected error - $error');
     } finally {
       client.close();
     }

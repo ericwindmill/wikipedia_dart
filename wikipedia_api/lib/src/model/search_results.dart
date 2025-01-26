@@ -10,21 +10,29 @@ class SearchResults {
   final String? searchTerm;
 
   static SearchResults fromJson(List<Object?> json) {
-    final results = <SearchResult>[];
+    final List<SearchResult> results = <SearchResult>[];
     if (json case [
-      String searchTerm,
-      Iterable articleTitles,
-      Iterable _,
-      Iterable urls,
+      final String searchTerm,
+      final Iterable<String> articleTitles,
+      Iterable<Object?> _,
+      final Iterable<String> urls,
     ]) {
-      var titlesList = articleTitles.toList();
-      var urlList = urls.toList();
-      for (var i = 0; i < articleTitles.length; i++) {
-        results.add(SearchResult(title: titlesList[i], url: urlList[i]));
+      final List<String> titlesList =
+          articleTitles.toList();
+      final List<String> urlList = urls.toList();
+      for (int i = 0; i < articleTitles.length; i++) {
+        results.add(
+          SearchResult(
+            title: titlesList[i],
+            url: urlList[i],
+          ),
+        );
       }
       return SearchResults(results, searchTerm: searchTerm);
     }
-    throw FormatException('Could not deserialize SearchResults, json=$json');
+    throw FormatException(
+      'Could not deserialize SearchResults, json=$json',
+    );
   }
 
   @override
@@ -39,9 +47,9 @@ class SearchResults {
 
   @override
   String toString() {
-    var pretty = '';
-    for (var result in results) {
-      pretty += '${result.url} \n';
+    final StringBuffer pretty = StringBuffer();
+    for (final SearchResult result in results) {
+      pretty.write('${result.url} \n');
     }
     return '\nSearchResults for $searchTerm: \n$pretty';
   }

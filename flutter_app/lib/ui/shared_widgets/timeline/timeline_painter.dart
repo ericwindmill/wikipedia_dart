@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/ui/theme/theme.dart';
-import 'package:flutter_app/ui/theme/breakpoint.dart';
-import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
+import '../../theme/breakpoint.dart';
+import '../../theme/theme.dart';
+import 'timeline.dart';
 
 class TimelinePainter extends CustomPainter {
   TimelinePainter({this.dotRadius = 4});
@@ -12,51 +12,67 @@ class TimelinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint =
+    final Paint paint =
         Paint()
           ..color = AppColors.primary
           ..strokeWidth = 2
           ..strokeCap = StrokeCap.round
           ..style = PaintingStyle.stroke;
 
-    final dotLocation = 10.0;
+    const double dotLocation = 10.0;
 
-    var topLineStart = Offset(0, 0);
-    var topLineEnd = Offset(0, dotLocation - dotRadius);
-    var dotOffset = Offset(0, dotLocation);
-    var bottomLineStart = Offset(0, dotLocation + dotRadius);
-    var bottomLineEnd = Offset(0, size.height);
+    const Offset topLineStart = Offset(0, 0);
+    final Offset topLineEnd = Offset(
+      0,
+      dotLocation - dotRadius,
+    );
+    const Offset dotOffset = Offset(0, dotLocation);
+    final Offset bottomLineStart = Offset(
+      0,
+      dotLocation + dotRadius,
+    );
+    final Offset bottomLineEnd = Offset(0, size.height);
     canvas.drawLine(topLineStart, topLineEnd, paint);
     canvas.drawCircle(dotOffset, dotRadius, paint);
     canvas.drawLine(bottomLineStart, bottomLineEnd, paint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) =>
+      false;
 }
 
 enum CapPosition { top, bottom }
 
 class TimelineCap extends StatelessWidget {
-  const TimelineCap({super.key, this.position = CapPosition.top});
+  const TimelineCap({
+    super.key,
+    this.position = CapPosition.top,
+  });
 
   final CapPosition position;
   @override
   Widget build(BuildContext context) {
-    final width = BreakpointProvider.appWidth(context);
-    final height = BreakpointProvider.of(context).spacing * 6;
+    final double width = BreakpointProvider.appWidth(
+      context,
+    );
+    final double height =
+        BreakpointProvider.of(context).spacing * 6;
     return Stack(
-      children: [
+      children: <Widget>[
         Positioned(
           top: 0,
           bottom: 0,
           left: sidebarWidth / 2,
           child: CustomPaint(
-            painter: TimelineCapPainter(height: height, capPosition: position),
+            painter: TimelineCapPainter(
+              height: height,
+              capPosition: position,
+            ),
           ),
         ),
         Row(
-          children: [
+          children: <Widget>[
             SizedBox(height: height, width: sidebarWidth),
             SizedBox(width: width - sidebarWidth),
           ],
@@ -67,21 +83,25 @@ class TimelineCap extends StatelessWidget {
 }
 
 class TimelineCapPainter extends CustomPainter {
-  TimelineCapPainter({this.height = 8, this.capPosition = CapPosition.top});
+  TimelineCapPainter({
+    this.height = 8,
+    this.capPosition = CapPosition.top,
+  });
 
   final double height;
   final CapPosition capPosition;
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint =
+    final Paint paint =
         Paint()
           ..color = AppColors.primary
-          ..strokeWidth = capPosition == CapPosition.top ? 0.0 : 2.0
+          ..strokeWidth =
+              capPosition == CapPosition.top ? 0.0 : 2.0
           ..strokeCap = StrokeCap.round
           ..style = PaintingStyle.stroke;
 
-    var i = 0;
+    int i = 0;
     while (i < height) {
       paint.strokeWidth =
           capPosition == CapPosition.top
@@ -97,5 +117,6 @@ class TimelineCapPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) =>
+      false;
 }

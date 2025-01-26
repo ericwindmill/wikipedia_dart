@@ -2,7 +2,7 @@ import 'package:cli/src/outputs.dart';
 import 'package:cli/wikipedia_cli.dart';
 
 void main(List<String> arguments) async {
-  var app =
+  final InteractiveCommandRunner<String> app =
       InteractiveCommandRunner<String>()
         ..addCommand(TimelineCommand())
         ..addCommand(GetRandomArticle())
@@ -11,14 +11,18 @@ void main(List<String> arguments) async {
 
   console.newScreen();
   await console.write('');
-  if (console.windowWidth < Outputs.wikipediaTitle.split('\n').first.length) {
+  if (console.windowWidth <
+      Outputs.wikipediaTitle.split('\n').first.length) {
     await console.write(Outputs.narrowWindowTitle);
   } else {
     await console.write(Outputs.dartTitle);
     await console.write(Outputs.wikipediaTitle);
   }
   await console.write('');
-  await Future.delayed(Duration(seconds: 1), () => '');
+  await Future.delayed(
+    const Duration(seconds: 1),
+    () => '',
+  );
   console.newScreen();
   app.run();
 }

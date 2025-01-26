@@ -1,6 +1,6 @@
 part of 'console.dart';
 
-const ansiEscapeLiteral = '\x1B';
+const String ansiEscapeLiteral = '\x1B';
 
 /// Reads the incoming bytes from stdin, and determines which
 /// [ConsoleControl] key has been entered.
@@ -66,7 +66,8 @@ enum ConsoleColor {
   /// print('AnsiColor.red.enableForeground');
   /// print('hello'); // prints in red color
   /// ```
-  String get enableForeground => '$ansiEscapeLiteral[38;2;$r;$g;${b}m';
+  String get enableForeground =>
+      '$ansiEscapeLiteral[38;2;$r;$g;${b}m';
 
   /// Change text color for all future output (until reset)
   /// ```dart
@@ -74,7 +75,8 @@ enum ConsoleColor {
   /// print('AnsiColor.red.enableForeground');
   /// print('hello'); // prints in red color
   /// ```
-  String get enableBackground => '$ansiEscapeLiteral[48;2;$r;$g;${b}m';
+  String get enableBackground =>
+      '$ansiEscapeLiteral[48;2;$r;$g;${b}m';
 
   /// Reset text and background color to terminal defaults
   static String get reset => '$ansiEscapeLiteral[0m';
@@ -121,13 +123,25 @@ extension AnsiUtils on String {
     bool invisible = false,
     bool strikethru = false,
   }) {
-    final styles = <int>[];
+    final List<int> styles = <int>[];
     if (foreground != null) {
-      styles.addAll([38, 2, foreground.r, foreground.g, foreground.b]);
+      styles.addAll(<int>[
+        38,
+        2,
+        foreground.r,
+        foreground.g,
+        foreground.b,
+      ]);
     }
 
     if (background != null) {
-      styles.addAll([48, 2, background.r, background.g, background.b]);
+      styles.addAll(<int>[
+        48,
+        2,
+        background.r,
+        background.g,
+        background.b,
+      ]);
     }
 
     if (bold) styles.add(1);
@@ -142,18 +156,26 @@ extension AnsiUtils on String {
   }
 
   String get strip {
-    return replaceAll(RegExp(r'\x1b\[[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e]'), '')
+    return replaceAll(
+          RegExp(
+            r'\x1b\[[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e]',
+          ),
+          '',
+        )
         .replaceAll(RegExp(r'\x1b[PX^_].*?\x1b\\'), '')
-        .replaceAll(RegExp(r'\x1b\][^\a]*(?:\a|\x1b\\)'), '')
+        .replaceAll(
+          RegExp(r'\x1b\][^\a]*(?:\a|\x1b\\)'),
+          '',
+        )
         .replaceAll(RegExp(r'\x1b[\[\]A-Z\\^_@]'), '');
   }
 
   List<String> splitLinesByLength(int length) {
-    var words = split(' ');
-    var output = <String>[];
-    var strBuffer = StringBuffer();
-    for (var i = 0; i < words.length; i++) {
-      var word = words[i];
+    final List<String> words = split(' ');
+    final List<String> output = <String>[];
+    final StringBuffer strBuffer = StringBuffer();
+    for (int i = 0; i < words.length; i++) {
+      final String word = words[i];
       if (strBuffer.length + word.length <= length) {
         strBuffer.write(word.trim());
         if (strBuffer.length + 1 <= length) {
@@ -162,7 +184,8 @@ extension AnsiUtils on String {
       }
       // If the next word surpasses length, start the next line
       if (i + 1 < words.length &&
-          words[i + 1].length + strBuffer.length + 1 > length) {
+          words[i + 1].length + strBuffer.length + 1 >
+              length) {
         output.add(strBuffer.toString().trim());
         strBuffer.clear();
       }

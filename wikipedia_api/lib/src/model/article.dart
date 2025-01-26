@@ -4,20 +4,35 @@ class Article {
   final String title;
   final String extract;
 
-  static List<Article> listFromJson(Map<String, Object?> json) {
-    final articles = <Article>[];
-    if (json case {"query": {"pages": Map<String, Object?> pages}}) {
-      for (var MapEntry(:value) in pages.entries) {
-        if (value case {"title": String title, "extract": String extract}) {
-          articles.add(Article(title: title, extract: extract));
+  static List<Article> listFromJson(
+    Map<String, Object?> json,
+  ) {
+    final List<Article> articles = <Article>[];
+    if (json case {
+      'query': {'pages': final Map<String, Object?> pages},
+    }) {
+      for (final MapEntry(:Object? value)
+          in pages.entries) {
+        if (value case {
+          'title': final String title,
+          'extract': final String extract,
+        }) {
+          articles.add(
+            Article(title: title, extract: extract),
+          );
         }
       }
       return articles;
     }
-    throw FormatException('Could not deserialize Article, json=$json');
+    throw FormatException(
+      'Could not deserialize Article, json=$json',
+    );
   }
 
-  Map<String, Object?> toJson() => {'title': title, 'extract': extract};
+  Map<String, Object?> toJson() => <String, Object?>{
+    'title': title,
+    'extract': extract,
+  };
 
   @override
   bool operator ==(Object other) =>

@@ -7,18 +7,25 @@ class HelpCommand extends Command<String> {
   String get name => 'help';
 
   @override
-  String get description => 'Prints this usage information.';
+  String get description =>
+      'Prints this usage information.';
 
   @override
-  List<String> get aliases => ['h'];
+  List<String> get aliases => <String>['h'];
 
-  final List<String> _columns = ['Command', 'Description', 'Args'];
+  final List<String> _columns = <String>[
+    'Command',
+    'Description',
+    'Args',
+  ];
 
   @override
   Stream<String> run({List<String>? args}) async* {
-    var table = Table(border: Border.fancy, headerColor: ConsoleColor.lightBlue)
-      ..setHeaderRow(_columns);
-    for (var c in runner.commands) {
+    final Table table = Table(
+      border: Border.fancy,
+      headerColor: ConsoleColor.lightBlue,
+    )..setHeaderRow(_columns);
+    for (final Command<String> c in runner.commands) {
       table.insertRow(_valuesForCommand(c));
     }
     console.resetCursorPosition();
@@ -29,13 +36,25 @@ class HelpCommand extends Command<String> {
 
   // Returns the pieces of usage, formatted
   // Pieces are [name(s), args, defaultArg, description].
-  List<String> _valuesForCommand(Command c) {
-    var name = [c.name, ...c.aliases].join(', ');
-    var values = [name, c.description];
+  List<String> _valuesForCommand(Command<String> c) {
+    final String name = <String>[
+      c.name,
+      ...c.aliases,
+    ].join(', ');
+    final List<String> values = <String>[
+      name,
+      c.description,
+    ];
     if (c is Args) {
-      var defaultVal = c.argDefault != null ? ' default:${c.argDefault}' : '';
-      var required = c.argRequired ? 'required' : '';
-      values.add('${c.argName}=${c.argHelp} $required $defaultVal');
+      final String defaultVal =
+          c.argDefault != null
+              ? ' default:${c.argDefault}'
+              : '';
+      final String required =
+          c.argRequired ? 'required' : '';
+      values.add(
+        '${c.argName}=${c.argHelp} $required $defaultVal',
+      );
     } else {
       values.add('');
     }
