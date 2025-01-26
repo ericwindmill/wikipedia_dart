@@ -21,10 +21,7 @@ abstract class Command<T> {
       (maxWidth * .5).floor(),
     ];
 
-    final String cmd = <String>[
-      name,
-      ...aliases,
-    ].join(', ');
+    final String cmd = <String>[name, ...aliases].join(', ');
     final StringBuffer buffer =
         StringBuffer()
           ..write('$cmd${' ' * columns.first} ')
@@ -41,8 +38,7 @@ mixin Args on Command<String> {
   String? get argDefault;
 
   bool validateArgs(List<String>? args) {
-    if (argRequired && args == null ||
-        argRequired && args!.isEmpty) {
+    if (argRequired && args == null || argRequired && args!.isEmpty) {
       return false;
     }
     for (final String arg in args!) {
@@ -60,10 +56,7 @@ mixin Args on Command<String> {
       (maxWidth * .5).floor(),
     ];
 
-    final String cmd = <String>[
-      name,
-      ...aliases,
-    ].join(', ');
+    final String cmd = <String>[name, ...aliases].join(', ');
     final StringBuffer buffer =
         StringBuffer()
           ..write('$cmd${' ' * columns.first} ')

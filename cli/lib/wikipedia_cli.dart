@@ -12,8 +12,7 @@
 library;
 
 import 'package:cli/src/model/command.dart' show Args, Command;
-import 'package:cli/wikipedia_cli.dart'
-    show Console, InteractiveCommandRunner;
+import 'package:cli/wikipedia_cli.dart' show Console, InteractiveCommandRunner;
 
 export 'src/app.dart';
 export 'src/commands/commands.dart';

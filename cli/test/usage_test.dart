@@ -7,11 +7,7 @@ void main() async {
   test('HelpCommand.run', () async* {
     final HelpCommand help = HelpCommand();
     await for (final String str in help.run()) {
-      expect(
-        str,
-        isNotNull,
-        reason: "commands shouldn't yield null",
-      );
+      expect(str, isNotNull, reason: "commands shouldn't yield null");
       emitsThrough(Outputs.enterACommand);
     }
   });

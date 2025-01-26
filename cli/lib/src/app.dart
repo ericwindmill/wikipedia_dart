@@ -27,13 +27,10 @@ import 'package:cli/src/outputs.dart';
 ///
 /// Input can also be added via the [onInput] method.
 class InteractiveCommandRunner<T> extends Stream<T> {
-  final Map<String, Command<T>> _commands =
-      <String, Command<T>>{};
+  final Map<String, Command<T>> _commands = <String, Command<T>>{};
 
   UnmodifiableSetView<Command<T>> get commands =>
-      UnmodifiableSetView<Command<T>>(<Command<T>>{
-        ..._commands.values,
-      });
+      UnmodifiableSetView<Command<T>>(<Command<T>>{..._commands.values});
 
   Future<void> run() async {
     await onInput('help');
@@ -41,33 +38,23 @@ class InteractiveCommandRunner<T> extends Stream<T> {
       // When control is released back to main input,
       // toggle rawMode off
       console.rawMode = false;
-      final String input =
-          String.fromCharCodes(data).trim();
+      final String input = String.fromCharCodes(data).trim();
       await onInput(input);
     }
   }
 
   Future<void> onInput(String input) async {
-    try {
-      final List<String> allArgs = input.split(' ');
-      final Command<T> cmd = parse(allArgs.first);
+    final List<String> allArgs = input.split(' ');
+    final Command<T> cmd = parse(allArgs.first);
 
-      // ignore: prefer_foreach
-      await for (final T message in cmd.run(
-        args: allArgs.sublist(1),
-      )) {
-        _streamController.add(message);
-      }
-    } catch (e, s) {
-      _streamController.addError(e, s);
+    // ignore: prefer_foreach
+    await for (final T message in cmd.run(args: allArgs.sublist(1))) {
+      _streamController.add(message);
     }
   }
 
   void addCommand(Command<T> command) {
-    for (final String name in <String>[
-      command.name,
-      ...command.aliases,
-    ]) {
+    for (final String name in <String>[command.name, ...command.aliases]) {
       if (_commands.containsKey(name)) {
         throw Exception(Outputs.inputExists(name));
       } else {
@@ -92,8 +79,7 @@ class InteractiveCommandRunner<T> extends Stream<T> {
     exit(code);
   }
 
-  final StreamController<T> _streamController =
-      StreamController<T>();
+  final StreamController<T> _streamController = StreamController<T>();
   Stream<T> get _stream => _streamController.stream;
 
   /// This is the output of the class

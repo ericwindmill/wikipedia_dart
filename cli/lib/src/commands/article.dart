@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cli/src/model/command.dart';
 import 'package:cli/src/outputs.dart';
-import 'package:cli/src/utils/style_text.dart';
 import 'package:cli/wikipedia_cli.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
@@ -11,8 +10,7 @@ class GetRandomArticle extends Command<String> {
   List<String> get aliases => <String>['r'];
 
   @override
-  String get description =>
-      'Print a random article summary from Wikipedia.';
+  String get description => 'Print a random article summary from Wikipedia.';
 
   @override
   String get name => 'random';
@@ -20,8 +18,7 @@ class GetRandomArticle extends Command<String> {
   @override
   Stream<String> run({List<String>? args}) async* {
     try {
-      final Summary summary =
-          await WikipediaApiClient.getRandomArticle();
+      final Summary summary = await WikipediaApiClient.getRandomArticle();
 
       console.newScreen();
       yield Outputs.summary(summary);
@@ -38,9 +35,6 @@ class GetRandomArticle extends Command<String> {
       }
     } on HttpException catch (e) {
       yield Outputs.wikipediaHttpError(e);
-    } catch (e, s) {
-      yield '\nUnknown error - $e\n'.red;
-      yield s.toString();
     }
   }
 }

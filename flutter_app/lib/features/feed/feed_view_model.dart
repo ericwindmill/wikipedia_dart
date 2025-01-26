@@ -18,12 +18,10 @@ class FeedViewModel extends ChangeNotifier {
 
   UnmodifiableListView<OnThisDayEvent> get timelinePreview =>
       UnmodifiableListView<OnThisDayEvent>(
-        _feed?.onThisDayTimeline?.take(2).toList() ??
-            <OnThisDayEvent>[],
+        _feed?.onThisDayTimeline?.take(2).toList() ?? <OnThisDayEvent>[],
       );
 
-  bool get hasImage =>
-      _feed?.imageOfTheDay?.originalImage.source != null;
+  bool get hasImage => _feed?.imageOfTheDay?.originalImage.source != null;
 
   WikipediaImage? get imageOfTheDay => _feed?.imageOfTheDay;
 

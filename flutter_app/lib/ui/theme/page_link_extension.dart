@@ -10,8 +10,7 @@ class PageLinkTheme extends ThemeExtension<PageLinkTheme> {
     Color? textColor,
   }) {
     return PageLinkTheme(
-      backgroundColor:
-          backgroundColor ?? this.backgroundColor,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
     );
   }
 
@@ -25,11 +24,7 @@ class PageLinkTheme extends ThemeExtension<PageLinkTheme> {
     }
     return PageLinkTheme(
       backgroundColor:
-          Color.lerp(
-            backgroundColor,
-            other.backgroundColor,
-            t,
-          ) ??
+          Color.lerp(backgroundColor, other.backgroundColor, t) ??
           backgroundColor,
     );
   }

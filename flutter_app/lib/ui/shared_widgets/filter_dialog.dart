@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FilterDialog<T> extends StatefulWidget {
@@ -14,6 +15,19 @@ class FilterDialog<T> extends StatefulWidget {
 
   @override
   State<FilterDialog<T>> createState() => _FilterDialogState<T>();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<Map<T, bool>>('options', options))
+      ..add(
+        ObjectFlagProperty<
+          void Function({required T value, bool? isChecked})
+        >.has('onSelectItem', onSelectItem),
+      )
+      ..add(ObjectFlagProperty<VoidCallback>.has('onSubmit', onSubmit));
+  }
 }
 
 class _FilterDialogState<T> extends State<FilterDialog<T>> {

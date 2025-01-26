@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' hide Summary;
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
@@ -14,9 +15,7 @@ class ArticlePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool hasImage = summary.originalImage != null;
     const double imageHeight = 140;
-    final Breakpoint breakpoint = BreakpointProvider.of(
-      context,
-    );
+    final Breakpoint breakpoint = BreakpointProvider.of(context);
 
     return SizedBox(
       height: hasImage ? 290 : 150,
@@ -29,38 +28,23 @@ class ArticlePreview extends StatelessWidget {
               RoundedImage(
                 source: summary.originalImage!.source,
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(
-                    Dimensions.radius,
-                  ),
-                  topRight: Radius.circular(
-                    Dimensions.radius,
-                  ),
+                  topLeft: Radius.circular(Dimensions.radius),
+                  topRight: Radius.circular(Dimensions.radius),
                 ),
                 height: imageHeight,
-                width:
-                    MediaQuery.of(context).size.width -
-                    breakpoint.margin,
+                width: MediaQuery.of(context).size.width - breakpoint.margin,
               ),
-            Text(
-              summary.titles.normalized,
-              style: AppTheme.serifTitle,
-            ),
+            Text(summary.titles.normalized, style: AppTheme.serifTitle),
             if (summary.description != null)
               Padding(
-                padding: EdgeInsets.only(
-                  bottom: breakpoint.spacing,
-                ),
+                padding: EdgeInsets.only(bottom: breakpoint.spacing),
                 child: Text(
                   summary.description!,
                   style: TextTheme.of(context).labelMedium,
                 ),
               ),
             const Spacer(),
-            Text(
-              summary.extract,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-            ),
+            Text(summary.extract, overflow: TextOverflow.ellipsis, maxLines: 3),
             const Spacer(),
             TextButton.icon(
               onPressed: () {},
@@ -71,13 +55,20 @@ class ArticlePreview extends StatelessWidget {
               ),
               label: Text(
                 'Save for later',
-                style: TextTheme.of(context).labelMedium!
-                    .copyWith(color: AppColors.primary),
+                style: TextTheme.of(
+                  context,
+                ).labelMedium!.copyWith(color: AppColors.primary),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Summary>('summary', summary));
   }
 }

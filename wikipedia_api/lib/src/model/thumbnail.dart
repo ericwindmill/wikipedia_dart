@@ -3,11 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonSerializable()
 class Thumbnail {
   /// Returns a new [Thumbnail] instance.
-  Thumbnail({
-    required this.source,
-    required this.width,
-    required this.height,
-  });
+  Thumbnail({required this.source, required this.width, required this.height});
 
   /// Thumbnail image URI
   String source;
@@ -33,15 +29,9 @@ class Thumbnail {
       'height': final int height,
       'width': final int width,
     }) {
-      return Thumbnail(
-        source: source,
-        width: width,
-        height: height,
-      );
+      return Thumbnail(source: source, width: width, height: height);
     }
-    throw FormatException(
-      'Could not deserialize Thumbnail, json=$json',
-    );
+    throw FormatException('Could not deserialize Thumbnail, json=$json');
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:cli/src/model/command.dart';
 import 'package:cli/src/outputs.dart';
-import 'package:cli/src/utils/style_text.dart';
 import 'package:cli/src/utils/timeout.dart';
 import 'package:cli/wikipedia_cli.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -121,9 +120,6 @@ class TimelineCommand extends Command<String> with Args {
             yield Outputs.enterLeftOrRight;
         }
       }
-    } catch (e) {
-      yield e.toString().red;
-      return;
     } finally {
       // "return to the menu" (print usage again)
       console
@@ -134,10 +130,7 @@ class TimelineCommand extends Command<String> with Args {
     }
   }
 
-  String _renderEvent(
-    OnThisDayTimeline timeline,
-    int index,
-  ) {
+  String _renderEvent(OnThisDayTimeline timeline, int index) {
     console
       ..eraseDisplay()
       ..resetCursorPosition();

@@ -2,32 +2,8 @@ part of 'console.dart';
 
 enum Border {
   none('', '', '', '', '', '', '', '', '', '', ''),
-  ascii(
-    '-',
-    '|',
-    '-',
-    '-',
-    '-',
-    '-',
-    '+',
-    '-',
-    '-',
-    '|',
-    '|',
-  ),
-  fancy(
-    '─',
-    '│',
-    '┌',
-    '┐',
-    '└',
-    '┘',
-    '┼',
-    '┴',
-    '┬',
-    '┤',
-    '├',
-  );
+  ascii('-', '|', '-', '-', '-', '-', '+', '-', '-', '|', '|'),
+  fancy('─', '│', '┌', '┐', '└', '┘', '┼', '┴', '┬', '┤', '├');
 
   const Border(
     this.horizontalLine,
@@ -115,10 +91,7 @@ class Table {
     );
   }
 
-  void insertRows(
-    List<List<Object>> newRows, {
-    int? index,
-  }) {
+  void insertRows(List<List<Object>> newRows, {int? index}) {
     int i = index ?? rows;
     for (final List<Object> row in newRows) {
       insertRow(row, index: i);
@@ -127,9 +100,7 @@ class Table {
   }
 
   bool get tableIntegrity {
-    return _table.every(
-          (List<Object> row) => row.length == columns,
-        ) &&
+    return _table.every((List<Object> row) => row.length == columns) &&
         columns == _columnWidths.length;
   }
 
@@ -148,11 +119,7 @@ class Table {
       final List<Object> currentRow = _table[0];
       buffer
         ..write(
-          _row(
-            currentRow,
-            textColor: headerColor,
-            styles: headerTextStyles,
-          ),
+          _row(currentRow, textColor: headerColor, styles: headerTextStyles),
         )
         ..write(_innerBorderRow());
     }
@@ -172,16 +139,12 @@ class Table {
 
   int _calculateTableWidth() {
     if (_table[0].isEmpty) return 0;
-    final int widths = _combineWidths(
-      _calculateColumnWidths(),
-    );
+    final int widths = _combineWidths(_calculateColumnWidths());
     return widths + _borderWidth();
   }
 
   int _combineWidths(List<int> columnWidths) =>
-      columnWidths.reduce(
-        (int start, int colWidth) => start + colWidth,
-      );
+      columnWidths.reduce((int start, int colWidth) => start + colWidth);
 
   int _borderWidth() {
     if (!_hasBorder) {
@@ -193,15 +156,10 @@ class Table {
 
   List<int> _calculateColumnWidths() {
     // for every column, look at each value in the column and take the max
-    final List<int> widths = List<int>.generate(columns, (
-      int col,
-    ) {
+    final List<int> widths = List<int>.generate(columns, (int col) {
       int maxWidth = 0;
       for (final List<Object> row in _table) {
-        maxWidth = math.max(
-          maxWidth,
-          row[col].toString().length,
-        );
+        maxWidth = math.max(maxWidth, row[col].toString().length);
       }
       return maxWidth;
     }, growable: false);
@@ -216,12 +174,9 @@ class Table {
   // the width of a column if every column had an equal width.
   // i.e. Wide columns have a greater length, while narrow columns
   // have a less than or equivalent length.
-  List<int> _adjustColumnWidthsForWindowSize(
-    List<int> columnWidths,
-  ) {
+  List<int> _adjustColumnWidthsForWindowSize(List<int> columnWidths) {
     final int borderLength = _borderWidth();
-    final int tableWidth =
-        _combineWidths(columnWidths) + borderLength;
+    final int tableWidth = _combineWidths(columnWidths) + borderLength;
     if (tableWidth <= maxWidth) return columnWidths;
 
     if (columnWidths.length == 1) {
@@ -230,41 +185,29 @@ class Table {
     }
 
     // This provides a basis for which columns should be adjusted
-    final int evenColumnWidth =
-        (maxWidth / columns).floor();
+    final int evenColumnWidth = (maxWidth / columns).floor();
 
     // separate long columns and short columns
     final List<int> wideColumnLengths =
         columnWidths
-            .where(
-              (int colLength) =>
-                  colLength > evenColumnWidth,
-            )
+            .where((int colLength) => colLength > evenColumnWidth)
             .toList();
     final List<int> narrowColumnLengths =
         columnWidths
-            .where(
-              (int colLength) =>
-                  colLength <= evenColumnWidth,
-            )
+            .where((int colLength) => colLength <= evenColumnWidth)
             .toList();
 
     // find the total available width, which is the table width
     // (the combined short column width)
     final int totalAvailableWidth =
-        maxWidth -
-        borderLength -
-        _combineWidths(narrowColumnLengths);
+        maxWidth - borderLength - _combineWidths(narrowColumnLengths);
 
     // (divide that available width among the width columns)
-    final Iterable<int> wideColumnIndexes =
-        wideColumnLengths.map(
-          (int colLength) =>
-              columnWidths.indexOf(colLength),
-        );
+    final Iterable<int> wideColumnIndexes = wideColumnLengths.map(
+      (int colLength) => columnWidths.indexOf(colLength),
+    );
     final int newLongColumnLength =
-        (totalAvailableWidth / wideColumnIndexes.length)
-            .floor();
+        (totalAvailableWidth / wideColumnIndexes.length).floor();
     for (final int col in wideColumnIndexes) {
       columnWidths[col] = newLongColumnLength;
     }
@@ -293,12 +236,10 @@ class Table {
   String _row(
     List<Object> row, {
     ConsoleColor textColor = ConsoleColor.white,
-    List<ConsoleTextStyle> styles =
-        const <ConsoleTextStyle>[],
+    List<ConsoleTextStyle> styles = const <ConsoleTextStyle>[],
   }) {
     // row data after being split to fit in column lengths
-    final List<List<String>> splitEntries =
-        <List<String>>[];
+    final List<List<String>> splitEntries = <List<String>>[];
     int i = 0;
     while (i < row.length) {
       final String entry = row[i].toString();
@@ -313,10 +254,7 @@ class Table {
     for (final List<String> row in splitEntries) {
       rowHeight = math.max(rowHeight, row.length);
     }
-    final List<String> newRows = List<String>.filled(
-      rowHeight,
-      '',
-    );
+    final List<String> newRows = List<String>.filled(rowHeight, '');
 
     // grab the first element of each splitEntry to make row one
     for (int index = 0; index < newRows.length; index++) {
@@ -363,19 +301,13 @@ class Table {
 
     return <String>[
       borderColor.enableForeground,
-      if (_hasTitle)
-        border.teeRight
-      else
-        border.topLeftCorner,
+      if (_hasTitle) border.teeRight else border.topLeftCorner,
       border.horizontalLine,
       _columnWidths
           .map((int width) => border.horizontalLine * width)
           .join(delimiter),
       border.horizontalLine,
-      if (_hasTitle)
-        border.teeLeft
-      else
-        border.topRightCorner,
+      if (_hasTitle) border.teeLeft else border.topRightCorner,
       ConsoleColor.reset,
       '\n',
     ].join();

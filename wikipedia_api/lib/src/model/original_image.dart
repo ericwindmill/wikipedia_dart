@@ -42,15 +42,9 @@ class OriginalImage {
       'height': final int height,
       'width': final int width,
     }) {
-      return OriginalImage(
-        source: source,
-        width: width,
-        height: height,
-      );
+      return OriginalImage(source: source, width: width, height: height);
     }
-    throw FormatException(
-      'Could not deserialize OriginalImage, json=$json',
-    );
+    throw FormatException('Could not deserialize OriginalImage, json=$json');
   }
 
   @override

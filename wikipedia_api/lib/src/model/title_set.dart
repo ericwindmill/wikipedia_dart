@@ -33,9 +33,7 @@ class TitlesSet {
         display: display,
       );
     }
-    throw FormatException(
-      'Could not deserialize TitleSet, json=$json',
-    );
+    throw FormatException('Could not deserialize TitleSet, json=$json');
   }
 
   @override

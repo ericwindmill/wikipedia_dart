@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' hide Summary;
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/theme/page_link_extension.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -76,5 +77,11 @@ class TimelinePageLink extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Summary>('summary', summary));
   }
 }

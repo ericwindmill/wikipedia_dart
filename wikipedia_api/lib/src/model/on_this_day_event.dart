@@ -33,17 +33,12 @@ class OnThisDayEvent {
   final EventType type;
 
   /// Returns -1 if [year] is null
-  int get yearsAgo =>
-      year != null ? DateTime.now().year - year! : -1;
+  int get yearsAgo => year != null ? DateTime.now().year - year! : -1;
 
   @override
-  String toString() =>
-      'OnThisDayInner[text=$text, type=${type.name}]';
+  String toString() => 'OnThisDayInner[text=$text, type=${type.name}]';
 
-  static OnThisDayEvent fromJson(
-    Map<String, Object?> json,
-    EventType t,
-  ) {
+  static OnThisDayEvent fromJson(Map<String, Object?> json, EventType t) {
     return switch (json) {
       {
         'text': final String text,
@@ -54,8 +49,7 @@ class OnThisDayEvent {
           text: text,
           year: year,
           pages: <Summary>[
-            for (final Map<String, Object?> p in pages)
-              Summary.fromJson(p),
+            for (final Map<String, Object?> p in pages) Summary.fromJson(p),
           ],
           type: t,
         ),
@@ -67,21 +61,16 @@ class OnThisDayEvent {
         OnThisDayEvent(
           text: text,
           pages: <Summary>[
-            for (final Map<String, Object?> p in pages)
-              Summary.fromJson(p),
+            for (final Map<String, Object?> p in pages) Summary.fromJson(p),
           ],
           type: t,
         ),
       _ =>
-        throw const FormatException(
-          'Invalid json in OnThisDayEvent.fromJson',
-        ),
+        throw const FormatException('Invalid json in OnThisDayEvent.fromJson'),
     };
   }
 
-  static OnThisDayEvent notableDeathFromJson(
-    Map<String, Object?> json,
-  ) {
+  static OnThisDayEvent notableDeathFromJson(Map<String, Object?> json) {
     if (json case {
       'text': final String text,
       'year': final int year,
@@ -91,22 +80,17 @@ class OnThisDayEvent {
         text: text,
         year: year,
         pages: <Summary>[
-          for (final Map<String, Object?> p in pages)
-            Summary.fromJson(p),
+          for (final Map<String, Object?> p in pages) Summary.fromJson(p),
         ],
         type: EventType.death,
       );
     }
 
-    throw const FormatException(
-      'Invalid json in OnThisDayEvent.fromJson',
-    );
+    throw const FormatException('Invalid json in OnThisDayEvent.fromJson');
   }
 
   /// Holidays don't have years
-  static OnThisDayEvent holidayFromJson(
-    Map<String, Object?> json,
-  ) {
+  static OnThisDayEvent holidayFromJson(Map<String, Object?> json) {
     if (json case {
       'text': final String text,
       'pages': final Iterable<Map<String, Object?>> pages,
@@ -114,21 +98,16 @@ class OnThisDayEvent {
       return OnThisDayEvent(
         text: text,
         pages: <Summary>[
-          for (final Map<String, Object?> p in pages)
-            Summary.fromJson(p),
+          for (final Map<String, Object?> p in pages) Summary.fromJson(p),
         ],
         type: EventType.holiday,
       );
     }
 
-    throw const FormatException(
-      'Invalid json in OnThisDayEvent.fromJson',
-    );
+    throw const FormatException('Invalid json in OnThisDayEvent.fromJson');
   }
 
-  static OnThisDayEvent selectedEventFromJson(
-    Map<String, Object?> json,
-  ) {
+  static OnThisDayEvent selectedEventFromJson(Map<String, Object?> json) {
     if (json case {
       'text': final String text,
       'year': final int year,
@@ -138,21 +117,16 @@ class OnThisDayEvent {
         text: text,
         year: year,
         pages: <Summary>[
-          for (final Map<String, Object?> p in pages)
-            Summary.fromJson(p),
+          for (final Map<String, Object?> p in pages) Summary.fromJson(p),
         ],
         type: EventType.selected,
       );
     }
 
-    throw const FormatException(
-      'Invalid json in OnThisDayEvent.fromJson',
-    );
+    throw const FormatException('Invalid json in OnThisDayEvent.fromJson');
   }
 
-  static OnThisDayEvent eventFromJson(
-    Map<String, Object?> json,
-  ) {
+  static OnThisDayEvent eventFromJson(Map<String, Object?> json) {
     if (json case {
       'text': final String text,
       'year': final int year,
@@ -162,15 +136,12 @@ class OnThisDayEvent {
         text: text,
         year: year,
         pages: <Summary>[
-          for (final Map<String, Object?> p in pages)
-            Summary.fromJson(p),
+          for (final Map<String, Object?> p in pages) Summary.fromJson(p),
         ],
         type: EventType.event,
       );
     }
 
-    throw const FormatException(
-      'Invalid json in OnThisDayEvent.fromJson',
-    );
+    throw const FormatException('Invalid json in OnThisDayEvent.fromJson');
   }
 }

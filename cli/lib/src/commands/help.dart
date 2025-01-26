@@ -7,17 +7,12 @@ class HelpCommand extends Command<String> {
   String get name => 'help';
 
   @override
-  String get description =>
-      'Prints this usage information.';
+  String get description => 'Prints this usage information.';
 
   @override
   List<String> get aliases => <String>['h'];
 
-  final List<String> _columns = <String>[
-    'Command',
-    'Description',
-    'Args',
-  ];
+  final List<String> _columns = <String>['Command', 'Description', 'Args'];
 
   @override
   Stream<String> run({List<String>? args}) async* {
@@ -38,24 +33,13 @@ class HelpCommand extends Command<String> {
   // Returns the pieces of usage, formatted
   // Pieces are [name(s), args, defaultArg, description].
   List<String> _valuesForCommand(Command<String> c) {
-    final String name = <String>[
-      c.name,
-      ...c.aliases,
-    ].join(', ');
-    final List<String> values = <String>[
-      name,
-      c.description,
-    ];
+    final String name = <String>[c.name, ...c.aliases].join(', ');
+    final List<String> values = <String>[name, c.description];
     if (c is Args) {
       final String defaultVal =
-          c.argDefault != null
-              ? ' default:${c.argDefault}'
-              : '';
-      final String required =
-          c.argRequired ? 'required' : '';
-      values.add(
-        '${c.argName}=${c.argHelp} $required $defaultVal',
-      );
+          c.argDefault != null ? ' default:${c.argDefault}' : '';
+      final String required = c.argRequired ? 'required' : '';
+      values.add('${c.argName}=${c.argHelp} $required $defaultVal');
     } else {
       values.add('');
     }

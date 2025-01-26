@@ -1,7 +1,4 @@
-bool verifyMonthAndDate({
-  required int month,
-  required int day,
-}) {
+bool verifyMonthAndDate({required int month, required int day}) {
   final List<int> longMonths = <int>[1, 3, 5, 7, 8, 10, 12];
   final List<int> shortMonths = <int>[4, 6, 9, 11];
   if (month < 1 || month > 12) return false;

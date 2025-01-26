@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
 import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
@@ -124,5 +125,13 @@ class TimelineView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<TimelineViewModel>('viewModel', viewModel))
+      ..add(DiagnosticsProperty<TimelineViewModel>('viewModel', viewModel));
   }
 }

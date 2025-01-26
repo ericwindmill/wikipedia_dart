@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
-
 import 'package:flutter_app/ui/theme/dimensions.dart';
 
 class FeedItem extends StatelessWidget {
@@ -20,28 +20,14 @@ class FeedItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          sectionTitle,
-          style: TextTheme.of(context).titleMedium,
-        ),
+        Text(sectionTitle, style: TextTheme.of(context).titleMedium),
         if (subtitle != null)
-          Text(
-            subtitle!,
-            style: TextTheme.of(context).labelMedium,
-          ),
-        SizedBox(
-          height:
-              BreakpointProvider.of(context).spacing * 2,
-        ),
+          Text(subtitle!, style: TextTheme.of(context).labelMedium),
+        SizedBox(height: BreakpointProvider.of(context).spacing * 2),
         Container(
           decoration: BoxDecoration(
-            color:
-                Theme.of(
-                  context,
-                ).colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(
-              Dimensions.radius,
-            ),
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(Dimensions.radius),
             boxShadow: const <BoxShadow>[
               BoxShadow(
                 spreadRadius: 1,
@@ -54,5 +40,13 @@ class FeedItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(StringProperty('sectionTitle', sectionTitle))
+      ..add(StringProperty('subtitle', subtitle));
   }
 }

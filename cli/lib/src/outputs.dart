@@ -22,27 +22,20 @@ class Outputs {
 ██║ █╗ ██║██║█████╔╝ ██║██████╔╝█████╗  ██║  ██║██║███████║
 ██║███╗██║██║██╔═██╗ ██║██╔═══╝ ██╔══╝  ██║  ██║██║██╔══██║
 ╚███╔███╔╝██║██║  ██╗██║██║     ███████╗██████╔╝██║██║  ██║
- ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝'''
-          .white
-          .center;
+ ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝'''.white.center;
 
   static String narrowWindowTitle =
       'Welcome to\nDart Wikipedia!'.center.displayText;
 
-  static String enterACommand =
-      'Enter a command to continue.'.instructionText;
+  static String enterACommand = 'Enter a command to continue.'.instructionText;
 
   // Article related
 
   static String summary(Summary summary) {
     return <String>[
       '\n${summary.titles.normalized.headerText} - ${summary.description}\n',
-      summary.extract.bodyText
-          .splitLinesByLength(50)
-          .join('\n'),
-      '\nRead more: ${summary.url}'.applyStyles(
-        faint: true,
-      ),
+      summary.extract.bodyText.splitLinesByLength(50).join('\n'),
+      '\nRead more: ${summary.url}'.applyStyles(faint: true),
     ].join('\n');
   }
 
@@ -58,29 +51,23 @@ class Outputs {
       'On first event, wrapping to end of list'.errorText;
 
   static String endOfList =
-      'End of event list, wrapping to the beginning of list'
-          .errorText;
+      'End of event list, wrapping to the beginning of list'.errorText;
 
   static String enterLeftOrRight =
       ' <- or -> to navigate, q to quit'.instructionText;
 
   static String eventNumber(int idx, int timelineLength) =>
-      'Event ${idx + 1}/$timelineLength\n'.applyStyles(
-        faint: true,
-      );
+      'Event ${idx + 1}/$timelineLength\n'.applyStyles(faint: true);
 
   static String event(OnThisDayEvent event) {
-    final StringBuffer strBuffer = StringBuffer('\n')
-      ..write(' * '.headerText);
+    final StringBuffer strBuffer = StringBuffer('\n')..write(' * '.headerText);
     if (event.year != null) {
       strBuffer.write(event.year.toString().headerText);
     } else {
       strBuffer.write('Holiday'.headerText);
     }
     strBuffer.write('\n\n');
-    final List<String> text = event.text.splitLinesByLength(
-      50,
-    );
+    final List<String> text = event.text.splitLinesByLength(50);
     for (final String line in text) {
       strBuffer.write('   $line\n'.bodyText);
     }

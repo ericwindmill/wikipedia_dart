@@ -17,22 +17,14 @@ class SearchResults {
       Iterable<Object?> _,
       final Iterable<String> urls,
     ]) {
-      final List<String> titlesList =
-          articleTitles.toList();
+      final List<String> titlesList = articleTitles.toList();
       final List<String> urlList = urls.toList();
       for (int i = 0; i < articleTitles.length; i++) {
-        results.add(
-          SearchResult(
-            title: titlesList[i],
-            url: urlList[i],
-          ),
-        );
+        results.add(SearchResult(title: titlesList[i], url: urlList[i]));
       }
       return SearchResults(results, searchTerm: searchTerm);
     }
-    throw FormatException(
-      'Could not deserialize SearchResults, json=$json',
-    );
+    throw FormatException('Could not deserialize SearchResults, json=$json');
   }
 
   @override

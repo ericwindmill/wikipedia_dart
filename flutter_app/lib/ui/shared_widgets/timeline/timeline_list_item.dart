@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
@@ -18,9 +19,7 @@ class TimelineListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = BreakpointProvider.appWidth(
-      context,
-    );
+    final double width = BreakpointProvider.appWidth(context);
     return Stack(
       children: <Widget>[
         Positioned(
@@ -37,8 +36,7 @@ class TimelineListItem extends StatelessWidget {
                 SizedBox(
                   width: width - sidebarWidth,
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         event.type != EventType.holiday
@@ -47,15 +45,10 @@ class TimelineListItem extends StatelessWidget {
                         style: AppTheme.timelineEntryTitle,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8.0,
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
                           event.text,
-                          style:
-                              TextTheme.of(
-                                context,
-                              ).bodyMedium,
+                          style: TextTheme.of(context).bodyMedium,
                         ),
                       ),
                     ],
@@ -69,16 +62,11 @@ class TimelineListItem extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: event.pages.length + 1,
-                  itemBuilder: (
-                    BuildContext context,
-                    int index,
-                  ) {
+                  itemBuilder: (BuildContext context, int index) {
                     if (index == 0) {
                       return Container(width: sidebarWidth);
                     }
-                    return TimelinePageLink(
-                      event.pages[index - 1],
-                    );
+                    return TimelinePageLink(event.pages[index - 1]);
                   },
                 ),
               ),
@@ -86,5 +74,14 @@ class TimelineListItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<bool>('showPageLinks', showPageLinks))
+      ..add(DiagnosticsProperty<OnThisDayEvent>('event', event))
+      ..add(DiagnosticsProperty<EdgeInsets>('contentPadding', contentPadding));
   }
 }

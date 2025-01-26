@@ -1,11 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/random_article/random_article_view_model.dart';
 
 class RandomArticleView extends StatelessWidget {
-  const RandomArticleView({
-    required this.viewModel,
-    super.key,
-  });
+  const RandomArticleView({required this.viewModel, super.key});
 
   final RandomArticleViewModel viewModel;
 
@@ -18,13 +16,19 @@ class RandomArticleView extends StatelessWidget {
           return Center(child: Text(viewModel.error));
         }
         if (!viewModel.hasData && !viewModel.hasError) {
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
+          return const Center(child: CircularProgressIndicator.adaptive());
         }
 
         return const Scaffold();
       },
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<RandomArticleViewModel>('viewModel', viewModel),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
@@ -21,15 +22,9 @@ class TimelinePainter extends CustomPainter {
     const double dotLocation = 10.0;
 
     const Offset topLineStart = Offset.zero;
-    final Offset topLineEnd = Offset(
-      0,
-      dotLocation - dotRadius,
-    );
+    final Offset topLineEnd = Offset(0, dotLocation - dotRadius);
     const Offset dotOffset = Offset(0, dotLocation);
-    final Offset bottomLineStart = Offset(
-      0,
-      dotLocation + dotRadius,
-    );
+    final Offset bottomLineStart = Offset(0, dotLocation + dotRadius);
     final Offset bottomLineEnd = Offset(0, size.height);
     canvas
       ..drawLine(topLineStart, topLineEnd, paint)
@@ -38,26 +33,19 @@ class TimelinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) =>
-      false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 enum CapPosition { top, bottom }
 
 class TimelineCap extends StatelessWidget {
-  const TimelineCap({
-    super.key,
-    this.position = CapPosition.top,
-  });
+  const TimelineCap({super.key, this.position = CapPosition.top});
 
   final CapPosition position;
   @override
   Widget build(BuildContext context) {
-    final double width = BreakpointProvider.appWidth(
-      context,
-    );
-    final double height =
-        BreakpointProvider.of(context).spacing * 6;
+    final double width = BreakpointProvider.appWidth(context);
+    final double height = BreakpointProvider.of(context).spacing * 6;
     return Stack(
       children: <Widget>[
         Positioned(
@@ -65,10 +53,7 @@ class TimelineCap extends StatelessWidget {
           bottom: 0,
           left: sidebarWidth / 2,
           child: CustomPaint(
-            painter: TimelineCapPainter(
-              height: height,
-              capPosition: position,
-            ),
+            painter: TimelineCapPainter(height: height, capPosition: position),
           ),
         ),
         Row(
@@ -80,13 +65,16 @@ class TimelineCap extends StatelessWidget {
       ],
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(EnumProperty<CapPosition>('position', position));
+  }
 }
 
 class TimelineCapPainter extends CustomPainter {
-  TimelineCapPainter({
-    this.height = 8,
-    this.capPosition = CapPosition.top,
-  });
+  TimelineCapPainter({this.height = 8, this.capPosition = CapPosition.top});
 
   final double height;
   final CapPosition capPosition;
@@ -96,8 +84,7 @@ class TimelineCapPainter extends CustomPainter {
     final Paint paint =
         Paint()
           ..color = AppColors.primary
-          ..strokeWidth =
-              capPosition == CapPosition.top ? 0.0 : 2.0
+          ..strokeWidth = capPosition == CapPosition.top ? 0.0 : 2.0
           ..strokeCap = StrokeCap.round
           ..style = PaintingStyle.stroke;
 
@@ -117,6 +104,5 @@ class TimelineCapPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) =>
-      false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

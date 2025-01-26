@@ -27,18 +27,13 @@ class Breakpoint {
     required this.spacing,
   });
 
-  factory Breakpoint.currentDevice(BuildContext context) =>
-      switch (MediaQuery.of(context).size.width) {
-        >= 0 && < 600 => Breakpoint.small(
-          platform: Theme.of(context).platform,
-        ),
-        >= 600 && < 840 => Breakpoint.medium(
-          platform: Theme.of(context).platform,
-        ),
-        _ => Breakpoint.large(
-          platform: Theme.of(context).platform,
-        ),
-      };
+  factory Breakpoint.currentDevice(
+    BuildContext context,
+  ) => switch (MediaQuery.of(context).size.width) {
+    >= 0 && < 600 => Breakpoint.small(platform: Theme.of(context).platform),
+    >= 600 && < 840 => Breakpoint.medium(platform: Theme.of(context).platform),
+    _ => Breakpoint.large(platform: Theme.of(context).platform),
+  };
 
   const Breakpoint.small({required this.platform})
     : width = BreakpointWidth.small,
@@ -73,20 +68,18 @@ class Breakpoint {
 
   /// A set of [TargetPlatform]s that the [Breakpoint] will be active
   /// on desktop.
-  static const Set<TargetPlatform> desktop =
-      <TargetPlatform>{
-        TargetPlatform.linux,
-        TargetPlatform.macOS,
-        TargetPlatform.windows,
-      };
+  static const Set<TargetPlatform> desktop = <TargetPlatform>{
+    TargetPlatform.linux,
+    TargetPlatform.macOS,
+    TargetPlatform.windows,
+  };
 
   /// A set of [TargetPlatform]s that the [Breakpoint] will be active on mobile.
-  static const Set<TargetPlatform> mobile =
-      <TargetPlatform>{
-        TargetPlatform.android,
-        TargetPlatform.fuchsia,
-        TargetPlatform.iOS,
-      };
+  static const Set<TargetPlatform> mobile = <TargetPlatform>{
+    TargetPlatform.android,
+    TargetPlatform.fuchsia,
+    TargetPlatform.iOS,
+  };
 
   /// Returns true if the current platform is Desktop.
   /// On web, returns true if the browser is running on a Desktop OS.
@@ -114,27 +107,26 @@ class BreakpointProvider extends InheritedWidget {
 
   static Breakpoint of(BuildContext context) {
     final BreakpointProvider? result =
-        context
-            .dependOnInheritedWidgetOfExactType<
-              BreakpointProvider
-            >();
-    assert(
-      result != null,
-      'No BreakpointProvider found in context',
-    );
+        context.dependOnInheritedWidgetOfExactType<BreakpointProvider>();
+    assert(result != null, 'No BreakpointProvider found in context');
     return result!.breakpoint;
   }
 
   /// Returns the width of app content, accounting for margins
   static double appWidth(BuildContext context) {
     final Breakpoint breakpoint = of(context);
-    return MediaQuery.of(context).size.width -
-        (breakpoint.margin * 2);
+    return MediaQuery.of(context).size.width - (breakpoint.margin * 2);
   }
 
   @override
   bool updateShouldNotify(BreakpointProvider old) {
     return old.breakpoint != breakpoint;
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Breakpoint>('breakpoint', breakpoint));
   }
 }
 
@@ -152,12 +144,10 @@ class BreakpointAwareWidget extends StatefulWidget {
   final Widget largeChild;
 
   @override
-  State<BreakpointAwareWidget> createState() =>
-      _BreakpointAwareLayoutState();
+  State<BreakpointAwareWidget> createState() => _BreakpointAwareLayoutState();
 }
 
-class _BreakpointAwareLayoutState
-    extends State<BreakpointAwareWidget> {
+class _BreakpointAwareLayoutState extends State<BreakpointAwareWidget> {
   late Breakpoint breakpoint;
 
   @override
@@ -175,10 +165,7 @@ class _BreakpointAwareLayoutState
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (
-        BuildContext context,
-        BoxConstraints constraints,
-      ) {
+      builder: (BuildContext context, BoxConstraints constraints) {
         return switch (breakpoint.width) {
           BreakpointWidth.small => widget.child,
           BreakpointWidth.medium => widget.mediumChild,
@@ -186,5 +173,11 @@ class _BreakpointAwareLayoutState
         };
       },
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Breakpoint>('breakpoint', breakpoint));
   }
 }

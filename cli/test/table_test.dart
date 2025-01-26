@@ -3,12 +3,7 @@ import 'package:cli/src/console/console.dart';
 import 'package:test/test.dart';
 
 List<List<String>> rows = <List<String>>[
-  <String>[
-    'Name',
-    'Age',
-    'Favorite book',
-    'Favorite passage',
-  ],
+  <String>['Name', 'Age', 'Favorite book', 'Favorite passage'],
   <String>[
     'Carrot',
     '3',

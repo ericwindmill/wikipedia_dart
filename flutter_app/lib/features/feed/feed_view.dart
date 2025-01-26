@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/feed_view_model.dart';
 import 'package:flutter_app/features/feed/widgets/article_preview.dart';
@@ -27,49 +28,28 @@ class FeedView extends StatelessWidget {
         }
         if (!viewModel.hasData && !viewModel.hasError) {
           return const Center(
-            child: Center(
-              child: CircularProgressIndicator.adaptive(),
-            ),
+            child: Center(child: CircularProgressIndicator.adaptive()),
           );
         }
 
         return Container(
           margin: EdgeInsets.symmetric(
-            horizontal:
-                BreakpointProvider.of(context).margin,
+            horizontal: BreakpointProvider.of(context).margin,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                height:
-                    BreakpointProvider.of(context).spacing *
-                    4,
-              ),
-              Text(
-                AppStrings.today,
-                style: TextTheme.of(context).titleLarge,
-              ),
-              SizedBox(
-                height:
-                    BreakpointProvider.of(context).spacing *
-                    4,
-              ),
+              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
+              Text(AppStrings.today, style: TextTheme.of(context).titleLarge),
+              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
               FeedItem(
-                sectionTitle:
-                    AppStrings.todaysFeaturedArticle,
+                sectionTitle: AppStrings.todaysFeaturedArticle,
                 child: ArticlePreview(
                   summary: viewModel.todaysFeaturedArticle!,
                 ),
               ),
               if (viewModel.hasImage)
-                SizedBox(
-                  height:
-                      BreakpointProvider.of(
-                        context,
-                      ).spacing *
-                      4,
-                ),
+                SizedBox(height: BreakpointProvider.of(context).spacing * 4),
               if (viewModel.hasImage)
                 GestureDetector(
                   onTap: () async {
@@ -77,56 +57,36 @@ class FeedView extends StatelessWidget {
                       CupertinoPageRoute<void>(
                         fullscreenDialog: true,
                         builder: (BuildContext context) {
-                          return ImageModalView(
-                            viewModel.imageOfTheDay!,
-                          );
+                          return ImageModalView(viewModel.imageOfTheDay!);
                         },
                       ),
                     );
                   },
                   child: FeedItem(
                     sectionTitle: 'Image of the Day',
-                    subtitle:
-                        'By ${viewModel.imageOfTheDay!.artist}',
+                    subtitle: 'By ${viewModel.imageOfTheDay!.artist}',
                     child: RoundedImage(
-                      source:
-                          viewModel
-                              .imageOfTheDay!
-                              .originalImage
-                              .source,
+                      source: viewModel.imageOfTheDay!.originalImage.source,
                       height: 240,
-                      width: BreakpointProvider.appWidth(
-                        context,
-                      ),
+                      width: BreakpointProvider.appWidth(context),
                     ),
                   ),
                 ),
-              SizedBox(
-                height:
-                    BreakpointProvider.of(context).spacing *
-                    4,
-              ),
+              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
               FeedItem(
                 sectionTitle: AppStrings.onThisDay,
                 subtitle: viewModel.readableDate,
                 child: GestureDetector(
                   onTap: () async {
-                    await Navigator.of(
-                      context,
-                    ).pushNamed(Routes.timeline);
+                    await Navigator.of(context).pushNamed(Routes.timeline);
                   },
                   child: Column(
                     children: <Widget>[
                       const TimelineCap(),
                       for (final OnThisDayEvent event
                           in viewModel.timelinePreview)
-                        TimelineListItem(
-                          showPageLinks: false,
-                          event: event,
-                        ),
-                      const TimelineCap(
-                        position: CapPosition.bottom,
-                      ),
+                        TimelineListItem(showPageLinks: false, event: event),
+                      const TimelineCap(position: CapPosition.bottom),
                     ],
                   ),
                 ),
@@ -136,5 +96,11 @@ class FeedView extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<FeedViewModel>('viewModel', viewModel));
   }
 }

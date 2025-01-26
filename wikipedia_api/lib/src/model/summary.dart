@@ -64,8 +64,7 @@ class Summary {
         },
         'description': final String description,
         'thumbnail': final Map<String, Object?> thumbnail,
-        'originalimage':
-            final Map<String, Object?> originalImage,
+        'originalimage': final Map<String, Object?> originalImage,
       } =>
         Summary(
           titles: TitlesSet.fromJson(titles),
@@ -73,9 +72,7 @@ class Summary {
           extract: extract,
           extractHtml: extractHtml,
           thumbnail: Thumbnail.fromJson(thumbnail),
-          originalImage: OriginalImage.fromJson(
-            originalImage,
-          ),
+          originalImage: OriginalImage.fromJson(originalImage),
           lang: lang,
           dir: dir,
           url: url,
@@ -89,8 +86,7 @@ class Summary {
         'lang': final String lang,
         'dir': final String dir,
         'thumbnail': final Map<String, Object?> thumbnail,
-        'originalimage':
-            final Map<String, Object?> originalImage,
+        'originalimage': final Map<String, Object?> originalImage,
         'content_urls': {
           'desktop': {'page': final String url},
           'mobile': {'page': String _},
@@ -102,9 +98,7 @@ class Summary {
           extract: extract,
           extractHtml: extractHtml,
           thumbnail: Thumbnail.fromJson(thumbnail),
-          originalImage: OriginalImage.fromJson(
-            originalImage,
-          ),
+          originalImage: OriginalImage.fromJson(originalImage),
           lang: lang,
           dir: dir,
           url: url,
@@ -153,10 +147,7 @@ class Summary {
           dir: dir,
           url: url,
         ),
-      _ =>
-        throw FormatException(
-          'Could not deserialize Summary, json=$json',
-        ),
+      _ => throw FormatException('Could not deserialize Summary, json=$json'),
     };
   }
 

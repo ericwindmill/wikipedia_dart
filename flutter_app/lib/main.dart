@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/feed_view.dart';
 import 'package:flutter_app/features/feed/feed_view_model.dart';
@@ -40,8 +41,7 @@ class _MainAppState extends State<MainApp> {
         theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
         darkTheme: AppTheme.darkTheme,
-        themeMode:
-            darkMode ? ThemeMode.dark : ThemeMode.light,
+        themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
         routes: routes,
         home: Builder(
           builder: (BuildContext context) {
@@ -51,26 +51,18 @@ class _MainAppState extends State<MainApp> {
                 centerTitle: false,
                 title: Text(
                   'Dart Wikipedia',
-                  style: AppTheme.serifTitle.copyWith(
-                    fontSize: 30,
-                  ),
+                  style: AppTheme.serifTitle.copyWith(fontSize: 30),
                 ),
                 actions: <Widget>[
                   IconButton(
-                    icon: Icon(
-                      darkMode
-                          ? Icons.light_mode
-                          : Icons.dark_mode,
-                    ),
+                    icon: Icon(darkMode ? Icons.light_mode : Icons.dark_mode),
                     onPressed: _toggleDarkMode,
                   ),
                 ],
               ),
               body: SafeArea(
                 child: SingleChildScrollView(
-                  child: FeedView(
-                    viewModel: FeedViewModel(),
-                  ),
+                  child: FeedView(viewModel: FeedViewModel()),
                 ),
               ),
             );
@@ -78,5 +70,13 @@ class _MainAppState extends State<MainApp> {
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<Breakpoint>('breakpoint', breakpoint))
+      ..add(DiagnosticsProperty<bool>('darkMode', darkMode));
   }
 }

@@ -42,10 +42,7 @@ class Console {
   /// Splits strings on `\n` characters, then writes each line to the
   /// console. [duration] defines how many milliseconds there will be
   /// between each line print.
-  Future<void> write(
-    String text, {
-    int duration = 50,
-  }) async {
+  Future<void> write(String text, {int duration = 50}) async {
     final List<String> lines = text.split('\n');
     for (final String l in lines) {
       await _delayedPrint('$l \n', duration: duration);
@@ -59,15 +56,12 @@ class Console {
   }
 
   /// Set cursor to top-left corner
-  void resetCursorPosition() => stdout.write(
-    ConsoleControl.resetCursorPosition.execute,
-  );
+  void resetCursorPosition() =>
+      stdout.write(ConsoleControl.resetCursorPosition.execute);
 
-  void eraseLine() =>
-      stdout.write(ConsoleControl.eraseLine.execute);
+  void eraseLine() => stdout.write(ConsoleControl.eraseLine.execute);
 
-  void eraseDisplay() =>
-      stdout.write(ConsoleControl.eraseDisplay.execute);
+  void eraseDisplay() => stdout.write(ConsoleControl.eraseDisplay.execute);
 
   /// Resets the console screen and positions the cursor in the top-left corner.
   void newScreen() {
@@ -121,9 +115,7 @@ class Console {
     }
 
     // handle A-Za-z
-    if (codeUnit >= 65 && codeUnit < 91 ||
-        codeUnit >= 97 ||
-        codeUnit < 123) {
+    if (codeUnit >= 65 && codeUnit < 91 || codeUnit >= 97 || codeUnit < 123) {
       // We only care about 'q' and 'Q'
       if (codeUnit == 113 || codeUnit == 81) {
         return ConsoleControl.q;
@@ -153,10 +145,7 @@ class Console {
     return key;
   }
 
-  Future<void> _delayedPrint(
-    String text, {
-    int duration = 0,
-  }) async {
+  Future<void> _delayedPrint(String text, {int duration = 0}) async {
     return Future<void>.delayed(
       Duration(milliseconds: duration),
       () => stdout.write(text),

@@ -19,9 +19,7 @@ class WikipediaImage {
   final String? caption;
   final Thumbnail? thumbnail;
 
-  static WikipediaImage fromJson(
-    Map<String, Object?> json,
-  ) {
+  static WikipediaImage fromJson(Map<String, Object?> json) {
     return switch (json) {
       {
         'title': final String title,
@@ -29,18 +27,14 @@ class WikipediaImage {
         'image': final Map<String, Object?> originalImage,
         'artist': {'text': final String artistName},
         'description': {'text': final String description},
-        'structured': {
-          'captions': {'en': final String caption},
-        },
+        'structured': {'captions': {'en': final String caption}},
       } =>
         WikipediaImage(
           title: title,
           artist: artistName,
           description: description,
           caption: caption,
-          originalImage: OriginalImage.fromJson(
-            originalImage,
-          ),
+          originalImage: OriginalImage.fromJson(originalImage),
           thumbnail: Thumbnail.fromJson(thumbnail),
         ),
       {
@@ -54,9 +48,7 @@ class WikipediaImage {
           title: title,
           artist: artistName,
           description: description,
-          originalImage: OriginalImage.fromJson(
-            originalImage,
-          ),
+          originalImage: OriginalImage.fromJson(originalImage),
           thumbnail: Thumbnail.fromJson(thumbnail),
         ),
       // minimum required image properties
@@ -66,14 +58,9 @@ class WikipediaImage {
       } =>
         WikipediaImage(
           title: title,
-          originalImage: OriginalImage.fromJson(
-            originalImage,
-          ),
+          originalImage: OriginalImage.fromJson(originalImage),
         ),
-      _ =>
-        throw FormatException(
-          'Could not deserialize Image, json=$json',
-        ),
+      _ => throw FormatException('Could not deserialize Image, json=$json'),
     };
   }
 }
