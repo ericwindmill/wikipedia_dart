@@ -39,7 +39,10 @@ class ArticlePreview extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(summary.titles.normalized, style: AppTheme.serifTitle),
+                  Text(
+                    summary.titles.normalized,
+                    style: AppTheme.serifHeading2,
+                  ),
                   if (summary.description != null)
                     Padding(
                       padding: EdgeInsets.only(bottom: breakpoint.spacing),

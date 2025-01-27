@@ -34,6 +34,7 @@ analyzer:
 linter:
   rules:
     always_put_control_body_on_new_line: false
+    always_specify_types: false
     # Violates Effective Dart "PREFER annotating with dynamic instead of letting inference fail", it
     # also conflicts with strong mode disabling `implicit-dynamic`. Turning it OFF.
     avoid_annotating_with_dynamic: false

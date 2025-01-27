@@ -8,6 +8,7 @@ environment:
   sdk: ^3.7.0-209.1.beta
 
 dependencies:
+  cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
   wikipedia_api:

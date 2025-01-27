@@ -49,7 +49,7 @@ class InteractiveCommandRunner<T> extends Stream<T> {
 
     // ignore: prefer_foreach
     await for (final T message in cmd.run(args: allArgs.sublist(1))) {
-      _streamController.add(message);
+      await console.write(message.toString());
     }
   }
 

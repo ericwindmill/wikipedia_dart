@@ -4,6 +4,7 @@ import 'package:flutter_app/features/feed/feed_view_model.dart';
 import 'package:flutter_app/features/feed/widgets/article_preview.dart';
 import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
 import 'package:flutter_app/features/feed/widgets/top_read_view.dart';
+import 'package:flutter_app/features/random_article/article_view.dart';
 import 'package:flutter_app/routes.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
@@ -42,6 +43,17 @@ class FeedView extends StatelessWidget {
             children: <Widget>[
               Text(AppStrings.today, style: TextTheme.of(context).titleLarge),
               FeedItem(
+                onTap: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) {
+                        return ArticleView(
+                          summary: viewModel.todaysFeaturedArticle!,
+                        );
+                      },
+                    ),
+                  );
+                },
                 sectionTitle: AppStrings.todaysFeaturedArticle,
                 child: ArticlePreview(
                   summary: viewModel.todaysFeaturedArticle!,
