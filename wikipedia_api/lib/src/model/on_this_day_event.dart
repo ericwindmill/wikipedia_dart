@@ -1,5 +1,5 @@
+// ignore_for_file: always_specify_types
 import 'package:json_annotation/json_annotation.dart';
-
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -43,21 +43,16 @@ class OnThisDayEvent {
       {
         'text': final String text,
         'year': final int year,
-        'pages': final Iterable<Map<String, Object?>> pages,
+        'pages': final Iterable pages,
       } =>
         OnThisDayEvent(
           text: text,
           year: year,
-          pages: <Summary>[
-            for (final Map<String, Object?> p in pages) Summary.fromJson(p),
-          ],
+          pages: <Summary>[for (final p in pages) Summary.fromJson(p)],
           type: t,
         ),
       // holidays don't have years
-      {
-        'text': final String text,
-        'pages': final Iterable<Map<String, Object?>> pages,
-      } =>
+      {'text': final String text, 'pages': final Iterable pages} =>
         OnThisDayEvent(
           text: text,
           pages: <Summary>[
@@ -68,80 +63,5 @@ class OnThisDayEvent {
       _ =>
         throw const FormatException('Invalid json in OnThisDayEvent.fromJson'),
     };
-  }
-
-  static OnThisDayEvent notableDeathFromJson(Map<String, Object?> json) {
-    if (json case {
-      'text': final String text,
-      'year': final int year,
-      'pages': final Iterable<Map<String, Object?>> pages,
-    }) {
-      return OnThisDayEvent(
-        text: text,
-        year: year,
-        pages: <Summary>[
-          for (final Map<String, Object?> p in pages) Summary.fromJson(p),
-        ],
-        type: EventType.death,
-      );
-    }
-
-    throw const FormatException('Invalid json in OnThisDayEvent.fromJson');
-  }
-
-  /// Holidays don't have years
-  static OnThisDayEvent holidayFromJson(Map<String, Object?> json) {
-    if (json case {
-      'text': final String text,
-      'pages': final Iterable<Map<String, Object?>> pages,
-    }) {
-      return OnThisDayEvent(
-        text: text,
-        pages: <Summary>[
-          for (final Map<String, Object?> p in pages) Summary.fromJson(p),
-        ],
-        type: EventType.holiday,
-      );
-    }
-
-    throw const FormatException('Invalid json in OnThisDayEvent.fromJson');
-  }
-
-  static OnThisDayEvent selectedEventFromJson(Map<String, Object?> json) {
-    if (json case {
-      'text': final String text,
-      'year': final int year,
-      'pages': final Iterable<Map<String, Object?>> pages,
-    }) {
-      return OnThisDayEvent(
-        text: text,
-        year: year,
-        pages: <Summary>[
-          for (final Map<String, Object?> p in pages) Summary.fromJson(p),
-        ],
-        type: EventType.selected,
-      );
-    }
-
-    throw const FormatException('Invalid json in OnThisDayEvent.fromJson');
-  }
-
-  static OnThisDayEvent eventFromJson(Map<String, Object?> json) {
-    if (json case {
-      'text': final String text,
-      'year': final int year,
-      'pages': final Iterable<Map<String, Object?>> pages,
-    }) {
-      return OnThisDayEvent(
-        text: text,
-        year: year,
-        pages: <Summary>[
-          for (final Map<String, Object?> p in pages) Summary.fromJson(p),
-        ],
-        type: EventType.event,
-      );
-    }
-
-    throw const FormatException('Invalid json in OnThisDayEvent.fromJson');
   }
 }

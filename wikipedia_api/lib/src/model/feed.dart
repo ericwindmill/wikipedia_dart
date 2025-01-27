@@ -1,3 +1,5 @@
+// ignore_for_file: always_specify_types
+
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class WikipediaFeed {
@@ -13,25 +15,27 @@ class WikipediaFeed {
   final WikipediaImage? imageOfTheDay;
 
   static WikipediaFeed fromJson(Map<String, Object?> json) {
-    final Summary? featured =
+    final featured =
         json.containsKey('tfa')
             ? Summary.fromJson(json['tfa']! as Map<String, Object?>)
             : null;
-    final List<OnThisDayEvent>? timeline =
+    final timeline =
         json.containsKey('onthisday')
-            ? (json['onthisday'] as List<Map<String, Object?>>?)
+            ? (json['onthisday'] as List<dynamic>?)
                 ?.map(
-                  (Map<String, Object?> e) =>
-                      OnThisDayEvent.fromJson(e, EventType.birthday),
+                  (e) => OnThisDayEvent.fromJson(
+                    e as Map<String, dynamic>,
+                    EventType.birthday,
+                  ),
                 )
                 .toList()
             : null;
-    final WikipediaImage? image =
+    final image =
         json.containsKey('image')
             ? WikipediaImage.fromJson(json['image']! as Map<String, Object?>)
             : null;
 
-    final Map<String, Object?>? mostReadJson =
+    final mostReadJson =
         json.containsKey('mostread')
             ? (json['mostread']! as Map<String, Object?>)
             : null;
@@ -40,8 +44,7 @@ class WikipediaFeed {
       mostRead =
           (mostReadJson['articles']! as List<Object?>)
               .map(
-                (Object? article) =>
-                    Summary.fromJson(article! as Map<String, Object?>),
+                (article) => Summary.fromJson(article! as Map<String, Object?>),
               )
               .toList();
     }

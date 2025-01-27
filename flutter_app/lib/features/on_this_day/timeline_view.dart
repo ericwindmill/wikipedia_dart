@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
 import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
@@ -38,6 +37,14 @@ class TimelineView extends StatelessWidget {
                     children: <Widget>[
                       Positioned(
                         top: 0,
+                        bottom: 10,
+                        left: sidebarWidth / 2,
+                        child: CustomPaint(
+                          painter: TimelineCapPainter(height: 10),
+                        ),
+                      ),
+                      Positioned(
+                        top: 10,
                         bottom: 0,
                         left: sidebarWidth / 2,
                         child: CustomPaint(
@@ -125,13 +132,5 @@ class TimelineView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty<TimelineViewModel>('viewModel', viewModel))
-      ..add(DiagnosticsProperty<TimelineViewModel>('viewModel', viewModel));
   }
 }

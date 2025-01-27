@@ -1,11 +1,10 @@
-import 'dart:collection';
+// ignore_for_file: always_specify_types
 
-import 'package:json_annotation/json_annotation.dart';
+import 'dart:collection';
 
 import 'package:wikipedia_api/src/model/event_type.dart';
 import 'package:wikipedia_api/src/model/on_this_day_event.dart';
 
-@JsonSerializable(explicitToJson: true)
 class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
   /// Returns a new [OnThisDayTimeline] instance.
   OnThisDayTimeline({
@@ -35,61 +34,41 @@ class OnThisDayTimeline extends IterableMixin<OnThisDayEvent> {
   /// Returns a new [OnThisDayTimeline] instance
   static OnThisDayTimeline fromJson(Map<String, Object?> json) {
     final List<OnThisDayEvent> births =
-        (json['births'] as List<Map<String, Object?>>?)
-            ?.map(
-              (Map<String, Object?> e) => OnThisDayEvent.fromJson(
-                e as Map<String, dynamic>,
-                EventType.birthday,
-              ),
-            )
-            .toList() ??
-        const <OnThisDayEvent>[];
+        json.containsKey('births')
+            ? (json['births']! as List)
+                .map((e) => OnThisDayEvent.fromJson(e, EventType.birthday))
+                .toList()
+            : const <OnThisDayEvent>[];
 
     final List<OnThisDayEvent> deaths =
-        (json['deaths'] as List<Map<String, Object?>>?)
-            ?.map(
-              (Map<String, Object?> e) => OnThisDayEvent.fromJson(
-                e as Map<String, dynamic>,
-                EventType.death,
-              ),
-            )
-            .toList() ??
-        const <OnThisDayEvent>[];
+        json.containsKey('deaths')
+            ? (json['deaths']! as List)
+                .map((e) => OnThisDayEvent.fromJson(e, EventType.death))
+                .toList()
+            : const <OnThisDayEvent>[];
 
     final List<OnThisDayEvent> events =
-        (json['events'] as List<Map<String, Object?>>?)
-            ?.map(
-              (Map<String, Object?> e) => OnThisDayEvent.fromJson(
-                e as Map<String, dynamic>,
-                EventType.event,
-              ),
-            )
-            .toList() ??
-        const <OnThisDayEvent>[];
+        json.containsKey('events')
+            ? (json['events']! as List)
+                .map((e) => OnThisDayEvent.fromJson(e, EventType.event))
+                .toList()
+            : const <OnThisDayEvent>[];
 
     final List<OnThisDayEvent> holidays =
-        (json['holidays'] as List<Map<String, Object?>>?)
-            ?.map(
-              (Map<String, Object?> e) => OnThisDayEvent.fromJson(
-                e as Map<String, dynamic>,
-                EventType.holiday,
-              ),
-            )
-            .toList() ??
-        const <OnThisDayEvent>[];
+        json.containsKey('holidays')
+            ? (json['holidays']! as List)
+                .map((e) => OnThisDayEvent.fromJson(e, EventType.holiday))
+                .toList()
+            : const <OnThisDayEvent>[];
 
     final List<OnThisDayEvent> selected =
-        (json['selected'] as List<Map<String, Object?>>?)
-            ?.map(
-              (Map<String, Object?> e) => OnThisDayEvent.fromJson(
-                e as Map<String, dynamic>,
-                EventType.selected,
-              ),
-            )
-            .toList() ??
-        const <OnThisDayEvent>[];
+        json.containsKey('selected')
+            ? (json['selected']! as List)
+                .map((e) => OnThisDayEvent.fromJson(e, EventType.selected))
+                .toList()
+            : const <OnThisDayEvent>[];
 
-    final List<OnThisDayEvent> all = <OnThisDayEvent>[
+    final all = <OnThisDayEvent>[
       ...births,
       ...deaths,
       ...events,

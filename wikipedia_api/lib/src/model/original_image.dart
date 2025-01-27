@@ -1,13 +1,12 @@
-import 'dart:ui' show Image;
-
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wikipedia_api/src/model/image.dart';
 import 'package:wikipedia_api/src/model/thumbnail.dart' show Thumbnail;
 import 'package:wikipedia_api/wikipedia_api.dart' show Thumbnail;
 
 /// Simple image is like a [Thumbnail], but full size
 /// It doesn't contain any metadata from Wikipedia.
 ///
-/// For images with metadata, see [Image]
+/// For images with metadata, see [WikipediaImage]
 @JsonSerializable()
 class OriginalImage {
   /// Returns a new [OriginalImage] instance.

@@ -6,10 +6,6 @@ analyzer:
 
   # For more information see: https://dart.dev/tools/analysis
   language:
-    strict-casts: true
-    strict-inference: true
-    strict-raw-types: true
-
   errors:
     # Without ignore here, we cause import of all_lint_rules to warn, because some rules conflict.
     # We explicitly enable conflicting rules and are fixing the conflicts in this file.
@@ -44,6 +40,8 @@ linter:
     avoid_classes_with_only_static_members: false
     avoid_types_on_closure_parameters: false
     close_sinks: false
+    # Turn on if you're creating a library for other developers
+    diagnostic_describe_all_properties: false
     document_ignores: false
     no_default_cases: false
     omit_local_variable_types: false

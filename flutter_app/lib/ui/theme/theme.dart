@@ -25,11 +25,11 @@ abstract final class AppTheme {
     titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
 
     /// Default text
-    bodyMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+    bodyMedium: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
 
     /// Used for labels and captions
     labelMedium: TextStyle(
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
       color: AppColors.labelLight,
     ),
@@ -39,11 +39,11 @@ abstract final class AppTheme {
     titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
 
     /// Default text
-    bodyMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+    bodyMedium: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
 
     /// Used for labels and captions
     labelMedium: TextStyle(
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
       color: AppColors.labelDark,
     ),
@@ -75,7 +75,7 @@ abstract final class AppTheme {
 abstract final class AppColors {
   static const Color primary = Color.fromRGBO(4, 104, 215, 1);
   static const Color containerOnDark = Color(0xFF181818);
-  static const Color labelLight = Color(0xFF1E1E1E);
+  static const Color labelLight = Color(0xFF565656);
   static const Color labelDark = Color(0xFFC4C0C0);
 
   static const ColorScheme lightColorScheme = ColorScheme.light(

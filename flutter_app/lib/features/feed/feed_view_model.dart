@@ -14,7 +14,7 @@ class FeedViewModel extends ChangeNotifier {
   bool get hasError => error != '';
 
   UnmodifiableListView<Summary> get mostRead =>
-      UnmodifiableListView<Summary>(_feed?.mostRead ?? <Summary>[]);
+      UnmodifiableListView<Summary>(_feed?.mostRead?.take(5) ?? <Summary>[]);
 
   UnmodifiableListView<OnThisDayEvent> get timelinePreview =>
       UnmodifiableListView<OnThisDayEvent>(
@@ -27,15 +27,19 @@ class FeedViewModel extends ChangeNotifier {
 
   Summary? get todaysFeaturedArticle => _todaysFeaturedArticle;
 
+  Summary? get randomArticle => _randomArticle;
+
   String get readableDate => DateTime.now().humanReadable;
 
   Summary? _todaysFeaturedArticle;
+  Summary? _randomArticle;
   WikipediaFeed? _feed;
 
   bool get hasData =>
       _feed != null ||
       todaysFeaturedArticle != null ||
-      timelinePreview.isNotEmpty;
+      timelinePreview.isNotEmpty ||
+      _randomArticle != null;
 
   Future<void> getFeed() async {
     try {
@@ -45,6 +49,8 @@ class FeedViewModel extends ChangeNotifier {
       _todaysFeaturedArticle =
           _feed!.todaysFeaturedArticle ??
           await WikipediaApiClient.getRandomArticle();
+
+      _randomArticle = await WikipediaApiClient.getRandomArticle();
 
       notifyListeners();
     } on HttpException catch (e) {

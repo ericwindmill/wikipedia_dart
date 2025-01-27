@@ -1,34 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/random_article/random_article_view_model.dart';
+import 'package:wikipedia_api/wikipedia_api.dart';
 
-class RandomArticleView extends StatelessWidget {
-  const RandomArticleView({required this.viewModel, super.key});
+class ArticleView extends StatelessWidget {
+  const ArticleView({required this.summary, super.key});
 
-  final RandomArticleViewModel viewModel;
+  final Summary summary;
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: viewModel,
-      builder: (BuildContext context, _) {
-        if (viewModel.hasError) {
-          return Center(child: Text(viewModel.error));
-        }
-        if (!viewModel.hasData && !viewModel.hasError) {
-          return const Center(child: CircularProgressIndicator.adaptive());
-        }
-
-        return const Scaffold();
-      },
-    );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<RandomArticleViewModel>('viewModel', viewModel),
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(child: Text(summary.titles.normalized)),
     );
   }
 }

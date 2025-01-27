@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart' hide Summary;
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/page_link_extension.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
@@ -23,7 +23,6 @@ class TimelinePageLink extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 8.0),
         child: Container(
-          height: 70,
           width: 220,
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           decoration: BoxDecoration(
@@ -47,7 +46,7 @@ class TimelinePageLink extends StatelessWidget {
                       ),
                       Text(
                         summary.description ?? '',
-                        maxLines: 3,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelSmall,
                       ),
@@ -56,32 +55,16 @@ class TimelinePageLink extends StatelessWidget {
                 ),
               ),
               if (summary.thumbnail != null)
-                Container(
-                  padding: const EdgeInsets.all(1),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: Image.network(
-                      summary.thumbnail!.source,
-                      fit: BoxFit.cover,
-                      height: 60,
-                      width: 50,
-                    ),
-                  ),
+                RoundedImage(
+                  source: summary.thumbnail!.source,
+                  height: 50,
+                  width: 50,
+                  borderRadius: BorderRadius.circular(3),
                 ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Summary>('summary', summary));
   }
 }

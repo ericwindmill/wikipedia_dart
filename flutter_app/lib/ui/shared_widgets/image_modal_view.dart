@@ -1,20 +1,53 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/shared_widgets/image.dart';
+import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ImageModalView extends StatelessWidget {
   const ImageModalView(this.image, {super.key});
 
   final WikipediaImage image;
+  Color get foregroundColor => Colors.white;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Stack());
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<WikipediaImage>('image', image));
+    final TextStyle textStyle = Theme.of(
+      context,
+    ).textTheme.bodyMedium!.copyWith(color: Colors.white);
+    return Dismissible(
+      direction: DismissDirection.vertical,
+      onDismissed: Navigator.of(context).pop,
+      key: const Key('ImageModal'),
+      child: SafeArea(
+        child: Stack(
+          children: <Widget>[
+            Center(child: RoundedImage(source: image.originalImage.source)),
+            Positioned(
+              bottom: 20,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: EdgeInsets.all(BreakpointProvider.of(context).padding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: BreakpointProvider.of(context).spacing * 2,
+                  children: <Widget>[
+                    const Center(
+                      child: Icon(Icons.drag_handle, color: Colors.white),
+                    ),
+                    Text(
+                      'Picture of the day for ${DateTime.now()}',
+                      style: textStyle,
+                    ),
+                    Text(image.description!, style: textStyle),
+                    Text(image.artist!, style: textStyle),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

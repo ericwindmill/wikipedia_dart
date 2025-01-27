@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
@@ -58,7 +57,7 @@ class TimelineListItem extends StatelessWidget {
             ),
             if (showPageLinks)
               SizedBox(
-                height: 80,
+                height: 65,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: event.pages.length + 1,
@@ -70,18 +69,11 @@ class TimelineListItem extends StatelessWidget {
                   },
                 ),
               ),
+            if (showPageLinks)
+              SizedBox(height: BreakpointProvider.of(context).spacing * 2),
           ],
         ),
       ],
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty<bool>('showPageLinks', showPageLinks))
-      ..add(DiagnosticsProperty<OnThisDayEvent>('event', event))
-      ..add(DiagnosticsProperty<EdgeInsets>('contentPadding', contentPadding));
   }
 }

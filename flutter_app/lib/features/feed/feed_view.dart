@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/feed_view_model.dart';
 import 'package:flutter_app/features/feed/widgets/article_preview.dart';
 import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
+import 'package:flutter_app/features/feed/widgets/top_read_view.dart';
 import 'package:flutter_app/routes.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
@@ -37,42 +37,16 @@ class FeedView extends StatelessWidget {
             horizontal: BreakpointProvider.of(context).margin,
           ),
           child: Column(
+            spacing: BreakpointProvider.of(context).spacing * 8,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
               Text(AppStrings.today, style: TextTheme.of(context).titleLarge),
-              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
               FeedItem(
                 sectionTitle: AppStrings.todaysFeaturedArticle,
                 child: ArticlePreview(
                   summary: viewModel.todaysFeaturedArticle!,
                 ),
               ),
-              if (viewModel.hasImage)
-                SizedBox(height: BreakpointProvider.of(context).spacing * 4),
-              if (viewModel.hasImage)
-                GestureDetector(
-                  onTap: () async {
-                    await Navigator.of(context).push(
-                      CupertinoPageRoute<void>(
-                        fullscreenDialog: true,
-                        builder: (BuildContext context) {
-                          return ImageModalView(viewModel.imageOfTheDay!);
-                        },
-                      ),
-                    );
-                  },
-                  child: FeedItem(
-                    sectionTitle: 'Image of the Day',
-                    subtitle: 'By ${viewModel.imageOfTheDay!.artist}',
-                    child: RoundedImage(
-                      source: viewModel.imageOfTheDay!.originalImage.source,
-                      height: 240,
-                      width: BreakpointProvider.appWidth(context),
-                    ),
-                  ),
-                ),
-              SizedBox(height: BreakpointProvider.of(context).spacing * 4),
               FeedItem(
                 sectionTitle: AppStrings.onThisDay,
                 subtitle: viewModel.readableDate,
@@ -91,16 +65,44 @@ class FeedView extends StatelessWidget {
                   ),
                 ),
               ),
+              if (viewModel.hasImage)
+                FeedItem(
+                  sectionTitle: 'Image of the Day',
+                  subtitle: 'By ${viewModel.imageOfTheDay!.artist}',
+                  child: GestureDetector(
+                    onTap: () async {
+                      await Navigator.of(context).push(
+                        CupertinoModalPopupRoute<void>(
+                          barrierColor: Colors.black87,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return ImageModalView(viewModel.imageOfTheDay!);
+                          },
+                        ),
+                      );
+                    },
+                    child: RoundedImage(
+                      source: viewModel.imageOfTheDay!.originalImage.source,
+                      height: 240,
+                      width: BreakpointProvider.appWidth(context),
+                    ),
+                  ),
+                ),
+              if (viewModel.mostRead.isNotEmpty)
+                FeedItem(
+                  sectionTitle: 'Top read',
+                  child: TopReadView(topReadArticles: viewModel.mostRead),
+                ),
+              if (viewModel.randomArticle != null)
+                FeedItem(
+                  sectionTitle: 'Random Article',
+                  child: ArticlePreview(summary: viewModel.randomArticle!),
+                ),
+              SizedBox(height: BreakpointProvider.of(context).spacing * 10),
             ],
           ),
         );
       },
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<FeedViewModel>('viewModel', viewModel));
   }
 }
