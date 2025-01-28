@@ -117,6 +117,15 @@ class FeedView extends StatelessWidget {
                 ),
               if (viewModel.randomArticle != null)
                 FeedItem(
+                  onTap: () async {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                          return ArticleView(summary: viewModel.randomArticle!);
+                        },
+                      ),
+                    );
+                  },
                   sectionTitle: AppStrings.randomArticle,
                   child: ArticlePreview(summary: viewModel.randomArticle!),
                 ),

@@ -53,6 +53,7 @@ class ArticleViewModel extends ChangeNotifier {
       final List<Article> articles = await WikimediaApiClient.getArticleByTitle(
         canonicalTitle,
       );
+
       _article = articles.first;
       notifyListeners();
     } on HttpException catch (e) {
