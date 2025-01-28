@@ -21,6 +21,9 @@ class _MainAppState extends State<MainApp> {
   late Breakpoint breakpoint;
   bool darkMode = false;
 
+  // This viewModel doesn't need to reload when setstate is called
+  final FeedViewModel viewModel = FeedViewModel();
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -62,7 +65,7 @@ class _MainAppState extends State<MainApp> {
               ),
               body: SafeArea(
                 child: SingleChildScrollView(
-                  child: FeedView(viewModel: FeedViewModel()),
+                  child: FeedView(viewModel: viewModel),
                 ),
               ),
             );

@@ -30,7 +30,12 @@ class ImageModalView extends StatelessWidget {
       child: SafeArea(
         child: Stack(
           children: <Widget>[
-            Center(child: RoundedImage(source: image.originalImage.source)),
+            Center(
+              child: RoundedImage(
+                source: image.originalImage.source,
+                borderRadius: BorderRadius.zero,
+              ),
+            ),
             Positioned(
               bottom: 20,
               left: 0,

@@ -63,6 +63,31 @@ class TimelineView extends StatelessWidget {
                         ),
                       ),
                       Positioned(
+                        top: 10,
+                        right: 50,
+                        child: IconButton(
+                          icon: const Icon(Icons.filter_alt_outlined),
+                          onPressed:
+                              () async => showAdaptiveDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return FilterDialog<EventType>(
+                                    options: viewModel.selectEventTypes.value,
+                                    onSelectItem:
+                                        ({
+                                          required EventType value,
+                                          bool? isChecked,
+                                        }) => viewModel.toggleSelectedType(
+                                          isChecked: isChecked ?? false,
+                                          type: value,
+                                        ),
+                                    onSubmit: viewModel.filterEvents,
+                                  );
+                                },
+                              ),
+                        ),
+                      ),
+                      Positioned(
                         top: 20,
                         left: sidebarWidth,
                         right: 20,
@@ -93,28 +118,6 @@ class TimelineView extends StatelessWidget {
                                 style: TextTheme.of(context).titleMedium,
                               ),
                             const SizedBox(height: 20),
-                            IconButton(
-                              icon: const Icon(Icons.filter_alt_outlined),
-                              onPressed:
-                                  () async => showAdaptiveDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return FilterDialog<EventType>(
-                                        options:
-                                            viewModel.selectEventTypes.value,
-                                        onSelectItem:
-                                            ({
-                                              required EventType value,
-                                              bool? isChecked,
-                                            }) => viewModel.toggleSelectedType(
-                                              isChecked: isChecked ?? false,
-                                              type: value,
-                                            ),
-                                        onSubmit: viewModel.filterEvents,
-                                      );
-                                    },
-                                  ),
-                            ),
                           ],
                         ),
                       ),

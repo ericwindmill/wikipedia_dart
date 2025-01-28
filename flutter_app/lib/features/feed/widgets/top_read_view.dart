@@ -43,13 +43,14 @@ class TopReadView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(topReadArticles[index].titles.normalized),
-                        Text(
-                          topReadArticles[index].description!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextTheme.of(context).labelMedium,
-                        ),
+                        Text(summary.titles.normalized),
+                        if (summary.description != null)
+                          Text(
+                            summary.description!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextTheme.of(context).labelMedium,
+                          ),
                       ],
                     ),
                   ),
