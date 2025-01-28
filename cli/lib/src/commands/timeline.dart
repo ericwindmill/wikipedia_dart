@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cli/src/model/command.dart';
 import 'package:cli/src/outputs.dart';
 import 'package:cli/src/utils/timeout.dart';
@@ -81,7 +83,7 @@ class TimelineCommand extends Command<String> with Args {
         assert(
           i >= 0 && i < timeline.length,
           'This method increments and decrements `i`, but i should always be '
-          'a valid index of timeline ,',
+          'a valid, positive index of timeline',
         );
         yield _renderEvent(timeline, i);
 
@@ -120,6 +122,8 @@ class TimelineCommand extends Command<String> with Args {
             yield Outputs.enterLeftOrRight;
         }
       }
+    } on HttpException catch (e) {
+      yield Outputs.wikipediaHttpError(e);
     } finally {
       // "return to the menu" (print usage again)
       console

@@ -56,7 +56,7 @@ class Table {
 
   int get rows => _table.length - 1;
 
-  /// The length of one row
+  // The length of one row
   int get columns => _table[0].length;
 
   List<int> _columnWidths = <int>[];
@@ -99,6 +99,7 @@ class Table {
     }
   }
 
+  /// Make sure that each row in the table has an equal number of columns
   bool get tableIntegrity {
     return _table.every((List<Object> row) => row.length == columns) &&
         columns == _columnWidths.length;
@@ -112,7 +113,8 @@ class Table {
     if (_hasTitle) {
       buffer.write(_renderTitle(tableWidth));
     }
-    // Top border (not including title)
+
+    // This border is the top not including title rows.
     buffer.write(_tableTopBorder());
 
     if (_hasHeader) {
@@ -172,8 +174,12 @@ class Table {
   // taking up the space left over after accounting for 'narrow' columns.
   // Wide and narrow columns are defined by their relationship to
   // the width of a column if every column had an equal width.
-  // i.e. Wide columns have a greater length, while narrow columns
+  // i.e. Wide columns have a greater length
+  // than (roughly)  windowWidth / numColumns, while narrow columns
   // have a less than or equivalent length.
+  //
+  // There's almost certainly a better way to do this.
+  // If this were a coding interview, I'm sure I would fail
   List<int> _adjustColumnWidthsForWindowSize(List<int> columnWidths) {
     final int borderLength = _borderWidth();
     final int tableWidth = _combineWidths(columnWidths) + borderLength;
@@ -187,7 +193,7 @@ class Table {
     // This provides a basis for which columns should be adjusted
     final int evenColumnWidth = (maxWidth / columns).floor();
 
-    // separate long columns and short columns
+    // separate wide columns and narrow columns
     final List<int> wideColumnLengths =
         columnWidths
             .where((int colLength) => colLength > evenColumnWidth)
@@ -197,12 +203,11 @@ class Table {
             .where((int colLength) => colLength <= evenColumnWidth)
             .toList();
 
-    // find the total available width, which is the table width
-    // (the combined short column width)
+    // find the total available width after accounting for narrow columns
     final int totalAvailableWidth =
         maxWidth - borderLength - _combineWidths(narrowColumnLengths);
 
-    // (divide that available width among the width columns)
+    // divide that available width among the width columns
     final Iterable<int> wideColumnIndexes = wideColumnLengths.map(
       (int colLength) => columnWidths.indexOf(colLength),
     );

@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:cli/src/console/console.dart';
 import 'package:cli/src/model/command.dart';
-import 'package:cli/src/outputs.dart';
 
 /// [InteractiveCommandRunner] establishes a protocol for the
 /// app to communicate with a continuously with an I/O source.
@@ -26,7 +25,7 @@ import 'package:cli/src/outputs.dart';
 /// The return value of [Command.run] is written to stdout.
 ///
 /// Input can also be added via the [onInput] method.
-class InteractiveCommandRunner<T> extends Stream<T> {
+class InteractiveCommandRunner<T> {
   final Map<String, Command<T>> _commands = <String, Command<T>>{};
 
   UnmodifiableSetView<Command<T>> get commands =>
@@ -45,7 +44,12 @@ class InteractiveCommandRunner<T> extends Stream<T> {
 
   Future<void> onInput(String input) async {
     final List<String> allArgs = input.split(' ');
-    final Command<T> cmd = parse(allArgs.first);
+    final Command<T>? cmd = parse(allArgs.first);
+
+    if (cmd == null) {
+      await console.write('Invalid input $input');
+      return;
+    }
 
     // ignore: prefer_foreach
     await for (final T message in cmd.run(args: allArgs.sublist(1))) {
@@ -56,7 +60,7 @@ class InteractiveCommandRunner<T> extends Stream<T> {
   void addCommand(Command<T> command) {
     for (final String name in <String>[command.name, ...command.aliases]) {
       if (_commands.containsKey(name)) {
-        throw Exception(Outputs.inputExists(name));
+        throw ArgumentError('[addCommand] - Input $name already exists.');
       } else {
         _commands[name] = command;
         command.runner = this;
@@ -64,37 +68,16 @@ class InteractiveCommandRunner<T> extends Stream<T> {
     }
   }
 
-  Command<T> parse(String input) {
+  Command<T>? parse(String input) {
     if (_commands.containsKey(input)) {
       return _commands[input]!;
     }
-
-    throw ArgumentError('Invalid input.');
+    return null;
   }
 
   void quit([int code = 0]) => _quit(code);
 
   void _quit(int code) {
-    // Cancel subscriptions and close streams here
     exit(code);
-  }
-
-  final StreamController<T> _streamController = StreamController<T>();
-  Stream<T> get _stream => _streamController.stream;
-
-  /// This is the output of the class
-  @override
-  StreamSubscription<T> listen(
-    void Function(T event)? onData, {
-    Function? onError,
-    void Function()? onDone,
-    bool? cancelOnError,
-  }) {
-    return _stream.listen(
-      onData,
-      onError: onError,
-      onDone: onDone,
-      cancelOnError: cancelOnError,
-    );
   }
 }

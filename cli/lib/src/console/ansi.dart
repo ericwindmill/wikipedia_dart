@@ -2,8 +2,7 @@ part of 'console.dart';
 
 const String ansiEscapeLiteral = '\x1B';
 
-/// Reads the incoming bytes from stdin, and determines which
-/// [ConsoleControl] key has been entered.
+/// Represents all the possible Ansi inputs (that this program cares about)
 ///
 /// As this is a demo, only the keys this program cares about are included.
 /// If you want to handle more key inputs, add keys to this enum, then handle
@@ -25,12 +24,16 @@ enum ConsoleControl {
 
   final String ansiCode;
 
+  /// Prepares the control key to be written to [stdout]
   String get execute => '$ansiEscapeLiteral[$ansiCode';
 }
 
-// As a demo, only includes colors this program cares about.
-// If you want to use more colors, add them here.
+/// RGB formatted colors that are used to style input
+///
 /// All colors from Dart's brand styleguide
+///
+/// As a demo, only includes colors this program cares about.
+/// If you want to use more colors, add them here.
 enum ConsoleColor {
   /// Navy blue - #043875
   dartBlue(4, 56, 117),
@@ -45,7 +48,7 @@ enum ConsoleColor {
   /// Warm red - #F25D50
   red(242, 93, 80),
 
-  /// #1CDAC5
+  /// Teal - #1CDAC5
   teal(28, 218, 197),
 
   /// Light yellow - #F9F8C4
@@ -82,7 +85,7 @@ enum ConsoleColor {
   /// Reset text and background color to terminal defaults
   static String get reset => '$ansiEscapeLiteral[0m';
 
-  /// Sets text color and then resets the color change
+  /// Sets text color for the input
   String applyForeground(String text) {
     return '$ansiEscapeLiteral[38;2;$r;$g;${b}m$text';
   }
@@ -93,6 +96,7 @@ enum ConsoleColor {
   }
 }
 
+/// Ansi codes to style text
 enum ConsoleTextStyle {
   bold(1),
   faint(2),

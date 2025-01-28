@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class WikipediaApiClient {
@@ -37,7 +36,7 @@ class WikipediaApiClient {
     try {
       final Uri url = Uri.https(
         'en.wikipedia.org',
-        '/api/rest_v1/page/summary/$articleTitle',
+        'https://en.wikipedia.org/api/rest_v1/page/summary/$articleTitle',
       );
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {

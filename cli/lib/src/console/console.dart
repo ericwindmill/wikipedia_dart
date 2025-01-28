@@ -75,7 +75,7 @@ class Console {
       return stdout.terminalColumns - 1;
     } else {
       // Treat a window that has no terminal as if it is 80x25. This should be
-      // more compatible with CI/CD environments.
+      // compatible with CI/CD environments.
       return 80;
     }
   }
@@ -116,13 +116,12 @@ class Console {
 
     // handle A-Za-z
     if (codeUnit >= 65 && codeUnit < 91 || codeUnit >= 97 || codeUnit < 123) {
-      // We only care about 'q' and 'Q'
-      if (codeUnit == 113 || codeUnit == 81) {
-        return ConsoleControl.q;
-      }
-      if (codeUnit == 114 || codeUnit == 82) {
-        return ConsoleControl.r;
-      }
+      // Right now, we only care about 'q' and 'r' (+ 'Q' and 'R')
+      return switch (codeUnit) {
+        113 || 81 => ConsoleControl.q,
+        114 || 82 => ConsoleControl.r,
+        _ => throw UnimplementedError(),
+      };
     }
 
     // handle escape

@@ -15,5 +15,8 @@ import 'package:cli/src/model/command.dart' show Args, Command;
 import 'package:cli/wikipedia_cli.dart' show Console, InteractiveCommandRunner;
 
 export 'src/app.dart';
-export 'src/commands/commands.dart';
+export 'src/commands/article.dart';
+export 'src/commands/help.dart';
+export 'src/commands/quit.dart';
+export 'src/commands/timeline.dart';
 export 'src/console/console.dart';
