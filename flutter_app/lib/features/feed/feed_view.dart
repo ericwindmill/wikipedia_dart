@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/article_view/article_view.dart';
 import 'package:flutter_app/features/feed/feed_view_model.dart';
 import 'package:flutter_app/features/feed/widgets/article_preview.dart';
 import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
 import 'package:flutter_app/features/feed/widgets/top_read_view.dart';
-import 'package:flutter_app/features/random_article/article_view.dart';
 import 'package:flutter_app/routes.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
@@ -79,8 +79,11 @@ class FeedView extends StatelessWidget {
               ),
               if (viewModel.hasImage)
                 FeedItem(
-                  sectionTitle: 'Image of the Day',
-                  subtitle: 'By ${viewModel.imageOfTheDay!.artist}',
+                  sectionTitle: AppStrings.imageOfTheDay,
+                  subtitle:
+                      viewModel.imageArtist.isNotEmpty
+                          ? AppStrings.by(viewModel.imageArtist)
+                          : '',
                   child: GestureDetector(
                     onTap: () async {
                       await Navigator.of(context).push(
@@ -88,7 +91,14 @@ class FeedView extends StatelessWidget {
                           barrierColor: Colors.black87,
                           barrierDismissible: false,
                           builder: (BuildContext context) {
-                            return ImageModalView(viewModel.imageOfTheDay!);
+                            return ImageModalView(
+                              viewModel.imageOfTheDay!,
+                              title: AppStrings.imageOfTheDayFor(
+                                viewModel.readableDate,
+                              ),
+                              attribution: viewModel.imageArtist,
+                              description: viewModel.imageOfTheDay!.description,
+                            );
                           },
                         ),
                       );
@@ -102,12 +112,12 @@ class FeedView extends StatelessWidget {
                 ),
               if (viewModel.mostRead.isNotEmpty)
                 FeedItem(
-                  sectionTitle: 'Top read',
+                  sectionTitle: AppStrings.topRead,
                   child: TopReadView(topReadArticles: viewModel.mostRead),
                 ),
               if (viewModel.randomArticle != null)
                 FeedItem(
-                  sectionTitle: 'Random Article',
+                  sectionTitle: AppStrings.randomArticle,
                   child: ArticlePreview(summary: viewModel.randomArticle!),
                 ),
               SizedBox(height: BreakpointProvider.of(context).spacing * 10),

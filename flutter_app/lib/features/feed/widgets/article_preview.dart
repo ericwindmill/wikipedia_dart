@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart' hide Summary;
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/dimensions.dart';
@@ -66,7 +66,7 @@ class ArticlePreview extends StatelessWidget {
                       size: 16,
                     ),
                     label: Text(
-                      'Save for later',
+                      AppStrings.saveForLater,
                       style: TextTheme.of(
                         context,
                       ).labelMedium!.copyWith(color: AppColors.primary),
@@ -79,11 +79,5 @@ class ArticlePreview extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Summary>('summary', summary));
   }
 }

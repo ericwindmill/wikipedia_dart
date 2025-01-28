@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/random_article/article_view_model.dart';
+import 'package:flutter_app/features/article_view/article_view_model.dart';
+import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
@@ -16,7 +17,7 @@ class ArticleView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Wikipedia Dart',
+          AppStrings.wikipediaDart,
           style: AppTheme.serifTitle.copyWith(fontSize: 20),
         ),
       ),

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/dimensions.dart';
@@ -25,7 +24,7 @@ class FeedItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(sectionTitle, style: TextTheme.of(context).titleMedium),
-          if (subtitle != null)
+          if (subtitle != null && subtitle!.isNotEmpty)
             Text(subtitle!, style: TextTheme.of(context).labelMedium),
           SizedBox(height: BreakpointProvider.of(context).spacing * 2),
           Container(
@@ -45,13 +44,5 @@ class FeedItem extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(StringProperty('sectionTitle', sectionTitle))
-      ..add(StringProperty('subtitle', subtitle));
   }
 }

@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/ui/app_localization.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class TimelineViewModel extends ChangeNotifier {
@@ -87,10 +88,12 @@ class TimelineViewModel extends ChangeNotifier {
       );
 
       filterEvents();
-      notifyListeners();
     } on HttpException catch (e) {
       debugPrint(e.toString());
-      error = 'failed to fetch timeline data';
+      error = AppStrings.failedToGetTimelineDataFromWikipedia;
+    } on FormatException catch (e) {
+      debugPrint(e.toString());
+    } finally {
       notifyListeners();
     }
   }

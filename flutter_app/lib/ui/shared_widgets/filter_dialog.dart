@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/app_localization.dart';
 
 class FilterDialog<T> extends StatefulWidget {
   const FilterDialog({
@@ -20,7 +21,7 @@ class _FilterDialogState<T> extends State<FilterDialog<T>> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: const Text('Filters'),
+      title: Text(AppStrings.filters),
       children: <Widget>[
         ...List<Widget>.generate(widget.options.length, (int idx) {
           final T option = widget.options.keys.elementAt(idx);
@@ -39,7 +40,7 @@ class _FilterDialogState<T> extends State<FilterDialog<T>> {
         }),
         TextButton(
           onPressed: widget.onSubmit,
-          child: const Text('Confirm choices'),
+          child: Text(AppStrings.confirmChoices),
         ),
       ],
     );

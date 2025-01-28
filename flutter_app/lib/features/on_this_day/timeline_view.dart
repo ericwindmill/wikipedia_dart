@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
+import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -70,7 +71,7 @@ class TimelineView extends StatelessWidget {
                           children: <Widget>[
                             const SizedBox(height: 20),
                             Text(
-                              'On This Day',
+                              AppStrings.onThisDay,
                               style: Theme.of(context).textTheme.headlineLarge,
                             ),
                             const SizedBox(height: 20),
@@ -79,14 +80,16 @@ class TimelineView extends StatelessWidget {
                               style: TextTheme.of(context).headlineMedium,
                             ),
                             Text(
-                              '${viewModel.filteredEvents.length} '
-                                      'historic events'
-                                  .toUpperCase(),
+                              AppStrings.historicEvents(
+                                viewModel.filteredEvents.length.toString(),
+                              ).toUpperCase(),
                               style: TextTheme.of(context).titleMedium,
                             ),
                             if (viewModel.readableYearRange != '')
                               Text(
-                                'from ${viewModel.readableYearRange}',
+                                AppStrings.yearRange(
+                                  viewModel.readableYearRange,
+                                ),
                                 style: TextTheme.of(context).titleMedium,
                               ),
                             const SizedBox(height: 20),

@@ -4,10 +4,19 @@ import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ImageModalView extends StatelessWidget {
-  const ImageModalView(this.image, {super.key});
+  const ImageModalView(
+    this.image, {
+    super.key,
+    this.title,
+    this.attribution,
+    this.description,
+  });
 
   final WikipediaImage image;
   Color get foregroundColor => Colors.white;
+  final String? title;
+  final String? attribution;
+  final String? description;
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +44,11 @@ class ImageModalView extends StatelessWidget {
                     const Center(
                       child: Icon(Icons.drag_handle, color: Colors.white),
                     ),
-                    Text(
-                      'Picture of the day for ${DateTime.now()}',
-                      style: textStyle,
-                    ),
-                    Text(image.description!, style: textStyle),
-                    Text(image.artist!, style: textStyle),
+                    if (title != null) Text(title!, style: textStyle),
+                    if (description != null)
+                      Text(description!, style: textStyle),
+                    if (attribution != null)
+                      Text(attribution!, style: textStyle),
                   ],
                 ),
               ),

@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
@@ -64,12 +63,6 @@ class TimelineCap extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(EnumProperty<CapPosition>('position', position));
   }
 }
 

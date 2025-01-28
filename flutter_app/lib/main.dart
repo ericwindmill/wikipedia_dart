@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/feed_view.dart';
 import 'package:flutter_app/features/feed/feed_view_model.dart';
 import 'package:flutter_app/routes.dart';
+import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
@@ -50,7 +50,7 @@ class _MainAppState extends State<MainApp> {
                 surfaceTintColor: Colors.white,
                 centerTitle: false,
                 title: Text(
-                  'Dart Wikipedia',
+                  AppStrings.wikipediaDart,
                   style: AppTheme.serifTitle.copyWith(fontSize: 30),
                 ),
                 actions: <Widget>[
@@ -70,13 +70,5 @@ class _MainAppState extends State<MainApp> {
         ),
       ),
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty<Breakpoint>('breakpoint', breakpoint))
-      ..add(DiagnosticsProperty<bool>('darkMode', darkMode));
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/random_article/article_view.dart';
+import 'package:flutter_app/features/article_view/article_view.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';

@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/app_localization.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class FeedViewModel extends ChangeNotifier {
@@ -24,6 +25,14 @@ class FeedViewModel extends ChangeNotifier {
   bool get hasImage => _feed?.imageOfTheDay?.originalImage.source != null;
 
   WikipediaImage? get imageOfTheDay => _feed?.imageOfTheDay;
+
+  String get imageArtist {
+    if (hasImage && imageOfTheDay!.artist != null) {
+      return imageOfTheDay!.artist!;
+    }
+
+    return '';
+  }
 
   Summary? get todaysFeaturedArticle => _todaysFeaturedArticle;
 
@@ -51,11 +60,13 @@ class FeedViewModel extends ChangeNotifier {
           await WikipediaApiClient.getRandomArticle();
 
       _randomArticle = await WikipediaApiClient.getRandomArticle();
-
-      notifyListeners();
     } on HttpException catch (e) {
-      // TODO(ewindmill): handle exception gracefully
-      error = e.message;
+      debugPrint(e.toString());
+      error = AppStrings.failedToGetTimelineDataFromWikipedia;
+    } on FormatException catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      notifyListeners();
     }
   }
 }
