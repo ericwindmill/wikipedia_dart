@@ -15,11 +15,11 @@ class FeedViewModel extends ChangeNotifier {
   bool get hasError => error != '';
 
   UnmodifiableListView<Summary> get mostRead =>
-      UnmodifiableListView<Summary>(_feed?.mostRead?.take(5) ?? <Summary>[]);
+      UnmodifiableListView<Summary>(_feed?.mostRead?.take(6) ?? <Summary>[]);
 
   UnmodifiableListView<OnThisDayEvent> get timelinePreview =>
       UnmodifiableListView<OnThisDayEvent>(
-        _feed?.onThisDayTimeline?.take(2).toList() ?? <OnThisDayEvent>[],
+        _feed?.onThisDayTimeline?.take(3).toList() ?? <OnThisDayEvent>[],
       );
 
   bool get hasImage => _feed?.imageOfTheDay?.originalImage.source != null;
@@ -49,6 +49,8 @@ class FeedViewModel extends ChangeNotifier {
       todaysFeaturedArticle != null ||
       timelinePreview.isNotEmpty ||
       _randomArticle != null;
+
+  final List<Summary> savedArticles = [];
 
   Future<void> getFeed() async {
     try {

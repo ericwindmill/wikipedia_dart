@@ -1,17 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/article_view/article_view.dart';
 import 'package:flutter_app/features/feed/feed_view_model.dart';
-import 'package:flutter_app/features/feed/widgets/article_preview.dart';
-import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
-import 'package:flutter_app/features/feed/widgets/top_read_view.dart';
-import 'package:flutter_app/routes.dart';
+import 'package:flutter_app/features/feed/widgets/featured_article.dart';
+import 'package:flutter_app/features/feed/widgets/featured_image.dart';
+import 'package:flutter_app/features/feed/widgets/most_read_preview.dart';
+import 'package:flutter_app/features/feed/widgets/timeline_preview.dart';
 import 'package:flutter_app/ui/app_localization.dart';
-import 'package:flutter_app/ui/shared_widgets/image.dart';
-import 'package:flutter_app/ui/shared_widgets/image_modal_view.dart';
-import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
-import 'package:wikipedia_api/wikipedia_api.dart';
 
 class FeedView extends StatelessWidget {
   const FeedView({required this.viewModel, super.key});
@@ -38,98 +32,42 @@ class FeedView extends StatelessWidget {
             horizontal: BreakpointProvider.of(context).margin,
           ),
           child: Column(
-            spacing: BreakpointProvider.of(context).spacing * 8,
+            spacing: BreakpointProvider.of(context).spacing,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(AppStrings.today, style: TextTheme.of(context).titleLarge),
-              FeedItem(
-                onTap: () async {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) {
-                        return ArticleView(
-                          summary: viewModel.todaysFeaturedArticle!,
-                        );
-                      },
-                    ),
-                  );
-                },
-                sectionTitle: AppStrings.todaysFeaturedArticle,
-                child: ArticlePreview(
-                  summary: viewModel.todaysFeaturedArticle!,
-                ),
+              Text(
+                AppStrings.today,
+                style: TextTheme.of(context).headlineSmall,
               ),
-              FeedItem(
-                sectionTitle: AppStrings.onThisDay,
-                subtitle: viewModel.readableDate,
-                child: GestureDetector(
-                  onTap: () async {
-                    await Navigator.of(context).pushNamed(Routes.timeline);
-                  },
-                  child: Column(
-                    children: <Widget>[
-                      const TimelineCap(),
-                      for (final OnThisDayEvent event
-                          in viewModel.timelinePreview)
-                        TimelineListItem(showPageLinks: false, event: event),
-                      const TimelineCap(position: CapPosition.bottom),
-                    ],
-                  ),
-                ),
-              ),
-              if (viewModel.hasImage)
-                FeedItem(
-                  sectionTitle: AppStrings.imageOfTheDay,
-                  subtitle:
-                      viewModel.imageArtist.isNotEmpty
-                          ? AppStrings.by(viewModel.imageArtist)
-                          : '',
-                  child: GestureDetector(
-                    onTap: () async {
-                      await Navigator.of(context).push(
-                        CupertinoModalPopupRoute<void>(
-                          barrierColor: Colors.black87,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return ImageModalView(
-                              viewModel.imageOfTheDay!,
-                              title: AppStrings.imageOfTheDayFor(
-                                viewModel.readableDate,
-                              ),
-                              attribution: viewModel.imageArtist,
-                              description: viewModel.imageOfTheDay!.description,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    child: RoundedImage(
-                      source: viewModel.imageOfTheDay!.originalImage.source,
-                      height: 240,
-                      width: BreakpointProvider.appWidth(context),
+              Wrap(
+                spacing: BreakpointProvider.of(context).spacing,
+                runSpacing: BreakpointProvider.of(context).spacing,
+                children: [
+                  if (viewModel.todaysFeaturedArticle != null)
+                    FeaturedArticle(
+                      header: AppStrings.todaysFeaturedArticle,
+                      featuredArticle: viewModel.todaysFeaturedArticle!,
                     ),
-                  ),
-                ),
-              if (viewModel.mostRead.isNotEmpty)
-                FeedItem(
-                  sectionTitle: AppStrings.topRead,
-                  child: TopReadView(topReadArticles: viewModel.mostRead),
-                ),
-              if (viewModel.randomArticle != null)
-                FeedItem(
-                  onTap: () async {
-                    await Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) {
-                          return ArticleView(summary: viewModel.randomArticle!);
-                        },
-                      ),
-                    );
-                  },
-                  sectionTitle: AppStrings.randomArticle,
-                  child: ArticlePreview(summary: viewModel.randomArticle!),
-                ),
-              SizedBox(height: BreakpointProvider.of(context).spacing * 10),
+                  if (viewModel.hasImage)
+                    FeaturedImage(
+                      image: viewModel.imageOfTheDay!,
+                      readableDate: viewModel.readableDate,
+                    ),
+                  if (viewModel.timelinePreview.isNotEmpty)
+                    TimelinePreview(
+                      timelinePreviewItems: viewModel.timelinePreview,
+                      readableDate: viewModel.readableDate,
+                    ),
+                  if (viewModel.mostRead.isNotEmpty)
+                    TopReadView(topReadArticles: viewModel.mostRead),
+                  if (viewModel.randomArticle != null)
+                    FeaturedArticle(
+                      header: AppStrings.randomArticle,
+                      featuredArticle: viewModel.randomArticle!,
+                    ),
+                ],
+              ),
+              const SizedBox(height: 50),
             ],
           ),
         );

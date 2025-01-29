@@ -12,7 +12,7 @@ class AppStrings {
     'by': 'By',
     'from': 'from',
     'imageOfTheDayFor': 'Image of the day for',
-    'topRead': 'Top read',
+    'mostRead': 'Most read articles',
     'randomArticle': 'Random Article',
 
     // generic ui elements
@@ -38,7 +38,7 @@ class AppStrings {
   static String get _historicEvents => _get('historicEvents');
   static String get imageOfTheDay => _get('imageOfTheDay');
   static String get _imageOfTheDayFor => _get('imageOfTheDayFor');
-  static String get topRead => _get('topRead');
+  static String get mostRead => _get('mostRead');
   static String get randomArticle => _get('randomArticle');
   static String get dataFromWikipedia => _get('dataFromWikipedia');
 

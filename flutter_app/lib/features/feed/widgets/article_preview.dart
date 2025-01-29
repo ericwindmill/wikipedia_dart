@@ -11,73 +11,77 @@ class ArticlePreview extends StatelessWidget {
 
   final Summary summary;
 
+  ({double height, double width}) _imageSize(BuildContext context) {
+    final breakpoint = BreakpointProvider.of(context);
+    final appWidth = BreakpointProvider.appWidth(context);
+
+    return switch (breakpoint.width) {
+      BreakpointWidth.small => (height: 160, width: appWidth),
+      BreakpointWidth.medium => (
+        height: 200,
+        width: BreakpointWidth.medium.begin,
+      ),
+      BreakpointWidth.large => (
+        height: 200,
+        width: BreakpointWidth.medium.begin,
+      ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool hasImage = summary.originalImage != null;
-    const double imageHeight = 140;
     final Breakpoint breakpoint = BreakpointProvider.of(context);
+    final imageSize = _imageSize(context);
 
-    return SizedBox(
-      // TODO(ewindmill): Does this change with screen size?
-      height: hasImage ? 304 : 150,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (hasImage)
-            RoundedImage(
-              source: summary.originalImage!.source,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(Dimensions.radius),
-                topRight: Radius.circular(Dimensions.radius),
-              ),
-              height: imageHeight,
-              width: MediaQuery.of(context).size.width - breakpoint.margin,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (hasImage)
+          RoundedImage(
+            source: summary.originalImage!.source,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(Dimensions.radius),
+              topRight: Radius.circular(Dimensions.radius),
             ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(breakpoint.padding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    summary.titles.normalized,
-                    style: AppTheme.serifHeading2,
-                  ),
-                  if (summary.description != null)
-                    Padding(
-                      padding: EdgeInsets.only(bottom: breakpoint.spacing),
-                      child: Text(
-                        summary.description!,
-                        style: TextTheme.of(context).labelMedium,
-                      ),
-                    ),
-                  const Spacer(),
-                  Text(
-                    summary.extract,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                  ),
-                  const Spacer(),
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.bookmark_border_outlined,
-                      color: AppColors.primary,
-                      size: 16,
-                    ),
-                    label: Text(
-                      AppStrings.saveForLater,
-                      style: TextTheme.of(
-                        context,
-                      ).labelMedium!.copyWith(color: AppColors.primary),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            height: 160,
+            width: imageSize.width,
           ),
-        ],
-      ),
+        Padding(
+          padding: EdgeInsets.all(breakpoint.padding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 5,
+            children: <Widget>[
+              // Text(summary.titles.normalized, style: AppTheme.serifHeading2),
+              if (summary.description != null)
+                Text(
+                  summary.description!,
+                  style: TextTheme.of(context).labelMedium,
+                ),
+              Text(
+                summary.extract,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+              ),
+              TextButton.icon(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.bookmark_border_outlined,
+                  color: AppColors.primary,
+                  size: Dimensions.iconSize,
+                ),
+                label: Text(
+                  AppStrings.saveForLater,
+                  style: TextTheme.of(
+                    context,
+                  ).labelMedium!.copyWith(color: AppColors.primary),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

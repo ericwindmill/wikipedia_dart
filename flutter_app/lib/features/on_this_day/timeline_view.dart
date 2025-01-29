@@ -129,7 +129,10 @@ class TimelineView extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     final OnThisDayEvent event =
                         viewModel.filteredEvents[index];
-                    return TimelineListItem(event: event);
+                    return SizedBox(
+                      height: 200,
+                      child: TimelineListItem(event: event),
+                    );
                   },
                 ),
               ],

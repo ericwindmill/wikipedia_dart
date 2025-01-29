@@ -38,7 +38,7 @@ class Breakpoint {
   const Breakpoint.small({required this.platform})
     : width = BreakpointWidth.small,
       margin = 16,
-      spacing = 4,
+      spacing = 8,
       padding = 8;
 
   const Breakpoint.medium({required this.platform})
@@ -51,7 +51,7 @@ class Breakpoint {
     : width = BreakpointWidth.large,
       margin = 24,
       spacing = 24,
-      padding = 16;
+      padding = 12;
   final TargetPlatform platform;
 
   final BreakpointWidth width;
@@ -132,14 +132,14 @@ class BreakpointProvider extends InheritedWidget {
 
 class BreakpointAwareWidget extends StatefulWidget {
   const BreakpointAwareWidget({
-    required this.child,
+    required this.smChild,
     super.key,
     Widget? mdChild,
     Widget? lgChild,
-  }) : mediumChild = mdChild ?? child,
-       largeChild = lgChild ?? mdChild ?? child;
+  }) : mediumChild = mdChild ?? smChild,
+       largeChild = lgChild ?? mdChild ?? smChild;
 
-  final Widget child;
+  final Widget smChild;
   final Widget mediumChild;
   final Widget largeChild;
 
@@ -149,12 +149,6 @@ class BreakpointAwareWidget extends StatefulWidget {
 
 class _BreakpointAwareLayoutState extends State<BreakpointAwareWidget> {
   late Breakpoint breakpoint;
-
-  @override
-  void initState() {
-    breakpoint = BreakpointProvider.of(context);
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -167,7 +161,7 @@ class _BreakpointAwareLayoutState extends State<BreakpointAwareWidget> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return switch (breakpoint.width) {
-          BreakpointWidth.small => widget.child,
+          BreakpointWidth.small => widget.smChild,
           BreakpointWidth.medium => widget.mediumChild,
           BreakpointWidth.large => widget.largeChild,
         };

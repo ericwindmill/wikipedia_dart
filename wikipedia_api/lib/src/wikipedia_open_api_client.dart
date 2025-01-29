@@ -36,7 +36,7 @@ class WikipediaApiClient {
     try {
       final Uri url = Uri.https(
         'en.wikipedia.org',
-        'https://en.wikipedia.org/api/rest_v1/page/summary/$articleTitle',
+        '/api/rest_v1/page/summary/$articleTitle',
       );
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
@@ -120,6 +120,22 @@ class WikipediaApiClient {
       }
     } on Exception catch (error) {
       throw Exception('Unexpected error - $error');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<String> getPageHtml(String title) async {
+    final client = http.Client();
+    try {
+      final url = Uri.https(
+        'en.wikipedia.org',
+        '/api/rest_v1/page/html/$title',
+      );
+      final response = await http.get(url);
+      return response.body;
+    } on HttpException catch (e) {
+      rethrow;
     } finally {
       client.close();
     }

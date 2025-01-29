@@ -2,46 +2,97 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/dimensions.dart';
 
+const double feedItemHeaderHeight = 60;
+
+({double feedItemHeight, double feedItemWidth}) itemSize(BuildContext context) {
+  final breakpoint = BreakpointProvider.of(context);
+  final totalWidth = BreakpointProvider.appWidth(context);
+
+  return switch (breakpoint.width) {
+    BreakpointWidth.small => (feedItemHeight: 400, feedItemWidth: totalWidth),
+    BreakpointWidth.medium => (
+      feedItemHeight: 400,
+      // account for spacing between items
+      feedItemWidth: (totalWidth - breakpoint.spacing * 2) / 2,
+    ),
+    BreakpointWidth.large => (
+      feedItemHeight: 420,
+      feedItemWidth: (totalWidth - breakpoint.spacing * 2) / 3,
+    ),
+  };
+}
+
 class FeedItem extends StatelessWidget {
   const FeedItem({
-    required this.sectionTitle,
     required this.child,
-    super.key,
-    this.subtitle,
     this.onTap,
+    this.header,
+    this.subhead,
+    super.key,
   });
 
-  final String sectionTitle;
   final Widget child;
-  final String? subtitle;
   final VoidCallback? onTap;
+  final String? header;
+  final String? subhead;
 
   @override
   Widget build(BuildContext context) {
+    final size = itemSize(context);
+
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(sectionTitle, style: TextTheme.of(context).titleMedium),
-          if (subtitle != null && subtitle!.isNotEmpty)
-            Text(subtitle!, style: TextTheme.of(context).labelMedium),
-          SizedBox(height: BreakpointProvider.of(context).spacing * 2),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(Dimensions.radius),
-              boxShadow: const <BoxShadow>[
-                BoxShadow(
-                  spreadRadius: 1,
-                  blurRadius: 8,
-                  color: Color.fromRGBO(0, 0, 0, .15),
+      child: SizedBox(
+        height: size.feedItemHeight,
+        width: size.feedItemWidth,
+        child: Stack(
+          children: [
+            if (header != null)
+              Positioned(
+                top: 0,
+                height: feedItemHeaderHeight,
+                left: 0,
+                right: 0,
+                child: Container(
+                  decoration: const BoxDecoration(color: Colors.white70),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(header!, style: TextTheme.of(context).titleMedium),
+                        if (subhead != null)
+                          Text(
+                            subhead!,
+                            style: TextTheme.of(context).labelMedium,
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
+              ),
+            Positioned(
+              top: feedItemHeaderHeight,
+              height: size.feedItemHeight - feedItemHeaderHeight,
+              left: 0,
+              right: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(1, 1),
+                      blurRadius: 10,
+                      color: Colors.black12,
+                    ),
+                  ],
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
+                child: child,
+              ),
             ),
-            child: child,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

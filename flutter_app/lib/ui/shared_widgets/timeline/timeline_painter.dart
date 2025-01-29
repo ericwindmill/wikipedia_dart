@@ -38,30 +38,33 @@ class TimelinePainter extends CustomPainter {
 enum CapPosition { top, bottom }
 
 class TimelineCap extends StatelessWidget {
-  const TimelineCap({super.key, this.position = CapPosition.top});
+  const TimelineCap({super.key, this.position = CapPosition.top, this.height});
 
   final CapPosition position;
+  final double? height;
+
   @override
   Widget build(BuildContext context) {
     final double width = BreakpointProvider.appWidth(context);
-    final double height = BreakpointProvider.of(context).spacing * 6;
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 0,
-          bottom: 0,
-          left: sidebarWidth / 2,
-          child: CustomPaint(
-            painter: TimelineCapPainter(height: height, capPosition: position),
+    final double capHeight = height ?? BreakpointProvider.of(context).spacing;
+    return SizedBox(
+      height: capHeight,
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: sidebarWidth / 2,
+            width: sidebarWidth,
+            child: CustomPaint(
+              painter: TimelineCapPainter(
+                height: capHeight,
+                capPosition: position,
+              ),
+            ),
           ),
-        ),
-        Row(
-          children: <Widget>[
-            SizedBox(height: height, width: sidebarWidth),
-            SizedBox(width: width - sidebarWidth),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

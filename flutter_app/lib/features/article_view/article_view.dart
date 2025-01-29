@@ -3,7 +3,6 @@ import 'package:flutter_app/features/article_view/article_view_model.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
-import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ArticleView extends StatelessWidget {
@@ -18,7 +17,7 @@ class ArticleView extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           AppStrings.wikipediaDart,
-          style: AppTheme.serifTitle.copyWith(fontSize: 20),
+          // style: AppTheme.serifTitle.copyWith(fontSize: 20),
         ),
       ),
       body: ListenableBuilder(
@@ -51,7 +50,7 @@ class ArticleView extends StatelessWidget {
                 ),
                 child: Text(
                   viewModel.summary.titles.normalized,
-                  style: AppTheme.serifTitle,
+                  // style: AppTheme.serifTitle,
                 ),
               ),
               ...List<Widget>.generate(viewModel.article.length, (index) {
@@ -63,21 +62,21 @@ class ArticleView extends StatelessWidget {
                       top: breakpoint.spacing * 6,
                       bottom: breakpoint.spacing,
                     ),
-                    child: Text(element.body, style: AppTheme.serifHeading1),
+                    // child: Text(element.body, style: AppTheme.serifHeading1),
                   ),
                   ElementType.heading2 => Padding(
                     padding: EdgeInsets.only(
                       top: breakpoint.spacing * 4,
                       bottom: breakpoint.spacing,
                     ),
-                    child: Text(element.body, style: AppTheme.serifHeading2),
+                    // child: Text(element.body, style: AppTheme.serifHeading2),
                   ),
                   ElementType.heading3 => Padding(
                     padding: EdgeInsets.only(
                       top: breakpoint.spacing * 2,
                       bottom: breakpoint.spacing,
                     ),
-                    child: Text(element.body, style: AppTheme.serifHeading3),
+                    // child: Text(element.body, style: AppTheme.serifHeading3),
                   ),
                   ElementType.paragraph => Padding(
                     padding: EdgeInsets.only(

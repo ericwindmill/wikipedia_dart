@@ -6,7 +6,7 @@ import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
-void main() {
+void main() async {
   runApp(const MainApp());
 }
 
@@ -54,7 +54,10 @@ class _MainAppState extends State<MainApp> {
                 centerTitle: false,
                 title: Text(
                   AppStrings.wikipediaDart,
-                  style: AppTheme.serifTitle.copyWith(fontSize: 30),
+                  style: TextTheme.of(context).headlineMedium!.copyWith(
+                    fontFamily: AppTheme.serif.fontFamily,
+                    fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
+                  ),
                 ),
                 actions: <Widget>[
                   IconButton(
