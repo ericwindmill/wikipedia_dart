@@ -1,5 +1,4 @@
 import 'package:wikipedia_api/src/model/original_image.dart';
-import 'package:wikipedia_api/src/model/thumbnail.dart';
 
 /// Contains images of different sizes and metadata
 class WikipediaImage {
@@ -14,11 +13,11 @@ class WikipediaImage {
   });
 
   final String title;
-  final OriginalImage originalImage;
+  final ImageFile originalImage;
   final String? artist;
   final String? description;
   final String? caption;
-  final Thumbnail? thumbnail;
+  final ImageFile? thumbnail;
 
   static WikipediaImage fromJson(Map<String, Object?> json) {
     return switch (json) {
@@ -35,8 +34,8 @@ class WikipediaImage {
           artist: artistName,
           description: description,
           caption: caption,
-          originalImage: OriginalImage.fromJson(originalImage),
-          thumbnail: Thumbnail.fromJson(thumbnail),
+          originalImage: ImageFile.fromJson(originalImage),
+          thumbnail: ImageFile.fromJson(thumbnail),
         ),
       {
         'title': final String title,
@@ -49,8 +48,8 @@ class WikipediaImage {
           title: title,
           artist: artistName,
           description: description,
-          originalImage: OriginalImage.fromJson(originalImage),
-          thumbnail: Thumbnail.fromJson(thumbnail),
+          originalImage: ImageFile.fromJson(originalImage),
+          thumbnail: ImageFile.fromJson(thumbnail),
         ),
       // minimum required image properties
       {
@@ -59,7 +58,7 @@ class WikipediaImage {
       } =>
         WikipediaImage(
           title: title,
-          originalImage: OriginalImage.fromJson(originalImage),
+          originalImage: ImageFile.fromJson(originalImage),
         ),
       {
         'title': final String title,
@@ -67,7 +66,7 @@ class WikipediaImage {
       } =>
         WikipediaImage(
           title: title,
-          originalImage: OriginalImage.fromJson(thumbnailImage),
+          originalImage: ImageFile.fromJson(thumbnailImage),
         ),
       _ => throw FormatException('Could not deserialize Image, json=$json'),
     };

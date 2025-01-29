@@ -50,7 +50,6 @@ class _MainAppState extends State<MainApp> {
           builder: (BuildContext context) {
             return Scaffold(
               appBar: AppBar(
-                surfaceTintColor: Colors.white,
                 centerTitle: false,
                 title: Text(
                   AppStrings.wikipediaDart,

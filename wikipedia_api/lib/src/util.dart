@@ -54,3 +54,9 @@ extension ReadableYear on int {
     return abs().toString();
   }
 }
+
+String? getFileExtension(String file) {
+  final segments = file.split('.');
+  if (segments.isNotEmpty) return segments.last;
+  return null;
+}

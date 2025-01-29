@@ -10,10 +10,12 @@ class FeaturedImage extends StatelessWidget {
   const FeaturedImage({
     required this.image,
     required this.readableDate,
+    required this.imageFile,
     super.key,
   });
 
   final WikipediaImage image;
+  final ImageFile imageFile;
   final String readableDate;
 
   @override
@@ -22,11 +24,12 @@ class FeaturedImage extends StatelessWidget {
       onTap: () async {
         await Navigator.of(context).push(
           CupertinoModalPopupRoute<void>(
-            barrierColor: Colors.black87,
+            barrierColor: Theme.of(context).colorScheme.primaryContainer,
             barrierDismissible: false,
             builder: (BuildContext context) {
               return ImageModalView(
                 image,
+                file: imageFile,
                 title: AppStrings.imageOfTheDayFor(readableDate),
                 attribution: image.artist,
                 description: image.description,
@@ -37,9 +40,7 @@ class FeaturedImage extends StatelessWidget {
       },
       header: AppStrings.imageOfTheDay,
       subhead: image.artist != null ? AppStrings.by(image.artist!) : '',
-      child: GestureDetector(
-        child: RoundedImage(source: image.originalImage.source),
-      ),
+      child: GestureDetector(child: RoundedImage(source: imageFile.source)),
     );
   }
 }

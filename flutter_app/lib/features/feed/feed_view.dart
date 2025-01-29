@@ -35,9 +35,14 @@ class FeedView extends StatelessWidget {
             spacing: BreakpointProvider.of(context).spacing,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                AppStrings.today,
-                style: TextTheme.of(context).headlineSmall,
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: BreakpointProvider.of(context).padding,
+                ),
+                child: Text(
+                  AppStrings.today,
+                  style: TextTheme.of(context).headlineSmall,
+                ),
               ),
               Wrap(
                 spacing: BreakpointProvider.of(context).spacing,
@@ -51,6 +56,7 @@ class FeedView extends StatelessWidget {
                   if (viewModel.hasImage)
                     FeaturedImage(
                       image: viewModel.imageOfTheDay!,
+                      imageFile: viewModel.imageSource!,
                       readableDate: viewModel.readableDate,
                     ),
                   if (viewModel.timelinePreview.isNotEmpty)

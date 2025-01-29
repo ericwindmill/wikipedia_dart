@@ -53,21 +53,18 @@ class FeedItem extends StatelessWidget {
                 height: feedItemHeaderHeight,
                 left: 0,
                 right: 0,
-                child: Container(
-                  decoration: const BoxDecoration(color: Colors.white70),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(header!, style: TextTheme.of(context).titleMedium),
-                        if (subhead != null)
-                          Text(
-                            subhead!,
-                            style: TextTheme.of(context).labelMedium,
-                          ),
-                      ],
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(header!, style: TextTheme.of(context).titleMedium),
+                      if (subhead != null)
+                        Text(
+                          subhead!,
+                          style: TextTheme.of(context).labelMedium,
+                        ),
+                    ],
                   ),
                 ),
               ),

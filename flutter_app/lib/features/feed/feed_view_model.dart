@@ -22,7 +22,26 @@ class FeedViewModel extends ChangeNotifier {
         _feed?.onThisDayTimeline?.take(3).toList() ?? <OnThisDayEvent>[],
       );
 
-  bool get hasImage => _feed?.imageOfTheDay?.originalImage.source != null;
+  bool get hasImage {
+    if (_feed?.imageOfTheDay?.originalImage == null &&
+        _feed?.imageOfTheDay?.thumbnail == null) {
+      return false;
+    }
+
+    return _acceptableImageType(_feed!.imageOfTheDay!.originalImage.source) ||
+        _acceptableImageType(_feed!.imageOfTheDay!.thumbnail!.source);
+  }
+
+  ImageFile? get imageSource {
+    if (!hasImage) return null;
+    if (_acceptableImageType(imageOfTheDay?.originalImage.source)) {
+      return imageOfTheDay!.originalImage;
+    }
+    if (_acceptableImageType(imageOfTheDay?.thumbnail?.source)) {
+      return imageOfTheDay!.thumbnail;
+    }
+    return null;
+  }
 
   WikipediaImage? get imageOfTheDay => _feed?.imageOfTheDay;
 
@@ -70,5 +89,14 @@ class FeedViewModel extends ChangeNotifier {
     } finally {
       notifyListeners();
     }
+  }
+
+  bool _acceptableImageType(String? sourceName) {
+    final acceptableImageFormats = ['png', 'jpg', 'jpeg'];
+    if (sourceName != null) {
+      final ext = getFileExtension(sourceName);
+      if (acceptableImageFormats.contains(ext)) return true;
+    }
+    return false;
   }
 }

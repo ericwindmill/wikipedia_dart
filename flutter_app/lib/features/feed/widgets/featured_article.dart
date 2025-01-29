@@ -52,6 +52,7 @@ class FeaturedArticle extends StatelessWidget {
             ),
             child: Text(
               featuredArticle.titles.normalized,
+              overflow: TextOverflow.ellipsis,
               style: TextTheme.of(context).titleMedium!.copyWith(
                 fontFamily: AppTheme.serif.fontFamily,
                 fontFamilyFallback: AppTheme.serif.fontFamilyFallback,

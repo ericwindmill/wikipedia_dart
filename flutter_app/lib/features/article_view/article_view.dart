@@ -3,6 +3,7 @@ import 'package:flutter_app/features/article_view/article_view_model.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/breakpoint.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ArticleView extends StatelessWidget {
@@ -15,9 +16,13 @@ class ArticleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Text(
           AppStrings.wikipediaDart,
-          // style: AppTheme.serifTitle.copyWith(fontSize: 20),
+          style: TextTheme.of(context).titleLarge!.copyWith(
+            fontFamily: AppTheme.serif.fontFamily,
+            fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
+          ),
         ),
       ),
       body: ListenableBuilder(
@@ -46,11 +51,26 @@ class ArticleView extends StatelessWidget {
                   horizontal: BreakpointProvider.of(context).margin,
                 ),
                 padding: EdgeInsets.symmetric(
-                  vertical: BreakpointProvider.of(context).spacing * 3,
+                  vertical: BreakpointProvider.of(context).spacing,
                 ),
                 child: Text(
                   viewModel.summary.titles.normalized,
-                  // style: AppTheme.serifTitle,
+                  style: TextTheme.of(context).titleLarge!.copyWith(
+                    fontFamily: AppTheme.serif.fontFamily,
+                    fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: BreakpointProvider.of(context).margin,
+                ),
+                padding: EdgeInsets.only(
+                  bottom: BreakpointProvider.of(context).spacing,
+                ),
+                child: Text(
+                  viewModel.summary.description ?? '',
+                  style: TextTheme.of(context).labelMedium,
                 ),
               ),
               ...List<Widget>.generate(viewModel.article.length, (index) {
@@ -58,31 +78,37 @@ class ArticleView extends StatelessWidget {
                 final ArticleElement element = viewModel.article[index];
                 final inner = switch (element.type) {
                   ElementType.heading1 => Padding(
-                    padding: EdgeInsets.only(
-                      top: breakpoint.spacing * 6,
-                      bottom: breakpoint.spacing,
+                    padding: EdgeInsets.symmetric(vertical: breakpoint.spacing),
+                    child: Text(
+                      element.body,
+                      style: TextTheme.of(context).titleLarge!.copyWith(
+                        fontFamily: AppTheme.serif.fontFamily,
+                        fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
+                      ),
                     ),
-                    // child: Text(element.body, style: AppTheme.serifHeading1),
                   ),
                   ElementType.heading2 => Padding(
-                    padding: EdgeInsets.only(
-                      top: breakpoint.spacing * 4,
-                      bottom: breakpoint.spacing,
+                    padding: EdgeInsets.symmetric(vertical: breakpoint.spacing),
+                    child: Text(
+                      element.body,
+                      style: TextTheme.of(context).titleMedium!.copyWith(
+                        fontFamily: AppTheme.serif.fontFamily,
+                        fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
+                      ),
                     ),
-                    // child: Text(element.body, style: AppTheme.serifHeading2),
                   ),
                   ElementType.heading3 => Padding(
-                    padding: EdgeInsets.only(
-                      top: breakpoint.spacing * 2,
-                      bottom: breakpoint.spacing,
+                    padding: EdgeInsets.symmetric(vertical: breakpoint.spacing),
+                    child: Text(
+                      element.body,
+                      style: TextTheme.of(context).titleSmall!.copyWith(
+                        fontFamily: AppTheme.serif.fontFamily,
+                        fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
+                      ),
                     ),
-                    // child: Text(element.body, style: AppTheme.serifHeading3),
                   ),
                   ElementType.paragraph => Padding(
-                    padding: EdgeInsets.only(
-                      top: breakpoint.spacing,
-                      bottom: breakpoint.spacing,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: breakpoint.spacing),
                     child: Text(element.body),
                   ),
                   ElementType.image => throw UnimplementedError(),

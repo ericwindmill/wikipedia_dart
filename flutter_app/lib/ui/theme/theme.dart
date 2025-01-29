@@ -22,7 +22,6 @@ abstract final class AppTheme {
 
   static const TextTheme _textTheme = TextTheme(
     titleLarge: TextStyle(fontWeight: FontWeight.bold),
-
     titleMedium: TextStyle(fontWeight: FontWeight.bold),
 
     /// Default text
@@ -37,10 +36,11 @@ abstract final class AppTheme {
   );
 
   static const TextTheme _textThemeDark = TextTheme(
-    titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    titleLarge: TextStyle(fontWeight: FontWeight.bold),
+    titleMedium: TextStyle(fontWeight: FontWeight.bold),
 
     /// Default text
-    bodyMedium: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+    bodyMedium: TextStyle(fontWeight: FontWeight.w400),
 
     /// Used for labels and captions
     labelMedium: TextStyle(
@@ -75,7 +75,7 @@ abstract final class AppTheme {
 
 abstract final class AppColors {
   static const Color primary = AppColors.flutterBlue5;
-  static const Color containerOnDark = Color(0xFF181818);
+  static const Color containerOnDark = Color(0xFF131313);
   static const Color labelOnLight = Color(0xFF4A4A4A);
   static const Color labelOnDark = Color(0xFFDADCE0);
 

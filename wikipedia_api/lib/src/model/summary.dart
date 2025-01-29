@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 @JsonSerializable()
@@ -31,13 +30,13 @@ class Summary {
   /// First several sentences of an article in simple HTML format
   String extractHtml;
 
-  Thumbnail? thumbnail;
+  ImageFile? thumbnail;
 
   /// Url to the article on Wikipedia
   String? url;
 
   ///
-  OriginalImage? originalImage;
+  ImageFile? originalImage;
 
   /// The page language code
   String lang;
@@ -71,8 +70,8 @@ class Summary {
           pageid: pageid,
           extract: extract,
           extractHtml: extractHtml,
-          thumbnail: Thumbnail.fromJson(thumbnail),
-          originalImage: OriginalImage.fromJson(originalImage),
+          thumbnail: ImageFile.fromJson(thumbnail),
+          originalImage: ImageFile.fromJson(originalImage),
           lang: lang,
           dir: dir,
           url: url,
@@ -97,8 +96,8 @@ class Summary {
           pageid: pageid,
           extract: extract,
           extractHtml: extractHtml,
-          thumbnail: Thumbnail.fromJson(thumbnail),
-          originalImage: OriginalImage.fromJson(originalImage),
+          thumbnail: ImageFile.fromJson(thumbnail),
+          originalImage: ImageFile.fromJson(originalImage),
           lang: lang,
           dir: dir,
           url: url,
