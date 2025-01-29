@@ -7,8 +7,8 @@ import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-class TopReadView extends StatelessWidget {
-  const TopReadView({required this.topReadArticles, super.key});
+class MostReadView extends StatelessWidget {
+  const MostReadView({required this.topReadArticles, super.key});
 
   final List<Summary> topReadArticles;
 
@@ -17,6 +17,7 @@ class TopReadView extends StatelessWidget {
     final Breakpoint breakpoint = BreakpointProvider.of(context);
     return FeedItem(
       header: AppStrings.mostRead,
+      subhead: AppStrings.fromToday,
       child: ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,

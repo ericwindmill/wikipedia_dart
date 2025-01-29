@@ -1,3 +1,5 @@
+import 'package:wikipedia_api/wikipedia_api.dart';
+
 /// Simple Localizations similar to
 /// https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization#an-alternative-class-for-the-apps-localized-resources
 class AppStrings {
@@ -14,6 +16,8 @@ class AppStrings {
     'imageOfTheDayFor': 'Image of the day for',
     'mostRead': 'Most read articles',
     'randomArticle': 'Random Article',
+    // TODO(ewindmill): this should be dynamic
+    'fromLanguageWikipedia': 'from English Wikipedia',
 
     // generic ui elements
     'saveForLater': 'Save for later',
@@ -41,6 +45,8 @@ class AppStrings {
   static String get mostRead => _get('mostRead');
   static String get randomArticle => _get('randomArticle');
   static String get dataFromWikipedia => _get('dataFromWikipedia');
+  static String get fromLanguageWikipedia => _get('fromLanguageWikipedia');
+  static String get fromToday => '$_from ${DateTime.now().humanReadable}';
 
   static String get _by => _get('by');
   static String get _from => _get('from');

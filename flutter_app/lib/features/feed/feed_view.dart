@@ -51,6 +51,7 @@ class FeedView extends StatelessWidget {
                   if (viewModel.todaysFeaturedArticle != null)
                     FeaturedArticle(
                       header: AppStrings.todaysFeaturedArticle,
+                      subhead: AppStrings.fromLanguageWikipedia,
                       featuredArticle: viewModel.todaysFeaturedArticle!,
                     ),
                   if (viewModel.hasImage)
@@ -65,10 +66,11 @@ class FeedView extends StatelessWidget {
                       readableDate: viewModel.readableDate,
                     ),
                   if (viewModel.mostRead.isNotEmpty)
-                    TopReadView(topReadArticles: viewModel.mostRead),
+                    MostReadView(topReadArticles: viewModel.mostRead),
                   if (viewModel.randomArticle != null)
                     FeaturedArticle(
                       header: AppStrings.randomArticle,
+                      subhead: AppStrings.fromLanguageWikipedia,
                       featuredArticle: viewModel.randomArticle!,
                     ),
                 ],

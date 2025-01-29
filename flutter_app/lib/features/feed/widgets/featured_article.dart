@@ -12,11 +12,13 @@ class FeaturedArticle extends StatelessWidget {
   const FeaturedArticle({
     required this.featuredArticle,
     required this.header,
+    required this.subhead,
     super.key,
   });
 
   final Summary featuredArticle;
   final String header;
+  final String subhead;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class FeaturedArticle extends StatelessWidget {
         );
       },
       header: header,
+      subhead: subhead,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
