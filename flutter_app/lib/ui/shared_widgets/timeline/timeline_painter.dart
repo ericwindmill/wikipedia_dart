@@ -45,7 +45,6 @@ class TimelineCap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = BreakpointProvider.appWidth(context);
     final double capHeight = height ?? BreakpointProvider.of(context).spacing;
     return SizedBox(
       height: capHeight,

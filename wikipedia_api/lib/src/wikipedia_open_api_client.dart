@@ -134,7 +134,7 @@ class WikipediaApiClient {
       );
       final response = await http.get(url);
       return response.body;
-    } on HttpException catch (e) {
+    } on HttpException {
       rethrow;
     } finally {
       client.close();

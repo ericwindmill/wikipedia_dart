@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/feed/feed_repository.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
@@ -10,9 +11,13 @@ class FeedViewModel extends ChangeNotifier {
     getFeed();
   }
 
+  final FeedRepository _feedRepository = FeedRepository();
+
   String error = '';
 
   bool get hasError => error != '';
+
+  final List<Summary> savedArticles = [];
 
   UnmodifiableListView<Summary> get mostRead =>
       UnmodifiableListView<Summary>(_feed?.mostRead?.take(6) ?? <Summary>[]);
@@ -45,14 +50,6 @@ class FeedViewModel extends ChangeNotifier {
 
   WikipediaImage? get imageOfTheDay => _feed?.imageOfTheDay;
 
-  String get imageArtist {
-    if (hasImage && imageOfTheDay!.artist != null) {
-      return imageOfTheDay!.artist!;
-    }
-
-    return '';
-  }
-
   Summary? get todaysFeaturedArticle => _todaysFeaturedArticle;
 
   Summary? get randomArticle => _randomArticle;
@@ -69,18 +66,25 @@ class FeedViewModel extends ChangeNotifier {
       timelinePreview.isNotEmpty ||
       _randomArticle != null;
 
-  final List<Summary> savedArticles = [];
+  bool _acceptableImageType(String? sourceName) {
+    final acceptableImageFormats = ['png', 'jpg', 'jpeg'];
+    if (sourceName != null) {
+      final ext = getFileExtension(sourceName);
+      if (acceptableImageFormats.contains(ext)) return true;
+    }
+    return false;
+  }
 
   Future<void> getFeed() async {
     try {
-      _feed = await WikipediaApiClient.getWikipediaFeed();
+      _feed = await _feedRepository.getWikipediaFeed();
 
       // As a fallback, show a random article
       _todaysFeaturedArticle =
           _feed!.todaysFeaturedArticle ??
-          await WikipediaApiClient.getRandomArticle();
+          await _feedRepository.getRandomArticle();
 
-      _randomArticle = await WikipediaApiClient.getRandomArticle();
+      _randomArticle = await _feedRepository.getRandomArticle();
     } on HttpException catch (e) {
       debugPrint(e.toString());
       error = AppStrings.failedToGetTimelineDataFromWikipedia;
@@ -89,14 +93,5 @@ class FeedViewModel extends ChangeNotifier {
     } finally {
       notifyListeners();
     }
-  }
-
-  bool _acceptableImageType(String? sourceName) {
-    final acceptableImageFormats = ['png', 'jpg', 'jpeg'];
-    if (sourceName != null) {
-      final ext = getFileExtension(sourceName);
-      if (acceptableImageFormats.contains(ext)) return true;
-    }
-    return false;
   }
 }

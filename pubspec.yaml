@@ -6,3 +6,4 @@ workspace:
   - wikipedia_api
   - cli
   - flutter_app
+  - server
