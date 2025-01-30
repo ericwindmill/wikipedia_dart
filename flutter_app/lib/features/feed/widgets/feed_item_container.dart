@@ -63,6 +63,7 @@ class FeedItem extends StatelessWidget {
                         Text(
                           subhead!,
                           style: TextTheme.of(context).labelMedium,
+                          overflow: TextOverflow.ellipsis,
                         ),
                     ],
                   ),

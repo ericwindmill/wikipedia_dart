@@ -40,7 +40,9 @@ class FeaturedImage extends StatelessWidget {
       },
       header: AppStrings.imageOfTheDay,
       subhead: image.artist != null ? AppStrings.by(image.artist!) : '',
-      child: GestureDetector(child: RoundedImage(source: imageFile.source)),
+      child: GestureDetector(
+        child: RoundedImage(source: imageFile.source, height: 400),
+      ),
     );
   }
 }

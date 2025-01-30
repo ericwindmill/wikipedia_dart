@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/article_view/article_repository.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 enum ElementType { heading1, heading2, heading3, paragraph, image }
@@ -12,7 +13,17 @@ class ArticleViewModel extends ChangeNotifier {
     getFullArticle(summary.titles.canonical);
   }
 
+  final ArticleRepository _repository = ArticleRepository();
+
   final Summary summary;
+
+  Article? _article;
+
+  bool get hasData => _article != null;
+
+  String error = '';
+
+  bool get hasError => error != '';
 
   List<ArticleElement> get article {
     if (!hasData) return [];
@@ -40,21 +51,17 @@ class ArticleViewModel extends ChangeNotifier {
     return elements;
   }
 
-  Article? _article;
-
-  bool get hasData => _article != null;
-
-  String error = '';
-
-  bool get hasError => error != '';
-
   Future<void> getFullArticle(String canonicalTitle) async {
     try {
-      final List<Article> articles = await WikimediaApiClient.getArticleByTitle(
+      final Article? article = await _repository.getArticleByTitle(
         canonicalTitle,
       );
+      if (article != null) {
+        _article = article;
+      } else {
+        error = 'Failed to fetch article. Please try again';
+      }
 
-      _article = articles.first;
       notifyListeners();
     } on HttpException catch (e) {
       error = e.message;

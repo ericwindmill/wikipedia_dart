@@ -2,6 +2,8 @@
 
 import 'dart:io';
 
+import 'package:server/routes/article.dart';
+import 'package:server/routes/page_summary.dart';
 import 'package:server/routes/wikipedia_feed.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
@@ -10,7 +12,9 @@ import 'package:shelf_router/shelf_router.dart';
 // Configure routes.
 final _router =
     Router()
-      ..get('/', () => print('alive!'))
+      ..get('/', () => print("It's alive!"))
+      ..mount('/page', PageSummaryApi().router.call)
+      ..mount('/article', ArticleApi().router.call)
       ..mount('/feed', WikipediaFeedApi().router.call);
 
 void main(List<String> args) async {
@@ -23,7 +27,7 @@ void main(List<String> args) async {
       .addHandler(_router.call);
 
   // For running in containers, we respect the PORT environment variable.
-  final port = int.parse(Platform.environment['PORT'] ?? '8888');
+  final port = int.parse(Platform.environment['PORT'] ?? '8080');
   final server = await serve(handler, ip, port);
   print('Server listening on port ${server.port}');
 }

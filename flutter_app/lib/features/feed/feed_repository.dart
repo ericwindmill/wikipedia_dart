@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_app/util.dart';
 import 'package:http/http.dart' as http;
 import 'package:wikipedia_api/wikipedia_api.dart';
 
@@ -11,21 +12,25 @@ class FeedRepository {
 
   Future<WikipediaFeed> getWikipediaFeed() async {
     if (_cachedFeed != null) return _cachedFeed!;
-
     final http.Client client = http.Client();
-    final Uri url = Uri.http('localhost:8888', '/feed');
-    final http.Response response = await client.get(url);
-    if (response.statusCode == 200) {
-      final Map<String, Object?> jsonData =
-          jsonDecode(response.body) as Map<String, Object?>;
-      _cachedFeed = WikipediaFeed.fromJson(jsonData);
-      return _cachedFeed!;
-    } else {
-      throw HttpException(
-        '[WikipediaDart.getWikipediaFeed] '
-        'statusCode=${response.statusCode}, '
-        'body=${response.body}',
-      );
+
+    try {
+      final Uri url = Uri.http(serverUri, '/feed');
+      final http.Response response = await client.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, Object?> jsonData =
+            jsonDecode(response.body) as Map<String, Object?>;
+        _cachedFeed = WikipediaFeed.fromJson(jsonData);
+        return _cachedFeed!;
+      } else {
+        throw HttpException(
+          '[WikipediaDart.getWikipediaFeed] '
+          'statusCode=${response.statusCode}, '
+          'body=${response.body}',
+        );
+      }
+    } finally {
+      client.close();
     }
   }
 
@@ -33,7 +38,7 @@ class FeedRepository {
     if (_cachedRandomArticle != null) return _cachedRandomArticle!;
 
     final http.Client client = http.Client();
-    final Uri url = Uri.http('localhost:8888', '/random');
+    final Uri url = Uri.http(serverUri, '/page/random');
     final http.Response response = await client.get(url);
     if (response.statusCode == 200) {
       final Map<String, Object?> jsonData =
