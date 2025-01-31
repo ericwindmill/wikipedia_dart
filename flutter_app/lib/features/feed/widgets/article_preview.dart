@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
+import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
-import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/dimensions.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
-import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
 class TimelinePainter extends CustomPainter {

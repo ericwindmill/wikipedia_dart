@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/article_view/article_page_view.dart';
+import 'package:flutter_app/features/article_view/article_view_model.dart';
+import 'package:flutter_app/features/saved_articles/save_for_later_button.dart';
+import 'package:flutter_app/features/saved_articles/saved_articles_view_model.dart';
+import 'package:flutter_app/providers/repository_provider.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/page_link_extension.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -15,7 +20,12 @@ class TimelinePageLink extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (BuildContext context) {
-              return Scaffold(body: Text(summary.titles.normalized));
+              return ArticleView(
+                viewModel: ArticleViewModel(
+                  summary,
+                  repository: RepositoryProvider.of(context).articleRepository,
+                ),
+              );
             },
           ),
         );
@@ -23,7 +33,7 @@ class TimelinePageLink extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 8.0),
         child: Container(
-          width: 220,
+          width: 240,
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
@@ -33,6 +43,13 @@ class TimelinePageLink extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
+              SaveForLaterButton(
+                summary: summary,
+                viewModel: SavedArticlesViewModel(
+                  repository:
+                      RepositoryProvider.of(context).savedArticlesRepository,
+                ),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),

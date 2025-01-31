@@ -2,13 +2,17 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/on_this_day/timeline_repository.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class TimelineViewModel extends ChangeNotifier {
-  TimelineViewModel() {
+  TimelineViewModel({required TimelineRepository repository})
+    : _repository = repository {
     getTimelineForDay(_date.month, _date.day);
   }
+
+  final TimelineRepository _repository;
 
   List<OnThisDayEvent> _filteredEvents = <OnThisDayEvent>[];
   UnmodifiableListView<OnThisDayEvent> get filteredEvents =>
@@ -82,10 +86,7 @@ class TimelineViewModel extends ChangeNotifier {
 
   Future<void> getTimelineForDay(int month, int day) async {
     try {
-      _timeline = await WikipediaApiClient.getTimelineForDate(
-        month: month,
-        day: day,
-      );
+      _timeline = await _repository.getTimelineForDate(month, day);
 
       filterEvents();
     } on HttpException catch (e) {

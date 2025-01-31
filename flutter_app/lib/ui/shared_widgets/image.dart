@@ -9,8 +9,6 @@ class RoundedImage extends StatelessWidget {
     this.width,
     BorderRadius? borderRadius,
     this.fit = BoxFit.cover,
-    // white background accounts for transparent background images
-    this.backgroundColor = Colors.white,
   }) : radius = borderRadius ?? BorderRadius.circular(Dimensions.radius);
 
   final String source;
@@ -18,12 +16,13 @@ class RoundedImage extends StatelessWidget {
   final double? height;
   final double? width;
   final BorderRadius radius;
-  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: backgroundColor,
+    // The container adds a background color because some images have a
+    // transparent background
+    return Container(
+      decoration: BoxDecoration(color: Colors.white, borderRadius: radius),
       child: ClipRRect(
         borderRadius: radius,
         child: Image.network(source, height: height, width: width, fit: fit),

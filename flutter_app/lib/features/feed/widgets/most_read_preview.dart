@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/article_view/article_view.dart';
+import 'package:flutter_app/features/article_view/article_page_view.dart';
+import 'package:flutter_app/features/article_view/article_view_model.dart';
 import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
+import 'package:flutter_app/providers/breakpoint_provider.dart';
+import 'package:flutter_app/providers/repository_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
+import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
-import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
@@ -39,7 +42,13 @@ class MostReadView extends StatelessWidget {
               await Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (BuildContext context) {
-                    return ArticleView(summary: summary);
+                    return ArticleView(
+                      viewModel: ArticleViewModel(
+                        summary,
+                        repository:
+                            RepositoryProvider.of(context).articleRepository,
+                      ),
+                    );
                   },
                 ),
               );
@@ -62,7 +71,7 @@ class MostReadView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Flexible(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
@@ -24,7 +23,6 @@ class FeaturedImage extends StatelessWidget {
       onTap: () async {
         await Navigator.of(context).push(
           CupertinoModalPopupRoute<void>(
-            barrierColor: Theme.of(context).colorScheme.primaryContainer,
             barrierDismissible: false,
             builder: (BuildContext context) {
               return ImageModalView(

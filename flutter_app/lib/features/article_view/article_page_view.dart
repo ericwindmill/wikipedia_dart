@@ -1,30 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/article_view/article_view_model.dart';
+import 'package:flutter_app/providers/breakpoint_provider.dart';
+import 'package:flutter_app/ui/adaptive_app_bar.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
-import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
-import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ArticleView extends StatelessWidget {
-  ArticleView({required Summary summary, super.key})
-    : viewModel = ArticleViewModel(summary);
+  const ArticleView({required this.viewModel, super.key});
 
   final ArticleViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: Text(
-          AppStrings.wikipediaDart,
-          style: TextTheme.of(context).titleLarge!.copyWith(
-            fontFamily: AppTheme.serif.fontFamily,
-            fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
-          ),
-        ),
-      ),
+      appBar: AdaptiveAppBar(title: AppStrings.wikipediaDart),
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (BuildContext context, _) {

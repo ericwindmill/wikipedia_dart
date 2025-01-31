@@ -9,11 +9,12 @@ enum ElementType { heading1, heading2, heading3, paragraph, image }
 typedef ArticleElement = ({String body, ElementType type});
 
 class ArticleViewModel extends ChangeNotifier {
-  ArticleViewModel(this.summary) {
+  ArticleViewModel(this.summary, {required ArticleRepository repository})
+    : _repository = repository {
     getFullArticle(summary.titles.canonical);
   }
 
-  final ArticleRepository _repository = ArticleRepository();
+  final ArticleRepository _repository;
 
   final Summary summary;
 

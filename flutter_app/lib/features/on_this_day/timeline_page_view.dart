@@ -1,8 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
+import 'package:flutter_app/ui/adaptive_app_bar.dart';
 import 'package:flutter_app/ui/app_localization.dart';
+import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
+import 'package:flutter_app/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class TimelineView extends StatelessWidget {
@@ -10,9 +15,48 @@ class TimelineView extends StatelessWidget {
 
   final TimelineViewModel viewModel;
 
+  List<Widget> actions(BuildContext context) {
+    return [];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          Breakpoint.isCupertino(context)
+              ? Colors.white
+              : Theme.of(context).scaffoldBackgroundColor,
+      appBar: AdaptiveAppBar(
+        actions: [
+          IconButton(
+            visualDensity: VisualDensity.compact,
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              color: AppColors.primary,
+              context.isCupertino
+                  ? CupertinoIcons.slider_horizontal_3
+                  : Icons.filter_alt_outlined,
+            ),
+            onPressed:
+                () async => showAdaptiveDialog(
+                  context: context,
+                  barrierColor: Colors.transparent,
+                  builder: (BuildContext context) {
+                    return FilterDialog<EventType>(
+                      options: viewModel.selectEventTypes.value,
+                      onSelectItem:
+                          ({required EventType value, bool? isChecked}) =>
+                              viewModel.toggleSelectedType(
+                                isChecked: isChecked ?? false,
+                                type: value,
+                              ),
+                      onSubmit: viewModel.filterEvents,
+                    );
+                  },
+                ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: ListenableBuilder(
           listenable: viewModel,
@@ -24,17 +68,12 @@ class TimelineView extends StatelessWidget {
               return const Center(child: CircularProgressIndicator.adaptive());
             }
 
-            return CustomScrollView(
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
-              slivers: <Widget>[
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  // TODO(ewindmill): if collapsed, only show filter
-                  //  and date select
-                  expandedHeight: 240,
-                  collapsedHeight: 240,
-                  flexibleSpace: Stack(
+            return ListView(
+              children: <Widget>[
+                // Title section
+                SizedBox(
+                  height: 240,
+                  child: Stack(
                     children: <Widget>[
                       Positioned(
                         top: 0,
@@ -50,41 +89,6 @@ class TimelineView extends StatelessWidget {
                         left: sidebarWidth / 2,
                         child: CustomPaint(
                           painter: TimelinePainter(dotRadius: 0),
-                        ),
-                      ),
-                      Positioned(
-                        top: 10,
-                        right: 10,
-                        child: IconButton(
-                          icon: const Icon(Icons.home_rounded),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
-                      Positioned(
-                        top: 10,
-                        right: 50,
-                        child: IconButton(
-                          icon: const Icon(Icons.filter_alt_outlined),
-                          onPressed:
-                              () async => showAdaptiveDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return FilterDialog<EventType>(
-                                    options: viewModel.selectEventTypes.value,
-                                    onSelectItem:
-                                        ({
-                                          required EventType value,
-                                          bool? isChecked,
-                                        }) => viewModel.toggleSelectedType(
-                                          isChecked: isChecked ?? false,
-                                          type: value,
-                                        ),
-                                    onSubmit: viewModel.filterEvents,
-                                  );
-                                },
-                              ),
                         ),
                       ),
                       Positioned(
@@ -124,15 +128,14 @@ class TimelineView extends StatelessWidget {
                     ],
                   ),
                 ),
-                SliverList.builder(
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                   itemCount: viewModel.filteredEvents.length,
                   itemBuilder: (BuildContext context, int index) {
                     final OnThisDayEvent event =
                         viewModel.filteredEvents[index];
-                    return SizedBox(
-                      height: 200,
-                      child: TimelineListItem(event: event),
-                    );
+                    return TimelineListItem(event: event);
                   },
                 ),
               ],

@@ -24,6 +24,8 @@ class ArticleRepository {
         _cachedArticles[canonicalTitle] = article;
         return article;
       }
+
+      // TODO(ewindmill): handle failures correctly
     } on HttpException {
       rethrow;
     } on FormatException {

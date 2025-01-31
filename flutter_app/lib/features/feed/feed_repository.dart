@@ -7,7 +7,6 @@ import 'package:wikipedia_api/wikipedia_api.dart';
 
 class FeedRepository {
   WikipediaFeed? _cachedFeed;
-
   Summary? _cachedRandomArticle;
 
   Future<WikipediaFeed> getWikipediaFeed() async {
@@ -18,8 +17,7 @@ class FeedRepository {
       final Uri url = Uri.http(serverUri, '/feed');
       final http.Response response = await client.get(url);
       if (response.statusCode == 200) {
-        final Map<String, Object?> jsonData =
-            jsonDecode(response.body) as Map<String, Object?>;
+        final Map<String, Object?> jsonData = jsonDecode(response.body);
         _cachedFeed = WikipediaFeed.fromJson(jsonData);
         return _cachedFeed!;
       } else {

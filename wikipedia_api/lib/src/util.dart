@@ -22,6 +22,15 @@ String toStringWithPad(int number) {
   return number.toString();
 }
 
+String padNums(String number) {
+  final int asInt = int.parse(number);
+  if (asInt < 10) {
+    return number.padLeft(2, '0');
+  }
+
+  return number;
+}
+
 Map<int, String> months = <int, String>{
   1: 'January',
   2: 'February',

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:server/routes/article.dart';
 import 'package:server/routes/page_summary.dart';
+import 'package:server/routes/timeline.dart';
 import 'package:server/routes/wikipedia_feed.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
@@ -15,7 +16,8 @@ final _router =
       ..get('/', () => print("It's alive!"))
       ..mount('/page', PageSummaryApi().router.call)
       ..mount('/article', ArticleApi().router.call)
-      ..mount('/feed', WikipediaFeedApi().router.call);
+      ..mount('/feed', WikipediaFeedApi().router.call)
+      ..mount('/timeline', TimelineApi().router.call);
 
 void main(List<String> args) async {
   // Use any available host or container IP (usually `0.0.0.0`).

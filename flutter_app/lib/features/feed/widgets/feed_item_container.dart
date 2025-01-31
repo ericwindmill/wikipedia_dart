@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/theme/breakpoint.dart';
+import 'package:flutter_app/providers/breakpoint_provider.dart';
+import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/theme/dimensions.dart';
 
 const double feedItemHeaderHeight = 60;
@@ -77,14 +78,20 @@ class FeedItem extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radius),
-                  boxShadow: const [
-                    BoxShadow(
-                      offset: Offset(1, 1),
-                      blurRadius: 10,
-                      color: Colors.black12,
-                    ),
-                  ],
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                  boxShadow:
+                      Breakpoint.isCupertino(context)
+                          ? null
+                          : const [
+                            BoxShadow(
+                              offset: Offset(1, 1),
+                              blurRadius: 10,
+                              color: Colors.black12,
+                            ),
+                          ],
+                  color:
+                      Breakpoint.isCupertino(context)
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.primaryContainer,
                 ),
                 child: child,
               ),

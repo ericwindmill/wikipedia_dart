@@ -29,13 +29,7 @@ class TimelinePreview extends StatelessWidget {
         children: <Widget>[
           const TimelineCap(),
           for (final OnThisDayEvent event in timelinePreviewItems)
-            Flexible(
-              child: TimelineListItem(
-                showPageLinks: false,
-                event: event,
-                maxLines: 2,
-              ),
-            ),
+            TimelineListItem(showPageLinks: false, event: event, maxLines: 2),
           const TimelineCap(position: CapPosition.bottom),
         ],
       ),

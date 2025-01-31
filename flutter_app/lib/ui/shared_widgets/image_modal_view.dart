@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
-import 'package:flutter_app/ui/theme/breakpoint.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ImageModalView extends StatelessWidget {
@@ -28,40 +28,63 @@ class ImageModalView extends StatelessWidget {
       onDismissed: Navigator.of(context).pop,
       key: const Key('ImageModal'),
       child: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Center(
-              child: RoundedImage(
-                borderRadius: BorderRadius.zero,
-                source: file.source,
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.transparent,
+                Theme.of(context).colorScheme.primaryContainer,
+              ],
+              stops: const [.0, .5],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-            Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
-              child: ColoredBox(
-                color: Theme.of(context).colorScheme.primaryContainer,
+          ),
+          child: Stack(
+            children: <Widget>[
+              Center(
+                child: RoundedImage(
+                  borderRadius: BorderRadius.zero,
+                  source: file.source,
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                left: 0,
+                right: 0,
                 child: Container(
                   margin: EdgeInsets.all(BreakpointProvider.of(context).margin),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: BreakpointProvider.of(context).spacing,
                     children: <Widget>[
-                      const Center(
-                        child: Icon(Icons.drag_handle, color: Colors.white),
+                      Center(
+                        child: Icon(
+                          Icons.drag_handle,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
                       ),
-                      if (title != null) Text(title!, style: textStyle),
+                      if (title != null)
+                        Text(
+                          title!,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
                       if (description != null)
                         Text(description!, style: textStyle),
                       if (attribution != null)
-                        Text(attribution!, style: textStyle),
+                        Text(
+                          attribution!,
+                          style: textStyle,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

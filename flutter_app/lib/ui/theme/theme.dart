@@ -1,8 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/theme/page_link_extension.dart';
 
 /// I copied this from the compass_app. IRL the AppTheme will be much smaller.
 abstract final class AppTheme {
+  // Map cupertino styles to MaterialTheme naming convention
+  static TextTheme cupertinoTextTheme = TextTheme(
+    headlineMedium: const CupertinoThemeData().textTheme.navLargeTitleTextStyle
+    // fixes a small bug with spacing
+    .copyWith(letterSpacing: -1.5),
+    titleLarge: const CupertinoThemeData().textTheme.navTitleTextStyle,
+  );
+
   static const TextStyle serif = TextStyle(
     fontFamily: 'Linux Libertine',
     fontFamilyFallback: <String>[
@@ -35,40 +44,27 @@ abstract final class AppTheme {
     ),
   );
 
-  static const TextTheme _textThemeDark = TextTheme(
-    titleLarge: TextStyle(fontWeight: FontWeight.bold),
-    titleMedium: TextStyle(fontWeight: FontWeight.bold),
+  static CupertinoThemeData cupertinoLightTheme = const CupertinoThemeData(
+    brightness: Brightness.light,
+    primaryColor: AppColors.primary,
+    scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
+  );
 
-    /// Default text
-    bodyMedium: TextStyle(fontWeight: FontWeight.w400),
-
-    /// Used for labels and captions
-    labelMedium: TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
-      color: AppColors.labelOnDark,
-    ),
+  static const ColorScheme lightColorScheme = ColorScheme.light(
+    primary: AppColors.primary,
+    primaryContainer: Colors.white,
+    onPrimaryContainer: AppColors.labelOnLight,
+    shadow: Colors.black12,
   );
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     textTheme: _textTheme,
     brightness: Brightness.light,
-    colorScheme: AppColors.lightColorScheme,
+    colorScheme: AppTheme.lightColorScheme,
+    scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
     extensions: <ThemeExtension<PageLinkTheme>>[
       PageLinkTheme(backgroundColor: Colors.grey.shade200),
-    ],
-  );
-
-  static ThemeData darkTheme = ThemeData(
-    textTheme: _textThemeDark,
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    colorScheme: AppColors.darkColorScheme,
-    scaffoldBackgroundColor: Colors.black,
-    shadowColor: Colors.black12,
-    extensions: <ThemeExtension<PageLinkTheme>>[
-      PageLinkTheme(backgroundColor: Colors.grey.shade800),
     ],
   );
 }
@@ -78,6 +74,7 @@ abstract final class AppColors {
   static const Color containerOnDark = Color(0xFF131313);
   static const Color labelOnLight = Color(0xFF4A4A4A);
   static const Color labelOnDark = Color(0xFFDADCE0);
+  static const Color scaffoldBackgroundColor = Color(0xFFF1F1F1);
 
   /// All colors from Flutter's brand guidelines
   static const Color warmRed = Color.fromRGBO(242, 93, 80, 1);
@@ -100,16 +97,4 @@ abstract final class AppColors {
     AppColors.flutterBlue5,
     AppColors.flutterBlue6,
   ];
-
-  static const ColorScheme lightColorScheme = ColorScheme.light(
-    primary: AppColors.primary,
-    primaryContainer: Colors.white,
-    shadow: Colors.black12,
-  );
-
-  static const ColorScheme darkColorScheme = ColorScheme.dark(
-    primary: AppColors.primary,
-    primaryContainer: AppColors.containerOnDark,
-    surface: Colors.black,
-  );
 }

@@ -7,11 +7,12 @@ import 'package:flutter_app/ui/app_localization.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class FeedViewModel extends ChangeNotifier {
-  FeedViewModel() {
+  FeedViewModel({required FeedRepository repository})
+    : _feedRepository = repository {
     getFeed();
   }
 
-  final FeedRepository _feedRepository = FeedRepository();
+  final FeedRepository _feedRepository;
 
   String error = '';
 
@@ -24,7 +25,7 @@ class FeedViewModel extends ChangeNotifier {
 
   UnmodifiableListView<OnThisDayEvent> get timelinePreview =>
       UnmodifiableListView<OnThisDayEvent>(
-        _feed?.onThisDayTimeline?.take(3).toList() ?? <OnThisDayEvent>[],
+        _feed?.onThisDayTimeline?.take(4).toList() ?? <OnThisDayEvent>[],
       );
 
   bool get hasImage {
