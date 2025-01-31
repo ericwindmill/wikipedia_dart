@@ -47,6 +47,14 @@ class Summary {
   /// Wikidata description for the page
   String? description;
 
+  bool get hasImage => originalImage != null || thumbnail != null;
+
+  String? get preferredSource {
+    if (originalImage != null) return originalImage!.source;
+    if (thumbnail != null) return thumbnail!.source;
+    return null;
+  }
+
   /// Returns a new [Summary] instance
   static Summary fromJson(Map<String, Object?> json) {
     return switch (json) {

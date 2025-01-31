@@ -5,6 +5,7 @@ import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/dimensions.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
+import 'package:flutter_app/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ArticlePreview extends StatelessWidget {
@@ -54,12 +55,8 @@ class ArticlePreview extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 5,
             children: <Widget>[
-              // Text(summary.titles.normalized, style: AppTheme.serifHeading2),
               if (summary.description != null)
-                Text(
-                  summary.description!,
-                  style: TextTheme.of(context).labelMedium,
-                ),
+                Text(summary.description!, style: context.textTheme.labelSmall),
               Text(
                 summary.extract,
                 overflow: TextOverflow.ellipsis,
@@ -74,9 +71,9 @@ class ArticlePreview extends StatelessWidget {
                 ),
                 label: Text(
                   AppStrings.saveForLater,
-                  style: TextTheme.of(
-                    context,
-                  ).labelMedium!.copyWith(color: AppColors.primary),
+                  style: context.textTheme.labelSmall!.copyWith(
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
             ],

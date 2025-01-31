@@ -21,7 +21,7 @@ class FeedViewModel extends ChangeNotifier {
   final List<Summary> savedArticles = [];
 
   UnmodifiableListView<Summary> get mostRead =>
-      UnmodifiableListView<Summary>(_feed?.mostRead?.take(6) ?? <Summary>[]);
+      UnmodifiableListView<Summary>(_feed?.mostRead?.take(7) ?? <Summary>[]);
 
   UnmodifiableListView<OnThisDayEvent> get timelinePreview =>
       UnmodifiableListView<OnThisDayEvent>(

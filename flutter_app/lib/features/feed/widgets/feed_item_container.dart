@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/theme/dimensions.dart';
+import 'package:flutter_app/util.dart';
 
 const double feedItemHeaderHeight = 60;
 
@@ -59,12 +60,18 @@ class FeedItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(header!, style: TextTheme.of(context).titleMedium),
+                      Text(header!, style: context.textTheme.titleMedium),
                       if (subhead != null)
-                        Text(
-                          subhead!,
-                          style: TextTheme.of(context).labelMedium,
-                          overflow: TextOverflow.ellipsis,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical:
+                                BreakpointProvider.of(context).spacing / 2,
+                          ),
+                          child: Text(
+                            subhead!,
+                            style: context.textTheme.labelSmall,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                     ],
                   ),
@@ -79,7 +86,7 @@ class FeedItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radius),
                   boxShadow:
-                      Breakpoint.isCupertino(context)
+                      context.isCupertino
                           ? null
                           : const [
                             BoxShadow(
@@ -89,7 +96,7 @@ class FeedItem extends StatelessWidget {
                             ),
                           ],
                   color:
-                      Breakpoint.isCupertino(context)
+                      context.isCupertino
                           ? Colors.white
                           : Theme.of(context).colorScheme.primaryContainer,
                 ),

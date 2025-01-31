@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
+import 'package:flutter_app/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class TimelineListItem extends StatelessWidget {
@@ -52,7 +53,7 @@ class TimelineListItem extends StatelessWidget {
                 ),
                 child: Text(
                   event.text,
-                  style: TextTheme.of(context).bodyMedium,
+                  style: context.textTheme.bodyMedium,
                   maxLines: maxLines,
                   overflow: (maxLines != null) ? TextOverflow.ellipsis : null,
                 ),

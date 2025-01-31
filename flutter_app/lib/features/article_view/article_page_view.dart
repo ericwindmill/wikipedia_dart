@@ -5,6 +5,7 @@ import 'package:flutter_app/ui/adaptive_app_bar.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
+import 'package:flutter_app/util.dart';
 
 class ArticleView extends StatelessWidget {
   const ArticleView({required this.viewModel, super.key});
@@ -45,7 +46,7 @@ class ArticleView extends StatelessWidget {
                 ),
                 child: Text(
                   viewModel.summary.titles.normalized,
-                  style: TextTheme.of(context).titleLarge!.copyWith(
+                  style: context.textTheme.titleLarge!.copyWith(
                     fontFamily: AppTheme.serif.fontFamily,
                     fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
                   ),
@@ -60,7 +61,7 @@ class ArticleView extends StatelessWidget {
                 ),
                 child: Text(
                   viewModel.summary.description ?? '',
-                  style: TextTheme.of(context).labelMedium,
+                  style: context.textTheme.labelSmall,
                 ),
               ),
               ...List<Widget>.generate(viewModel.article.length, (index) {
@@ -71,7 +72,7 @@ class ArticleView extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: breakpoint.spacing),
                     child: Text(
                       element.body,
-                      style: TextTheme.of(context).titleLarge!.copyWith(
+                      style: context.textTheme.titleLarge!.copyWith(
                         fontFamily: AppTheme.serif.fontFamily,
                         fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
                       ),
@@ -81,7 +82,7 @@ class ArticleView extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: breakpoint.spacing),
                     child: Text(
                       element.body,
-                      style: TextTheme.of(context).titleMedium!.copyWith(
+                      style: context.textTheme.titleMedium!.copyWith(
                         fontFamily: AppTheme.serif.fontFamily,
                         fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
                       ),
@@ -91,7 +92,7 @@ class ArticleView extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: breakpoint.spacing),
                     child: Text(
                       element.body,
-                      style: TextTheme.of(context).titleSmall!.copyWith(
+                      style: context.textTheme.titleSmall!.copyWith(
                         fontFamily: AppTheme.serif.fontFamily,
                         fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
                       ),

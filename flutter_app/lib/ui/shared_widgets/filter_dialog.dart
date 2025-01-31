@@ -63,7 +63,7 @@ class _FilterDialogState<T extends Enum> extends State<FilterDialog<T>> {
         ),
     ];
 
-    return Breakpoint.isCupertino(context)
+    return context.isCupertino
         ? Material(
           color: Colors.transparent,
           child: CupertinoAlertDialog(content: dialogBody, actions: actions),

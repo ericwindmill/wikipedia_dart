@@ -10,8 +10,8 @@ import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:flutter_app/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-class TimelineView extends StatelessWidget {
-  const TimelineView({required this.viewModel, super.key});
+class TimelinePageView extends StatelessWidget {
+  const TimelinePageView({required this.viewModel, super.key});
 
   final TimelineViewModel viewModel;
 
@@ -23,7 +23,7 @@ class TimelineView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          Breakpoint.isCupertino(context)
+          context.isCupertino
               ? Colors.white
               : Theme.of(context).scaffoldBackgroundColor,
       appBar: AdaptiveAppBar(
@@ -106,20 +106,20 @@ class TimelineView extends StatelessWidget {
                             const SizedBox(height: 20),
                             Text(
                               viewModel.readableDate,
-                              style: TextTheme.of(context).headlineMedium,
+                              style: context.textTheme.headlineMedium,
                             ),
                             Text(
                               AppStrings.historicEvents(
                                 viewModel.filteredEvents.length.toString(),
                               ).toUpperCase(),
-                              style: TextTheme.of(context).titleMedium,
+                              style: context.textTheme.titleMedium,
                             ),
                             if (viewModel.readableYearRange != '')
                               Text(
                                 AppStrings.yearRange(
                                   viewModel.readableYearRange,
                                 ),
-                                style: TextTheme.of(context).titleMedium,
+                                style: context.textTheme.titleMedium,
                               ),
                             const SizedBox(height: 20),
                           ],

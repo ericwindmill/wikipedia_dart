@@ -25,12 +25,12 @@ class TimelinePreview extends StatelessWidget {
         await Navigator.of(context).pushNamed(Routes.timeline);
       },
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const TimelineCap(),
+          const TimelineCap(height: 20),
           for (final OnThisDayEvent event in timelinePreviewItems)
             TimelineListItem(showPageLinks: false, event: event, maxLines: 2),
-          const TimelineCap(position: CapPosition.bottom),
+          const TimelineCap(position: CapPosition.bottom, height: 20),
         ],
       ),
     );

@@ -6,9 +6,10 @@ import 'package:flutter_app/features/feed/widgets/most_read_preview.dart';
 import 'package:flutter_app/features/feed/widgets/timeline_preview.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
+import 'package:flutter_app/util.dart';
 
-class FeedView extends StatelessWidget {
-  const FeedView({required this.viewModel, super.key});
+class FeedPageView extends StatelessWidget {
+  const FeedPageView({required this.viewModel, super.key});
 
   final FeedViewModel viewModel;
 
@@ -43,8 +44,8 @@ class FeedView extends StatelessWidget {
                     bottom: BreakpointProvider.of(context).padding,
                   ),
                   child: Text(
-                    viewModel.readableDate,
-                    style: TextTheme.of(context).headlineSmall,
+                    AppStrings.today,
+                    style: context.textTheme.headlineMedium,
                   ),
                 ),
                 Wrap(

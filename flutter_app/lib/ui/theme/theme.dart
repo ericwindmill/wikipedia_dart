@@ -2,16 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/theme/page_link_extension.dart';
 
-/// I copied this from the compass_app. IRL the AppTheme will be much smaller.
 abstract final class AppTheme {
-  // Map cupertino styles to MaterialTheme naming convention
-  static TextTheme cupertinoTextTheme = TextTheme(
-    headlineMedium: const CupertinoThemeData().textTheme.navLargeTitleTextStyle
-    // fixes a small bug with spacing
-    .copyWith(letterSpacing: -1.5),
-    titleLarge: const CupertinoThemeData().textTheme.navTitleTextStyle,
-  );
-
   static const TextStyle serif = TextStyle(
     fontFamily: 'Linux Libertine',
     fontFamilyFallback: <String>[
@@ -29,25 +20,34 @@ abstract final class AppTheme {
     fontWeight: FontWeight.w500,
   );
 
-  static const TextTheme _textTheme = TextTheme(
-    titleLarge: TextStyle(fontWeight: FontWeight.bold),
-    titleMedium: TextStyle(fontWeight: FontWeight.bold),
-
-    /// Default text
-    bodyMedium: TextStyle(fontWeight: FontWeight.w400),
-
-    /// Used for labels and captions
-    labelMedium: TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
-      color: AppColors.labelOnLight,
-    ),
-  );
-
   static CupertinoThemeData cupertinoLightTheme = const CupertinoThemeData(
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
+  );
+
+  // Map cupertino styles to MaterialTheme naming convention
+  static TextTheme cupertinoTextTheme = TextTheme(
+    headlineMedium: AppTheme
+        .cupertinoLightTheme
+        .textTheme
+        .navLargeTitleTextStyle
+        // fixes a small bug with spacing
+        .copyWith(letterSpacing: -1.5),
+    titleLarge: const CupertinoThemeData().textTheme.navTitleTextStyle.copyWith(
+      fontSize: 20,
+    ),
+    titleMedium: const CupertinoThemeData().textTheme.navTitleTextStyle
+        .copyWith(fontSize: 16),
+
+    /// Default text
+    bodyMedium: const CupertinoThemeData().textTheme.textStyle.copyWith(
+      fontSize: 14,
+    ),
+    labelSmall: const CupertinoThemeData().textTheme.textStyle.copyWith(
+      color: CupertinoColors.secondaryLabel,
+      fontSize: 12,
+    ),
   );
 
   static const ColorScheme lightColorScheme = ColorScheme.light(
@@ -59,13 +59,28 @@ abstract final class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    textTheme: _textTheme,
+    textTheme: materialTextTheme,
     brightness: Brightness.light,
     colorScheme: AppTheme.lightColorScheme,
     scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
     extensions: <ThemeExtension<PageLinkTheme>>[
       PageLinkTheme(backgroundColor: Colors.grey.shade200),
     ],
+  );
+
+  static const TextTheme materialTextTheme = TextTheme(
+    titleLarge: TextStyle(fontWeight: FontWeight.bold),
+    titleMedium: TextStyle(fontWeight: FontWeight.bold),
+
+    /// Default text
+    bodyMedium: TextStyle(fontWeight: FontWeight.w400),
+
+    /// Used for labels and captions
+    labelSmall: TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w400,
+      color: AppColors.labelOnLight,
+    ),
   );
 }
 

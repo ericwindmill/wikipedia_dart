@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/breakpoint.dart';
+import 'package:flutter_app/util.dart';
 
 class AdaptiveTextButton extends StatelessWidget {
   const AdaptiveTextButton({super.key});
@@ -9,7 +9,7 @@ class AdaptiveTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     const child = Text('Button');
 
-    return Breakpoint.isCupertino(context)
+    return context.isCupertino
         ? CupertinoButton(child: child, onPressed: () {})
         : TextButton(child: child, onPressed: () {});
   }

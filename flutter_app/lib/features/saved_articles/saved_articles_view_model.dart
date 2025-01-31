@@ -6,18 +6,12 @@ import 'package:wikipedia_api/wikipedia_api.dart';
 
 class SavedArticlesViewModel extends ChangeNotifier {
   SavedArticlesViewModel({required SavedArticlesRepository repository})
-    : _repository = repository {
-    _repository.savedArticles.listen((List<Summary> savedArticles) {
-      _savedArticles = savedArticles;
-      notifyListeners();
-    });
-  }
+    : _repository = repository {}
+
+  UnmodifiableMapView<String, Summary> get savedArticles =>
+      UnmodifiableMapView(_repository.savedArticles.value);
 
   final SavedArticlesRepository _repository;
-  List<Summary> _savedArticles = [];
-
-  UnmodifiableListView<Summary> get savedArticles =>
-      UnmodifiableListView(_savedArticles);
 
   void saveArticle(Summary summary) {
     _repository.saveArticle(summary);
@@ -30,7 +24,7 @@ class SavedArticlesViewModel extends ChangeNotifier {
   }
 
   bool articleIsSaved(Summary summary) {
-    return _savedArticles.any(
+    return savedArticles.values.any(
       (s) => s.titles.canonical == summary.titles.canonical,
     );
   }

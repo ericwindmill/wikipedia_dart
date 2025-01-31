@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/article_view/article_page_view.dart';
 import 'package:flutter_app/features/article_view/article_view_model.dart';
 import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
+import 'package:flutter_app/features/saved_articles/save_for_later_button.dart';
+import 'package:flutter_app/features/saved_articles/saved_articles_view_model.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/providers/repository_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/dimensions.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
+import 'package:flutter_app/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class FeaturedArticle extends StatelessWidget {
@@ -24,6 +27,8 @@ class FeaturedArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final breakpoint = BreakpointProvider.of(context);
+
     return FeedItem(
       onTap: () async {
         await Navigator.of(context).push(
@@ -56,14 +61,14 @@ class FeaturedArticle extends StatelessWidget {
             ),
           Padding(
             padding: EdgeInsets.only(
-              top: BreakpointProvider.of(context).padding,
-              left: BreakpointProvider.of(context).padding,
-              right: BreakpointProvider.of(context).padding,
+              top: breakpoint.padding,
+              left: breakpoint.padding,
+              right: breakpoint.padding,
             ),
             child: Text(
               featuredArticle.titles.normalized,
               overflow: TextOverflow.ellipsis,
-              style: TextTheme.of(context).titleMedium!.copyWith(
+              style: context.textTheme.titleMedium!.copyWith(
                 fontFamily: AppTheme.serif.fontFamily,
                 fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
               ),
@@ -72,19 +77,20 @@ class FeaturedArticle extends StatelessWidget {
           if (featuredArticle.description != null)
             Padding(
               padding: EdgeInsets.only(
-                left: BreakpointProvider.of(context).padding,
-                right: BreakpointProvider.of(context).padding,
-                bottom: BreakpointProvider.of(context).padding,
+                left: breakpoint.padding,
+                right: breakpoint.padding,
+                bottom: breakpoint.padding,
+                top: 4,
               ),
               child: Text(
                 featuredArticle.description!,
-                style: TextTheme.of(context).labelMedium,
+                style: context.textTheme.labelSmall,
               ),
             ),
           Padding(
             padding: EdgeInsets.only(
-              left: BreakpointProvider.of(context).padding,
-              right: BreakpointProvider.of(context).padding,
+              left: breakpoint.padding,
+              right: breakpoint.padding,
             ),
             child: Text(
               featuredArticle.extract,
@@ -93,22 +99,13 @@ class FeaturedArticle extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: TextButton.icon(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.bookmark_border_outlined,
-                color: AppColors.primary,
-                size: Dimensions.iconSize,
-              ),
-              label: Text(
-                AppStrings.saveForLater,
-                style: TextTheme.of(
-                  context,
-                ).labelMedium!.copyWith(color: AppColors.primary),
-              ),
+          SaveForLaterButton(
+            label: Text(AppStrings.saveForLater),
+            viewModel: SavedArticlesViewModel(
+              repository:
+                  RepositoryProvider.of(context).savedArticlesRepository,
             ),
+            summary: featuredArticle,
           ),
         ],
       ),
