@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:wikipedia_api/src/model/article.dart';
+import 'package:wikipedia_api/src/model/search_results.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class WikimediaApiClient {

@@ -6,7 +6,7 @@ import 'package:wikipedia_api/wikipedia_api.dart';
 
 class SavedArticlesViewModel extends ChangeNotifier {
   SavedArticlesViewModel({required SavedArticlesRepository repository})
-    : _repository = repository {}
+    : _repository = repository;
 
   UnmodifiableMapView<String, Summary> get savedArticles =>
       UnmodifiableMapView(_repository.savedArticles.value);

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
-import 'package:flutter_app/ui/theme/dimensions.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
-import 'package:flutter_app/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ArticlePreview extends StatelessWidget {
@@ -43,8 +42,8 @@ class ArticlePreview extends StatelessWidget {
           RoundedImage(
             source: summary.originalImage!.source,
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(Dimensions.radius),
-              topRight: Radius.circular(Dimensions.radius),
+              topLeft: Radius.circular(AppTheme.radius),
+              topRight: Radius.circular(AppTheme.radius),
             ),
             height: 160,
             width: imageSize.width,
@@ -67,7 +66,7 @@ class ArticlePreview extends StatelessWidget {
                 icon: const Icon(
                   Icons.bookmark_border_outlined,
                   color: AppColors.primary,
-                  size: Dimensions.iconSize,
+                  size: AppTheme.iconSize,
                 ),
                 label: Text(
                   AppStrings.saveForLater,

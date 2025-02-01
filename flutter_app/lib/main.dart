@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/article_view/article_repository.dart';
 import 'package:flutter_app/features/feed/feed_repository.dart';
 import 'package:flutter_app/features/on_this_day/timeline_repository.dart';
 import 'package:flutter_app/features/saved_articles/saved_articles_repository.dart';
@@ -9,10 +8,13 @@ import 'package:flutter_app/routes.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
+const String serverHost = 'localhost';
+const String serverPort = '8080';
+const String serverUri = '$serverHost:$serverPort';
+
 void main() async {
   runApp(
     RepositoryProvider(
-      articleRepository: ArticleRepository(),
       feedRepository: FeedRepository(),
       timelineRepository: TimelineRepository(),
       savedArticlesRepository: SavedArticlesRepository(),

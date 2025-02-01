@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
-import 'package:flutter_app/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class TimelineListItem extends StatelessWidget {
@@ -40,7 +40,9 @@ class TimelineListItem extends StatelessWidget {
                   event.type != EventType.holiday
                       ? event.year!.absYear
                       : event.type.humanReadable,
-                  style: AppTheme.timelineEntryTitle,
+                  style: context.textTheme.titleMedium!.copyWith(
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
             ),
@@ -73,7 +75,7 @@ class TimelineListItem extends StatelessWidget {
                   },
                 ),
               ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
         ),
       ],

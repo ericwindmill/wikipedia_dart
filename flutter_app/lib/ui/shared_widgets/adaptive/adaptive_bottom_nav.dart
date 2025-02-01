@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/util.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 
 class AdaptiveBottomNav extends StatefulWidget {
   const AdaptiveBottomNav({

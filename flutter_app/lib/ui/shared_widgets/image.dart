@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/theme/dimensions.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
 
 class RoundedImage extends StatelessWidget {
   RoundedImage({
@@ -9,7 +9,7 @@ class RoundedImage extends StatelessWidget {
     this.width,
     BorderRadius? borderRadius,
     this.fit = BoxFit.cover,
-  }) : radius = borderRadius ?? BorderRadius.circular(Dimensions.radius);
+  }) : radius = borderRadius ?? BorderRadius.circular(AppTheme.radius);
 
   final String source;
   final BoxFit fit;
@@ -19,8 +19,8 @@ class RoundedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The container adds a background color because some images have a
-    // transparent background
+    // The container adds a background color because some images from
+    // wikipedia have a transparent background
     return Container(
       decoration: BoxDecoration(color: Colors.white, borderRadius: radius),
       child: ClipRRect(

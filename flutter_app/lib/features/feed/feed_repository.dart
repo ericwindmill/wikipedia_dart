@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_app/util.dart';
+import 'package:flutter_app/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:wikipedia_api/wikipedia_api.dart';
 

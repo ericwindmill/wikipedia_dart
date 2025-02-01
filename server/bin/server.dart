@@ -33,7 +33,7 @@ void main(List<String> args) async {
 
   late Handler handler;
 
-  if (args.first.contains('dev')) {
+  if (args.isNotEmpty && args.first.contains('dev')) {
     // Configure a pipeline that logs requests.
     handler = const Pipeline()
         .addMiddleware(logRequests())
