@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/app_localization.dart';
-import 'package:flutter_app/ui/breakpoint.dart';
-import 'package:flutter_app/util.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 
 class FilterDialog<T extends Enum> extends StatefulWidget {
   const FilterDialog({

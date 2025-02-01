@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/breakpoint.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
-import 'package:flutter_app/util.dart';
 
 class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AdaptiveAppBar({super.key, this.title, this.actions});

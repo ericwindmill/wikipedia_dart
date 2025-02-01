@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/saved_articles/saved_articles_view_model.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
-import 'package:flutter_app/util.dart';
 
 class SavedArticlesPageView extends StatelessWidget {
   const SavedArticlesPageView({required this.viewModel, super.key});

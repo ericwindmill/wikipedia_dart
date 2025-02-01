@@ -6,7 +6,7 @@ import 'package:flutter_app/features/feed/widgets/most_read_preview.dart';
 import 'package:flutter_app/features/feed/widgets/timeline_preview.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
-import 'package:flutter_app/util.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 
 class FeedPageView extends StatelessWidget {
   const FeedPageView({required this.viewModel, super.key});

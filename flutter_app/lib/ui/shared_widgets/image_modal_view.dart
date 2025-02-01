@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
@@ -22,69 +23,52 @@ class ImageModalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.bodyMedium!;
+    final TextStyle textStyle = context.textTheme.bodyMedium!;
     return Dismissible(
       direction: DismissDirection.vertical,
       onDismissed: Navigator.of(context).pop,
       key: const Key('ImageModal'),
       child: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.transparent,
-                Theme.of(context).colorScheme.primaryContainer,
-              ],
-              stops: const [.0, .5],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+        child: Stack(
+          children: <Widget>[
+            Center(
+              child: RoundedImage(
+                borderRadius: BorderRadius.zero,
+                source: file.source,
+              ),
             ),
-          ),
-          child: Stack(
-            children: <Widget>[
-              Center(
-                child: RoundedImage(
-                  borderRadius: BorderRadius.zero,
-                  source: file.source,
-                ),
-              ),
-              Positioned(
-                bottom: 20,
-                left: 0,
-                right: 0,
-                child: Container(
-                  margin: EdgeInsets.all(BreakpointProvider.of(context).margin),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: BreakpointProvider.of(context).spacing,
-                    children: <Widget>[
-                      Center(
-                        child: Icon(
-                          Icons.drag_handle,
-                          color:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
+            Positioned(
+              bottom: 20,
+              left: 0,
+              right: 0,
+              child: Container(
+                margin: EdgeInsets.all(BreakpointProvider.of(context).margin),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: BreakpointProvider.of(context).spacing,
+                  children: <Widget>[
+                    Center(
+                      child: Icon(
+                        Icons.drag_handle,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
-                      if (title != null)
-                        Text(
-                          title!,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                      if (description != null)
-                        Text(description!, style: textStyle),
-                      if (attribution != null)
-                        Text(
-                          attribution!,
-                          style: textStyle,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                    ],
-                  ),
+                    ),
+                    if (title != null)
+                      Text(title!, style: context.textTheme.titleSmall),
+                    if (description != null)
+                      Text(description!, style: textStyle),
+                    if (attribution != null)
+                      Text(
+                        attribution!,
+                        style: textStyle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

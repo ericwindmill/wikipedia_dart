@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/article_view/article_page_view.dart';
-import 'package:flutter_app/features/article_view/article_view_model.dart';
 import 'package:flutter_app/features/saved_articles/save_for_later_button.dart';
 import 'package:flutter_app/features/saved_articles/saved_articles_view_model.dart';
 import 'package:flutter_app/providers/repository_provider.dart';
@@ -20,12 +19,7 @@ class TimelinePageLink extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (BuildContext context) {
-              return ArticleView(
-                viewModel: ArticleViewModel(
-                  summary,
-                  repository: RepositoryProvider.of(context).articleRepository,
-                ),
-              );
+              return ArticleView(summary: summary);
             },
           ),
         );

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/saved_articles/saved_articles_view_model.dart';
-import 'package:flutter_app/ui/theme/dimensions.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class SaveForLaterButton extends StatelessWidget {
-  /// An [IconButton] who's icon is an [Icon.bookmark_border_outlined].
+  /// An [IconButton] that, when tapped, adds articles to a
+  /// 'save for later' list.
   /// It has it's own ViewModel, and can be dropped in anywhere in the app
   /// to track article summaries for the saveForLater view
   const SaveForLaterButton({
@@ -51,7 +52,7 @@ class SaveForLaterButton extends StatelessWidget {
         return IconButton(
           onPressed: _onPressed,
           padding: EdgeInsets.zero,
-          iconSize: Dimensions.iconSize,
+          iconSize: AppTheme.iconSize,
           icon: icon,
         );
       },

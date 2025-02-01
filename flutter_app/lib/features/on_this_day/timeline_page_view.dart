@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
-import 'package:flutter_app/ui/adaptive_app_bar.dart';
 import 'package:flutter_app/ui/app_localization.dart';
-import 'package:flutter_app/ui/breakpoint.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
+import 'package:flutter_app/ui/shared_widgets/adaptive/adaptive_app_bar.dart';
 import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
-import 'package:flutter_app/util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class TimelinePageView extends StatelessWidget {

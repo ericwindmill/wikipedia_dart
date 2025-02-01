@@ -86,11 +86,7 @@ class Breakpoint {
     TargetPlatform.macOS,
   };
 
-  static const Set<TargetPlatform> material = {
-    TargetPlatform.android,
-    TargetPlatform.fuchsia,
-  };
-
+  /// Returns true if the current platform is iOS or MacOS.
   static bool isCupertino(BuildContext context) {
     return cupertino.contains(Theme.of(context).platform);
   }
