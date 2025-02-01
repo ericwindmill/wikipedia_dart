@@ -13,20 +13,37 @@ import 'package:shelf_router/shelf_router.dart';
 // Configure routes.
 final _router =
     Router()
-      ..get('/', () => print("It's alive!"))
-      ..mount('/page', PageSummaryApi().router.call)
+      ..get('/', (Request _) => Response.ok("It's alive!"))
+      ..mount('/page', PageSummaryApiRemote().router.call)
       ..mount('/article', ArticleApi().router.call)
-      ..mount('/feed', WikipediaFeedApi().router.call)
-      ..mount('/timeline', TimelineApi().router.call);
+      ..mount('/feed', WikipediaFeedApiRemote().router.call)
+      ..mount('/timeline', TimelineApiRemote().router.call);
+
+final _devRouter =
+    Router()
+      ..get('/', (Request _) => Response.ok("It's alive!"))
+      ..mount('/page', PageSummaryApiDev().router.call)
+      ..mount('/article', ArticleApi().router.call)
+      ..mount('/feed', WikipediaFeedApiDev().router.call)
+      ..mount('/timeline', TimelineApiDev().router.call);
 
 void main(List<String> args) async {
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = InternetAddress.anyIPv4;
 
-  // Configure a pipeline that logs requests.
-  final handler = const Pipeline()
-      .addMiddleware(logRequests())
-      .addHandler(_router.call);
+  late Handler handler;
+
+  if (args.first.contains('dev')) {
+    // Configure a pipeline that logs requests.
+    handler = const Pipeline()
+        .addMiddleware(logRequests())
+        .addHandler(_devRouter.call);
+  } else {
+    // Configure a pipeline that logs requests.
+    handler = const Pipeline()
+        .addMiddleware(logRequests())
+        .addHandler(_router.call);
+  }
 
   // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');

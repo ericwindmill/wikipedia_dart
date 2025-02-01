@@ -4,7 +4,24 @@ import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart' show Router;
 
-class PageSummaryApi {
+abstract class PageSummaryApi {
+  Router get router;
+  final String route = '/random';
+}
+
+class PageSummaryApiDev extends PageSummaryApi {
+  @override
+  Router get router {
+    return Router()..get(route, (Request _) async {
+      final file = File('./lib/test_data/summary.json');
+      final json = file.readAsStringSync();
+      return Response.ok(json);
+    });
+  }
+}
+
+class PageSummaryApiRemote extends PageSummaryApi {
+  @override
   Router get router {
     final router =
         Router()..get('/random', (Request _) async {

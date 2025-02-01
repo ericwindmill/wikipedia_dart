@@ -5,7 +5,23 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-class WikipediaFeedApi {
+abstract class WikipediaFeedApi {
+  Router get router;
+}
+
+class WikipediaFeedApiDev extends WikipediaFeedApi {
+  @override
+  Router get router {
+    return Router()..get('/', (Request _) async {
+      final file = File('./lib/test_data/wikipedia_feed.json');
+      final json = file.readAsStringSync();
+      return Response.ok(json, headers: {'Content-Type': 'application/json'});
+    });
+  }
+}
+
+class WikipediaFeedApiRemote extends WikipediaFeedApi {
+  @override
   Router get router {
     final router =
         Router()..get('/', (Request _) async {

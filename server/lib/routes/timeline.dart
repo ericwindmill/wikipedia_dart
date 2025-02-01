@@ -1,9 +1,26 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-class TimelineApi {
+abstract class TimelineApi {
+  Router get router;
+}
+
+class TimelineApiDev extends TimelineApi {
+  @override
+  Router get router {
+    return Router()..get('/<month>/<day>', (Request _) async {
+      final file = File('./lib/test_data/on_this_day.json');
+      final json = file.readAsStringSync();
+      return Response.ok(json);
+    });
+  }
+}
+
+class TimelineApiRemote {
   Router get router {
     return Router()..get('/<month>/<day>', (
       Request request,
