@@ -60,13 +60,13 @@ class FeedItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(header!, style: context.textTheme.titleMedium),
+                      Text(header!, style: context.titleMedium),
                       if (subhead != null)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Text(
                             subhead!,
-                            style: context.textTheme.labelSmall,
+                            style: context.labelSmall,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),

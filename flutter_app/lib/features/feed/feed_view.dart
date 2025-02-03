@@ -43,10 +43,7 @@ class FeedView extends StatelessWidget {
                     top: BreakpointProvider.of(context).padding * 4,
                     bottom: BreakpointProvider.of(context).padding,
                   ),
-                  child: Text(
-                    AppStrings.today,
-                    style: context.textTheme.headlineMedium,
-                  ),
+                  child: Text(AppStrings.today, style: context.headlineLarge),
                 ),
                 Wrap(
                   spacing: BreakpointProvider.of(context).spacing,

@@ -61,7 +61,7 @@ class FeaturedArticle extends StatelessWidget {
             child: Text(
               featuredArticle.titles.normalized,
               overflow: TextOverflow.ellipsis,
-              style: context.textTheme.titleMedium,
+              style: context.titleMedium,
             ),
           ),
           if (featuredArticle.description != null)
@@ -74,7 +74,7 @@ class FeaturedArticle extends StatelessWidget {
               ),
               child: Text(
                 featuredArticle.description!,
-                style: context.textTheme.labelSmall,
+                style: context.labelSmall,
               ),
             ),
           Padding(

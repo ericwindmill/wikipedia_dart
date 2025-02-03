@@ -23,7 +23,7 @@ class ImageModalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = context.textTheme.bodyMedium!;
+    final TextStyle textStyle = context.bodyMedium;
     return Dismissible(
       direction: DismissDirection.vertical,
       onDismissed: Navigator.of(context).pop,
@@ -53,8 +53,7 @@ class ImageModalView extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
                     ),
-                    if (title != null)
-                      Text(title!, style: context.textTheme.titleSmall),
+                    if (title != null) Text(title!, style: context.titleMedium),
                     if (description != null)
                       Text(description!, style: textStyle),
                     if (attribution != null)

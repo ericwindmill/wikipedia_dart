@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/feed_repository.dart';
 import 'package:flutter_app/features/on_this_day/timeline_repository.dart';
@@ -42,14 +43,17 @@ class _MainAppState extends State<MainApp> {
       breakpoint: breakpoint,
       child: Builder(
         builder: (context) {
-          return MaterialApp(
-            theme:
-                context.isCupertino
-                    ? AppTheme.cupertinoLightTheme
-                    : AppTheme.materialLightTheme,
-            debugShowCheckedModeBanner: false,
-            routes: routes,
-          );
+          return context.isCupertino
+              ? CupertinoApp(
+                theme: CupertinoAppTheme.lightTheme,
+                debugShowCheckedModeBanner: false,
+                routes: routes,
+              )
+              : MaterialApp(
+                theme: MaterialAppTheme.lightTheme,
+                debugShowCheckedModeBanner: false,
+                routes: routes,
+              );
         },
       ),
     );

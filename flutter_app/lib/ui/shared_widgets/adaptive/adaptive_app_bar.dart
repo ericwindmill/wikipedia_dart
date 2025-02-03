@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
-import 'package:flutter_app/ui/theme/theme.dart';
 
 class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AdaptiveAppBar({super.key, this.title, this.actions});
@@ -12,16 +11,22 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     if (context.isCupertino) {
-      return CupertinoNavigationBar(
-        middle: Text(
-          title ?? '',
-          style: AppTheme.cupertinoTextTheme.titleLarge,
+      return CupertinoNavigationBar.large(
+        backgroundColor: Colors.red,
+        leading: Icon(
+          CupertinoIcons.person_2,
+          color: Theme.of(context).primaryColor,
         ),
-        trailing: Column(children: actions ?? []),
+        trailing: Icon(
+          CupertinoIcons.person_2,
+          color: Theme.of(context).primaryColor,
+        ),
+        largeTitle: Text(title ?? '', style: context.titleLarge),
+        // trailing: Column(children: actions ?? []),
       );
     } else {
       return AppBar(
-        title: Text(title ?? '', style: context.textTheme.titleLarge),
+        title: Text(title ?? '', style: context.titleLarge),
         actions: actions,
       );
     }

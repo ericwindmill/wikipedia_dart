@@ -40,9 +40,7 @@ class TimelineListItem extends StatelessWidget {
                   event.type != EventType.holiday
                       ? event.year!.absYear
                       : event.type.humanReadable,
-                  style: context.textTheme.titleMedium!.copyWith(
-                    color: AppColors.primary,
-                  ),
+                  style: context.titleMedium.copyWith(color: AppColors.primary),
                 ),
               ),
             ),
@@ -55,7 +53,7 @@ class TimelineListItem extends StatelessWidget {
                 ),
                 child: Text(
                   event.text,
-                  style: context.textTheme.bodyMedium,
+                  style: context.bodyMedium,
                   maxLines: maxLines,
                   overflow: (maxLines != null) ? TextOverflow.ellipsis : null,
                 ),
@@ -75,7 +73,6 @@ class TimelineListItem extends StatelessWidget {
                   },
                 ),
               ),
-            const SizedBox(height: 10),
           ],
         ),
       ],

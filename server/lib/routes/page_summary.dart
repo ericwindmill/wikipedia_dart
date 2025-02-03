@@ -13,6 +13,7 @@ class PageSummaryApiDev extends PageSummaryApi {
   @override
   Router get router {
     return Router()..get(route, (Request _) async {
+      // TOD0(ewindmill): use `assets` dir
       final file = File('./lib/test_data/summary.json');
       final json = file.readAsStringSync();
       return Response.ok(json);

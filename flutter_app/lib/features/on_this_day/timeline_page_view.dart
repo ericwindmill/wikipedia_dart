@@ -97,25 +97,25 @@ class TimelinePageView extends StatelessWidget {
                             const SizedBox(height: 20),
                             Text(
                               AppStrings.onThisDay,
-                              style: Theme.of(context).textTheme.headlineLarge,
+                              style: context.headlineLarge,
                             ),
                             const SizedBox(height: 20),
                             Text(
                               viewModel.readableDate,
-                              style: context.textTheme.headlineMedium,
+                              style: context.titleMedium,
                             ),
                             Text(
                               AppStrings.historicEvents(
                                 viewModel.filteredEvents.length.toString(),
                               ).toUpperCase(),
-                              style: context.textTheme.titleMedium,
+                              style: context.titleMedium,
                             ),
                             if (viewModel.readableYearRange != '')
                               Text(
                                 AppStrings.yearRange(
                                   viewModel.readableYearRange,
                                 ),
-                                style: context.textTheme.titleMedium,
+                                style: context.titleMedium,
                               ),
                             const SizedBox(height: 20),
                           ],
