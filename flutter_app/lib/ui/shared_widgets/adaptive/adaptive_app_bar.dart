@@ -15,22 +15,13 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
       return CupertinoNavigationBar(
         middle: Text(
           title ?? '',
-          style: AppTheme.cupertinoTextTheme.titleLarge!.copyWith(
-            fontFamily: AppTheme.serif.fontFamily,
-            fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
-          ),
+          style: AppTheme.cupertinoTextTheme.titleLarge,
         ),
         trailing: Column(children: actions ?? []),
       );
     } else {
       return AppBar(
-        title: Text(
-          title ?? '',
-          style: context.textTheme.titleLarge!.copyWith(
-            fontFamily: AppTheme.serif.fontFamily,
-            fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
-          ),
-        ),
+        title: Text(title ?? '', style: context.textTheme.titleLarge),
         actions: actions,
       );
     }

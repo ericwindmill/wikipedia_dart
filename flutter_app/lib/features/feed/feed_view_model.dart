@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/feed_repository.dart';
@@ -86,11 +85,9 @@ class FeedViewModel extends ChangeNotifier {
           await _feedRepository.getRandomArticle();
 
       _randomArticle = await _feedRepository.getRandomArticle();
-    } on HttpException catch (e) {
+    } on Exception catch (e) {
       debugPrint(e.toString());
-      error = AppStrings.failedToGetTimelineDataFromWikipedia;
-    } on FormatException catch (e) {
-      debugPrint(e.toString());
+      error = AppStrings.failedToGetDailyFeedDataFromWikipedia;
     } finally {
       notifyListeners();
     }

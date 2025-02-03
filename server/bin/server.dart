@@ -8,6 +8,7 @@ import 'package:server/routes/timeline.dart';
 import 'package:server/routes/wikipedia_feed.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
+import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 // Configure routes.
@@ -31,19 +32,21 @@ void main(List<String> args) async {
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = InternetAddress.anyIPv4;
 
-  late Handler handler;
+  final overrideHeaders = {
+    ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+    'Content-Type': 'application/json;charset=utf-8',
+  };
 
-  if (args.isNotEmpty && args.first.contains('dev')) {
-    // Configure a pipeline that logs requests.
-    handler = const Pipeline()
-        .addMiddleware(logRequests())
-        .addHandler(_devRouter.call);
-  } else {
-    // Configure a pipeline that logs requests.
-    handler = const Pipeline()
-        .addMiddleware(logRequests())
-        .addHandler(_router.call);
-  }
+  final Pipeline pipeline = const Pipeline()
+      .addMiddleware(corsHeaders(headers: overrideHeaders))
+      .addMiddleware(logRequests());
+
+  final Handler handler =
+      args.isNotEmpty && args.first.contains('dev')
+          ? _devRouter.call
+          : _router.call;
+
+  pipeline.addHandler(handler);
 
   // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');

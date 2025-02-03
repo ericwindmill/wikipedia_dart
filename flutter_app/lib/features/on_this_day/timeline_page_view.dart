@@ -4,6 +4,7 @@ import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/adaptive/adaptive_app_bar.dart';
+import 'package:flutter_app/ui/shared_widgets/adaptive/adaptive_scaffold.dart';
 import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
@@ -20,11 +21,7 @@ class TimelinePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor:
-          context.isCupertino
-              ? Colors.white
-              : Theme.of(context).scaffoldBackgroundColor,
+    return AdaptiveScaffold(
       appBar: AdaptiveAppBar(
         actions: [
           IconButton(

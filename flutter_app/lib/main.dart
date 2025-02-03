@@ -6,11 +6,8 @@ import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/providers/repository_provider.dart';
 import 'package:flutter_app/routes.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
-
-const String serverHost = 'localhost';
-const String serverPort = '8080';
-const String serverUri = '$serverHost:$serverPort';
 
 void main() async {
   runApp(
@@ -43,10 +40,17 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return BreakpointProvider(
       breakpoint: breakpoint,
-      child: MaterialApp(
-        theme: AppTheme.lightTheme,
-        debugShowCheckedModeBanner: false,
-        routes: routes,
+      child: Builder(
+        builder: (context) {
+          return MaterialApp(
+            theme:
+                context.isCupertino
+                    ? AppTheme.cupertinoLightTheme
+                    : AppTheme.materialLightTheme,
+            debugShowCheckedModeBanner: false,
+            routes: routes,
+          );
+        },
       ),
     );
   }

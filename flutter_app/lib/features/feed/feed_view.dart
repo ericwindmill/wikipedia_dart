@@ -8,8 +8,8 @@ import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
 
-class FeedPageView extends StatelessWidget {
-  const FeedPageView({required this.viewModel, super.key});
+class FeedView extends StatelessWidget {
+  const FeedView({required this.viewModel, super.key});
 
   final FeedViewModel viewModel;
 

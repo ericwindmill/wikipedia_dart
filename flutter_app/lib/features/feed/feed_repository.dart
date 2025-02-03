@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter_app/main.dart';
+import 'package:flutter_app/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:wikipedia_api/wikipedia_api.dart';
 
@@ -15,13 +14,13 @@ class FeedRepository {
 
     try {
       final Uri url = Uri.http(serverUri, '/feed');
-      final http.Response response = await client.get(url);
+      final http.Response response = await client.get(url, headers: headers);
       if (response.statusCode == 200) {
         final Map<String, Object?> jsonData = jsonDecode(response.body);
         _cachedFeed = WikipediaFeed.fromJson(jsonData);
         return _cachedFeed!;
       } else {
-        throw HttpException(
+        throw Exception(
           '[WikipediaDart.getWikipediaFeed] '
           'statusCode=${response.statusCode}, '
           'body=${response.body}',
@@ -44,7 +43,7 @@ class FeedRepository {
       _cachedRandomArticle = Summary.fromJson(jsonData);
       return _cachedRandomArticle!;
     } else {
-      throw HttpException(
+      throw Exception(
         '[WikipediaDart.getWikipediaFeed] '
         'statusCode=${response.statusCode}, '
         'body=${response.body}',

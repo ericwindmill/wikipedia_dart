@@ -27,10 +27,10 @@ class TimelinePreview extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const TimelineCap(height: 20),
+          const TimelineCap(height: 10),
           for (final OnThisDayEvent event in timelinePreviewItems)
             TimelineListItem(showPageLinks: false, event: event, maxLines: 2),
-          const TimelineCap(position: CapPosition.bottom, height: 20),
+          const TimelineCap(position: CapPosition.bottom, height: 10),
         ],
       ),
     );

@@ -63,10 +63,7 @@ class FeedItem extends StatelessWidget {
                       Text(header!, style: context.textTheme.titleMedium),
                       if (subhead != null)
                         Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical:
-                                BreakpointProvider.of(context).spacing / 2,
-                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Text(
                             subhead!,
                             style: context.textTheme.labelSmall,
@@ -84,7 +81,7 @@ class FeedItem extends StatelessWidget {
               right: 0,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppTheme.radius),
+                  borderRadius: BorderRadius.circular(AppDimensions.radius),
                   boxShadow:
                       context.isCupertino
                           ? null

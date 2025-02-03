@@ -9,7 +9,7 @@ class RoundedImage extends StatelessWidget {
     this.width,
     BorderRadius? borderRadius,
     this.fit = BoxFit.cover,
-  }) : radius = borderRadius ?? BorderRadius.circular(AppTheme.radius);
+  }) : radius = borderRadius ?? BorderRadius.circular(AppDimensions.radius);
 
   final String source;
   final BoxFit fit;

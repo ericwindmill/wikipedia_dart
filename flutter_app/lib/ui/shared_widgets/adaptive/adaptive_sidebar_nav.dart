@@ -19,9 +19,9 @@ class _AdaptiveSidebarNavState extends State<AdaptiveSidebarNav> {
   @override
   Widget build(BuildContext context) {
     if (context.isCupertino) {
-      return Placeholder();
+      return const Placeholder();
     } else {
-      return NavigationRail(destinations: [], selectedIndex: 0);
+      return NavigationRail(destinations: const [], selectedIndex: 0);
     }
   }
 }

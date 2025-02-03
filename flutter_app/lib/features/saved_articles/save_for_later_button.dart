@@ -52,7 +52,7 @@ class SaveForLaterButton extends StatelessWidget {
         return IconButton(
           onPressed: _onPressed,
           padding: EdgeInsets.zero,
-          iconSize: AppTheme.iconSize,
+          iconSize: AppDimensions.iconSize,
           icon: icon,
         );
       },

@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/on_this_day/timeline_repository.dart';
@@ -89,11 +88,9 @@ class TimelineViewModel extends ChangeNotifier {
       _timeline = await _repository.getTimelineForDate(month, day);
 
       filterEvents();
-    } on HttpException catch (e) {
+    } on Exception catch (e) {
       debugPrint(e.toString());
       error = AppStrings.failedToGetTimelineDataFromWikipedia;
-    } on FormatException catch (e) {
-      debugPrint(e.toString());
     } finally {
       notifyListeners();
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
+import 'package:flutter_app/ui/theme/theme.dart';
 
 class AdaptiveBottomNav extends StatefulWidget {
   const AdaptiveBottomNav({
@@ -43,6 +44,7 @@ class _AdaptiveBottomNavState extends State<AdaptiveBottomNav> {
         : NavigationBar(
           selectedIndex: selectedIndex,
           onDestinationSelected: onSelection,
+          indicatorColor: AppColors.flutterBlue3,
           destinations:
               widget.navigationItems.entries
                   .map<Widget>(

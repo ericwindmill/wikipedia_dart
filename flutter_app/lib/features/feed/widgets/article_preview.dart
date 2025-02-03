@@ -42,8 +42,8 @@ class ArticlePreview extends StatelessWidget {
           RoundedImage(
             source: summary.originalImage!.source,
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(AppTheme.radius),
-              topRight: Radius.circular(AppTheme.radius),
+              topLeft: Radius.circular(AppDimensions.radius),
+              topRight: Radius.circular(AppDimensions.radius),
             ),
             height: 160,
             width: imageSize.width,
@@ -58,6 +58,7 @@ class ArticlePreview extends StatelessWidget {
                 Text(summary.description!, style: context.textTheme.labelSmall),
               Text(
                 summary.extract,
+                style: context.textTheme.bodyMedium,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
               ),
@@ -66,7 +67,7 @@ class ArticlePreview extends StatelessWidget {
                 icon: const Icon(
                   Icons.bookmark_border_outlined,
                   color: AppColors.primary,
-                  size: AppTheme.iconSize,
+                  size: AppDimensions.iconSize,
                 ),
                 label: Text(
                   AppStrings.saveForLater,

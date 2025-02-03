@@ -4,8 +4,8 @@ import 'package:flutter_app/features/saved_articles/saved_articles_view_model.da
 import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 
-class SavedArticlesPageView extends StatelessWidget {
-  const SavedArticlesPageView({required this.viewModel, super.key});
+class SavedArticlesView extends StatelessWidget {
+  const SavedArticlesView({required this.viewModel, super.key});
 
   final SavedArticlesViewModel viewModel;
 

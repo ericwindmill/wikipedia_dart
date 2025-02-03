@@ -48,8 +48,8 @@ class FeaturedArticle extends StatelessWidget {
               height: itemSize(context).feedItemHeight / 2.5,
               width: double.infinity,
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(AppTheme.radius),
-                topRight: Radius.circular(AppTheme.radius),
+                topLeft: Radius.circular(AppDimensions.radius),
+                topRight: Radius.circular(AppDimensions.radius),
               ),
             ),
           Padding(
@@ -61,10 +61,7 @@ class FeaturedArticle extends StatelessWidget {
             child: Text(
               featuredArticle.titles.normalized,
               overflow: TextOverflow.ellipsis,
-              style: context.textTheme.titleMedium!.copyWith(
-                fontFamily: AppTheme.serif.fontFamily,
-                fontFamilyFallback: AppTheme.serif.fontFamilyFallback,
-              ),
+              style: context.textTheme.titleMedium,
             ),
           ),
           if (featuredArticle.description != null)
