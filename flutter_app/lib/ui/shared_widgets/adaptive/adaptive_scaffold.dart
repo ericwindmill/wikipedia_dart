@@ -55,7 +55,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
     if (context.isCupertino) {
       return CupertinoPageScaffold(
         navigationBar:
-            breakpoint.width != BreakpointWidth.large
+            breakpoint.width == BreakpointWidth.small
                 ? CupertinoNavigationBar(
                   middle: Text(widget.title ?? '', style: context.titleLarge),
                   automaticallyImplyMiddle: false,
@@ -66,7 +66,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (breakpoint.width == BreakpointWidth.large &&
+              if (breakpoint.width != BreakpointWidth.small &&
                   widget.navigationItems != null)
                 CupertinoSideNav(
                   title: Text(
@@ -74,6 +74,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                     style: context.titleLarge.copyWith(fontSize: 24),
                   ),
                   navigationItems: widget.navigationItems!,
+                  extended: breakpoint.width == BreakpointWidth.large,
                   onDestinationSelected: onSelectIndex,
                   selectedIndex: _selectedIndex,
                   selectedIndicatorColor: AppColors.flutterBlue1,

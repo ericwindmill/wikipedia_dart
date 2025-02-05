@@ -49,11 +49,8 @@ class _CupertinoSideNavState extends State<CupertinoSideNav> {
     final indicatorColor =
         widget.selectedIndicatorColor ?? Theme.of(context).colorScheme.primary;
 
-    return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minWidth: collapsedWidth,
-        maxWidth: extendedWidth,
-      ),
+    return SizedBox(
+      width: widget.extended ? extendedWidth : collapsedWidth,
       child: Container(
         color: backgroundColor,
         padding: const EdgeInsets.all(8.0),
@@ -61,7 +58,8 @@ class _CupertinoSideNavState extends State<CupertinoSideNav> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
-            Padding(padding: const EdgeInsets.all(16.0), child: widget.title),
+            if (widget.extended)
+              Padding(padding: const EdgeInsets.all(16.0), child: widget.title),
             const SizedBox(height: 30),
             Expanded(
               child: Column(
@@ -72,6 +70,7 @@ class _CupertinoSideNavState extends State<CupertinoSideNav> {
                       child: CupertinoRailOption(
                         icon: widget.navigationItems.entries.elementAt(i).value,
                         label: widget.navigationItems.entries.elementAt(i).key,
+                        extended: widget.extended,
                         unselectedIconTheme:
                             widget.unselectedIconTheme ??
                             const IconThemeData(
@@ -114,12 +113,14 @@ class CupertinoRailOption extends StatefulWidget {
     required this.onTap,
     required this.backgroundColor,
     required this.indicatorColor,
+    required this.extended,
     super.key,
   });
 
   final IconData icon;
   final String label;
   final VoidCallback? onTap;
+  final bool extended;
   final bool selected;
   final IconThemeData unselectedIconTheme;
   final IconThemeData selectedIconTheme;
@@ -141,12 +142,6 @@ class _CupertinoRailOptionState extends State<CupertinoRailOption> {
       (false, true) => widget.indicatorColor,
       (false, false) => widget.backgroundColor,
     };
-  }
-
-  Color _lighten(Color color) {
-    final hsl = HSLColor.fromColor(color);
-    final hslDark = hsl.withLightness((hsl.lightness - .1).clamp(0.0, 1.0));
-    return hslDark.toColor();
   }
 
   Color _darken(Color color) {
@@ -184,6 +179,7 @@ class _CupertinoRailOptionState extends State<CupertinoRailOption> {
             child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconTheme(
                     data:
@@ -192,8 +188,21 @@ class _CupertinoRailOptionState extends State<CupertinoRailOption> {
                             : widget.unselectedIconTheme,
                     child: Icon(widget.icon),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(child: Text(widget.label)),
+                  if (widget.extended) const SizedBox(width: 10),
+                  if (widget.extended)
+                    Expanded(
+                      child: Text(
+                        widget.label,
+                        style:
+                            widget.selected
+                                ? const CupertinoTextThemeData().textStyle
+                                    .copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    )
+                                : const CupertinoTextThemeData().textStyle,
+                      ),
+                    ),
                 ],
               ),
             ),
