@@ -49,6 +49,11 @@ class FeedView extends StatelessWidget {
                   spacing: BreakpointProvider.of(context).spacing,
                   runSpacing: BreakpointProvider.of(context).spacing,
                   children: [
+                    if (viewModel.timelinePreview.isNotEmpty)
+                      TimelinePreview(
+                        timelinePreviewItems: viewModel.timelinePreview,
+                        readableDate: viewModel.readableDate,
+                      ),
                     if (viewModel.todaysFeaturedArticle != null)
                       FeaturedArticle(
                         header: AppStrings.todaysFeaturedArticle,
@@ -61,11 +66,7 @@ class FeedView extends StatelessWidget {
                         imageFile: viewModel.imageSource!,
                         readableDate: viewModel.readableDate,
                       ),
-                    if (viewModel.timelinePreview.isNotEmpty)
-                      TimelinePreview(
-                        timelinePreviewItems: viewModel.timelinePreview,
-                        readableDate: viewModel.readableDate,
-                      ),
+
                     if (viewModel.mostRead.isNotEmpty)
                       MostReadView(topReadArticles: viewModel.mostRead),
                     if (viewModel.randomArticle != null)

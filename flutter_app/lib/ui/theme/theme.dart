@@ -7,6 +7,7 @@ abstract final class CupertinoAppTheme {
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.cupertinoScaffoldBackgroundColor,
+    barBackgroundColor: Colors.white,
     textTheme: lightTextTheme,
   );
 
@@ -22,8 +23,9 @@ abstract final class CupertinoAppTheme {
 
   static TextStyle headline = _cupertinoTextTheme.textStyle.copyWith(
     fontWeight: FontWeight.w600,
-    fontSize: 17,
+    fontSize: 14,
     color: Colors.black,
+
     fontFamily: 'Linux Libertine',
     fontFamilyFallback: <String>[
       'Georgia',
@@ -44,8 +46,8 @@ abstract final class CupertinoAppTheme {
   );
 
   static TextStyle body = _cupertinoTextTheme.textStyle.copyWith(
-    height: 1,
-    fontSize: 14,
+    height: 1.3,
+    fontSize: 15,
   );
 }
 
@@ -89,7 +91,7 @@ abstract final class MaterialAppTheme {
       fontSize: 15,
       color: Colors.black,
     ),
-    bodyMedium: TextStyle(fontSize: 17, color: Colors.black, height: 1.3),
+    bodyMedium: TextStyle(fontSize: 15, color: Colors.black, height: 1.3),
     labelSmall: TextStyle(
       fontSize: 11,
       fontWeight: FontWeight.w400,

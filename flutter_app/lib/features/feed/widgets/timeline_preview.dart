@@ -20,9 +20,9 @@ class TimelinePreview extends StatelessWidget {
 
   (double, double) _capSize(BreakpointWidth breakpointWidth) {
     return switch (breakpointWidth) {
-      BreakpointWidth.small => (4.0, 4.0),
-      BreakpointWidth.medium => (0.0, 0.0),
-      BreakpointWidth.large => (0.0, 0.0),
+      BreakpointWidth.small => (32.0, 32.0),
+      BreakpointWidth.medium => (16.0, 16.0),
+      BreakpointWidth.large => (16.0, 8.0),
     };
   }
 

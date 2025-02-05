@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/on_this_day/timeline_view_model.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
-import 'package:flutter_app/ui/shared_widgets/adaptive/adaptive_app_bar.dart';
 import 'package:flutter_app/ui/shared_widgets/adaptive/adaptive_scaffold.dart';
 import 'package:flutter_app/ui/shared_widgets/filter_dialog.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
@@ -22,39 +21,35 @@ class TimelinePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
-      appBar: AdaptiveAppBar(
-        actions: [
-          IconButton(
-            visualDensity: VisualDensity.compact,
-            padding: EdgeInsets.zero,
-            icon: Icon(
-              color: AppColors.primary,
-              context.isCupertino
-                  ? CupertinoIcons.slider_horizontal_3
-                  : Icons.filter_alt_outlined,
-            ),
-            onPressed:
-                () async => showAdaptiveDialog(
-                  context: context,
-                  barrierColor: Colors.transparent,
-                  builder: (BuildContext context) {
-                    return FilterDialog<EventType>(
-                      options: viewModel.selectEventTypes.value,
-                      onSelectItem:
-                          ({required EventType value, bool? isChecked}) =>
-                              viewModel.toggleSelectedType(
-                                isChecked: isChecked ?? false,
-                                type: value,
-                              ),
-                      onSubmit: viewModel.filterEvents,
-                    );
-                  },
-                ),
+      actions: [
+        IconButton(
+          icon: Icon(
+            color: AppColors.primary,
+            context.isCupertino
+                ? CupertinoIcons.slider_horizontal_3
+                : Icons.filter_alt_outlined,
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: ListenableBuilder(
+          onPressed:
+              () async => showAdaptiveDialog(
+                context: context,
+                barrierColor: Colors.transparent,
+                builder: (BuildContext context) {
+                  return FilterDialog<EventType>(
+                    options: viewModel.selectEventTypes.value,
+                    onSelectItem:
+                        ({required EventType value, bool? isChecked}) =>
+                            viewModel.toggleSelectedType(
+                              isChecked: isChecked ?? false,
+                              type: value,
+                            ),
+                    onSubmit: viewModel.filterEvents,
+                  );
+                },
+              ),
+        ),
+      ],
+      tabs: [
+        ListenableBuilder(
           listenable: viewModel,
           builder: (BuildContext context, _) {
             if (viewModel.hasError) {
@@ -138,7 +133,7 @@ class TimelinePageView extends StatelessWidget {
             );
           },
         ),
-      ),
+      ],
     );
   }
 }

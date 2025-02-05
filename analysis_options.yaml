@@ -50,6 +50,7 @@ linter:
     # I like this, but it lints 'fromJson' constructors
     prefer_constructors_over_static_methods: false
     prefer_double_quotes: false
+    prefer_null_aware_method_calls: false
     prefer_expression_function_bodies: false
     discarded_futures: false
     # not used because of false positives in parameters
