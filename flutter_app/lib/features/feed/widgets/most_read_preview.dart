@@ -38,35 +38,27 @@ class MostReadView extends StatelessWidget {
           shrinkWrap: true,
           itemCount: topReadArticles.length,
           separatorBuilder: (context, index) {
-            return const Divider(height: .1, thickness: .1);
+            return const Divider(height: .1, thickness: .2);
           },
           itemBuilder: (BuildContext context, int index) {
-            final Color iconColor =
-                [
-                  AppColors.flutterBlue5,
-                  AppColors.flutterBlue2,
-                  AppColors.flutterBlue4,
-                  AppColors.flutterBlue1,
-                ][index % 4];
             final Summary summary = topReadArticles[index];
-            final trailing = RoundedImage(
-              borderRadius: BorderRadius.circular(2.0),
-              source: summary.thumbnail!.source,
-              height: 30,
-              width: 30,
-            );
-
+            Widget? trailing;
+            if (summary.thumbnail != null) {
+              trailing = RoundedImage(
+                borderRadius: BorderRadius.circular(3.0),
+                source: summary.thumbnail!.source,
+                height: 30,
+                width: 30,
+              );
+            }
             final leading = Container(
               height: 20,
               width: 20,
-              decoration: ShapeDecoration(
-                shape: CircleBorder(side: BorderSide(color: iconColor)),
+              decoration: const ShapeDecoration(
+                shape: CircleBorder(side: BorderSide(color: AppColors.primary)),
               ),
               child: Center(
-                child: Text(
-                  '${index + 1}',
-                  style: context.textTheme.labelSmall,
-                ),
+                child: Text('${index + 1}', style: context.labelSmall),
               ),
             );
 
@@ -81,9 +73,14 @@ class MostReadView extends StatelessWidget {
                 )
                 : ListTile(
                   title: Text(summary.titles.normalized),
-                  subtitle: Text(summary.description ?? ''),
+                  leading: leading,
+                  dense: true,
+                  subtitle: Text(
+                    summary.description ?? '',
+                    style: context.labelSmall,
+                  ),
                   trailing: trailing,
-                  onTap: () {},
+                  onTap: () => _onTap(context, summary),
                 );
           },
         ),

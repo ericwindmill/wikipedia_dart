@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:wikipedia_api/src/model/image.dart';
+import 'package:wikipedia_api/src/util.dart';
 
 /// Image path and size, but doesn't contain any Wikipedia descriptions.
 ///
@@ -17,6 +18,12 @@ class ImageFile {
 
   /// Original image height
   int height;
+
+  String get extension {
+    final extension = getFileExtension(source);
+    // by default, return a non-viable image extension
+    return extension ?? 'err';
+  }
 
   Map<String, Object?> toJson() {
     return <String, Object?>{

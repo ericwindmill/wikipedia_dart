@@ -55,10 +55,10 @@ class ArticlePreview extends StatelessWidget {
             spacing: 5,
             children: <Widget>[
               if (summary.description != null)
-                Text(summary.description!, style: context.textTheme.labelSmall),
+                Text(summary.description!, style: context.labelSmall),
               Text(
                 summary.extract,
-                style: context.textTheme.bodyMedium,
+                style: context.bodyMedium,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
               ),
@@ -71,9 +71,7 @@ class ArticlePreview extends StatelessWidget {
                 ),
                 label: Text(
                   AppStrings.saveForLater,
-                  style: context.textTheme.labelSmall!.copyWith(
-                    color: AppColors.primary,
-                  ),
+                  style: context.labelSmall.copyWith(color: AppColors.primary),
                 ),
               ),
             ],

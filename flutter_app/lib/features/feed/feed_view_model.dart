@@ -5,6 +5,8 @@ import 'package:flutter_app/features/feed/feed_repository.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
+const acceptableImageFormats = ['png', 'jpg', 'jpeg'];
+
 class FeedViewModel extends ChangeNotifier {
   FeedViewModel({required FeedRepository repository})
     : _feedRepository = repository {
@@ -67,7 +69,6 @@ class FeedViewModel extends ChangeNotifier {
       _randomArticle != null;
 
   bool _acceptableImageType(String? sourceName) {
-    final acceptableImageFormats = ['png', 'jpg', 'jpeg'];
     if (sourceName != null) {
       final ext = getFileExtension(sourceName);
       if (acceptableImageFormats.contains(ext)) return true;

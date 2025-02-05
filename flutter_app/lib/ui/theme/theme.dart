@@ -2,28 +2,60 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/theme/page_link_extension.dart';
 
-abstract final class AppTheme {
-  // Map Cupertino data to a Material ThemeData object
-  static ThemeData cupertinoLightTheme = ThemeData(
+abstract final class CupertinoAppTheme {
+  static CupertinoThemeData lightTheme = CupertinoThemeData(
     brightness: Brightness.light,
-    scaffoldBackgroundColor: AppColors.cupertinoScaffoldBackgroundColor,
     primaryColor: AppColors.primary,
-    textTheme: cupertinoTextTheme,
-    colorScheme: const ColorScheme.light(
-      primary: AppColors.primary,
-      primaryContainer: Colors.white,
-      onPrimaryContainer: AppColors.labelOnLight,
-      shadow: Colors.black12,
-    ),
-    extensions: <ThemeExtension<PageLinkTheme>>[
-      PageLinkTheme(backgroundColor: Colors.grey.shade200),
+    scaffoldBackgroundColor: AppColors.cupertinoScaffoldBackgroundColor,
+    barBackgroundColor: Colors.white,
+    textTheme: lightTextTheme,
+  );
+
+  static CupertinoTextThemeData lightTextTheme = CupertinoTextThemeData(
+    textStyle: body,
+    navLargeTitleTextStyle: largeTitle,
+  );
+
+  static const _cupertinoTextTheme = CupertinoTextThemeData();
+
+  static TextStyle largeTitle = _cupertinoTextTheme.navLargeTitleTextStyle
+      .copyWith(fontSize: 32);
+
+  static TextStyle headline = _cupertinoTextTheme.textStyle.copyWith(
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    color: Colors.black,
+
+    fontFamily: 'Linux Libertine',
+    fontFamilyFallback: <String>[
+      'Georgia',
+      'Times',
+      'Source Serif Pro',
+      'serif',
     ],
   );
 
-  static ThemeData materialLightTheme = ThemeData(
+  static TextStyle subhead = _cupertinoTextTheme.textStyle.copyWith(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle caption = _cupertinoTextTheme.textStyle.copyWith(
+    color: CupertinoColors.secondaryLabel,
+    fontSize: 11,
+  );
+
+  static TextStyle body = _cupertinoTextTheme.textStyle.copyWith(
+    height: 1.3,
+    fontSize: 15,
+  );
+}
+
+abstract final class MaterialAppTheme {
+  static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    textTheme: materialTextTheme,
+    textTheme: lightTextTheme,
     colorScheme: const ColorScheme.light(
       primary: AppColors.primary,
       primaryContainer: Colors.white,
@@ -36,45 +68,7 @@ abstract final class AppTheme {
     ],
   );
 
-  // Used to create Cupertino text styles
-  static const CupertinoThemeData _cupertinoLightTheme = CupertinoThemeData(
-    brightness: Brightness.light,
-    primaryColor: AppColors.primary,
-  );
-
-  // Map cupertino styles to MaterialTheme naming convention
-  static TextTheme cupertinoTextTheme = TextTheme(
-    headlineLarge: AppTheme
-        ._cupertinoLightTheme
-        .textTheme
-        .navLargeTitleTextStyle
-        .copyWith(letterSpacing: -1.5, fontSize: 32),
-    titleLarge: AppTheme._cupertinoLightTheme.textTheme.navTitleTextStyle
-        .copyWith(
-          fontSize: 22,
-          fontFamily: 'Linux Libertine',
-          fontFamilyFallback: <String>[
-            'Georgia',
-            'Times',
-            'Source Serif Pro',
-            'serif',
-          ],
-        ),
-    titleMedium: AppTheme._cupertinoLightTheme.textTheme.navTitleTextStyle
-        .copyWith(fontSize: 16),
-
-    /// Default text
-    bodyMedium: AppTheme._cupertinoLightTheme.textTheme.textStyle.copyWith(
-      fontSize: 14,
-      height: 1.3,
-    ),
-    labelSmall: AppTheme._cupertinoLightTheme.textTheme.textStyle.copyWith(
-      color: CupertinoColors.secondaryLabel,
-      fontSize: 11,
-    ),
-  );
-
-  static TextTheme materialTextTheme = const TextTheme(
+  static TextTheme lightTextTheme = const TextTheme(
     headlineLarge: TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 32,
@@ -82,7 +76,7 @@ abstract final class AppTheme {
     ),
     titleLarge: TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 22,
+      fontSize: 14,
       color: Colors.black,
       fontFamily: 'Linux Libertine',
       fontFamilyFallback: <String>[
@@ -94,10 +88,10 @@ abstract final class AppTheme {
     ),
     titleMedium: TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 16,
+      fontSize: 15,
       color: Colors.black,
     ),
-    bodyMedium: TextStyle(fontSize: 14, color: Colors.black, height: 1.3),
+    bodyMedium: TextStyle(fontSize: 15, color: Colors.black, height: 1.3),
     labelSmall: TextStyle(
       fontSize: 11,
       fontWeight: FontWeight.w400,

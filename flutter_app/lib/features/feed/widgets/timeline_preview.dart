@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
+import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/routes.dart';
 import 'package:flutter_app/ui/app_localization.dart';
+import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline_list_item.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline_painter.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -16,8 +18,17 @@ class TimelinePreview extends StatelessWidget {
   final String readableDate;
   final List<OnThisDayEvent> timelinePreviewItems;
 
+  (double, double) _capSize(BreakpointWidth breakpointWidth) {
+    return switch (breakpointWidth) {
+      BreakpointWidth.small => (32.0, 32.0),
+      BreakpointWidth.medium => (16.0, 16.0),
+      BreakpointWidth.large => (16.0, 8.0),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
+    final breakpointWidth = BreakpointProvider.of(context).width;
     return FeedItem(
       header: AppStrings.onThisDay,
       subhead: readableDate,
@@ -27,10 +38,13 @@ class TimelinePreview extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const TimelineCap(height: 10),
+          TimelineCap(height: _capSize(breakpointWidth).$1),
           for (final OnThisDayEvent event in timelinePreviewItems)
             TimelineListItem(showPageLinks: false, event: event, maxLines: 2),
-          const TimelineCap(position: CapPosition.bottom, height: 10),
+          TimelineCap(
+            position: CapPosition.bottom,
+            height: _capSize(breakpointWidth).$2,
+          ),
         ],
       ),
     );

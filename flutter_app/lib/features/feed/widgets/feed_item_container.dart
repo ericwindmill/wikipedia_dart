@@ -14,12 +14,13 @@ const double feedItemHeaderHeight = 60;
     BreakpointWidth.small => (feedItemHeight: 400, feedItemWidth: totalWidth),
     BreakpointWidth.medium => (
       feedItemHeight: 400,
-      // account for spacing between items
-      feedItemWidth: (totalWidth - breakpoint.spacing * 2) / 2,
+      // account for spacing between items and nav rail (72)
+      feedItemWidth: (totalWidth - 72 - breakpoint.spacing * 2) / 2,
     ),
     BreakpointWidth.large => (
       feedItemHeight: 420,
-      feedItemWidth: (totalWidth - breakpoint.spacing * 2) / 3,
+      // account for spacing between items and extended nav rail (72)
+      feedItemWidth: (totalWidth - 248 - breakpoint.spacing * 2) / 2,
     ),
   };
 }
@@ -60,13 +61,13 @@ class FeedItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(header!, style: context.textTheme.titleMedium),
+                      Text(header!, style: context.titleMedium),
                       if (subhead != null)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Text(
                             subhead!,
-                            style: context.textTheme.labelSmall,
+                            style: context.labelSmall,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
