@@ -18,6 +18,7 @@ class CupertinoSideNav extends StatefulWidget {
     this.unselectedIconTheme,
     this.selectedIconTheme,
     this.selectedIndicatorColor,
+    this.leading,
     super.key,
   }) : assert(
          selectedIndex == null ||
@@ -36,6 +37,7 @@ class CupertinoSideNav extends StatefulWidget {
   final IconThemeData? unselectedIconTheme;
   final IconThemeData? selectedIconTheme;
   final Color? selectedIndicatorColor;
+  final Widget? leading;
 
   @override
   State<CupertinoSideNav> createState() => _CupertinoSideNavState();
@@ -96,6 +98,7 @@ class _CupertinoSideNavState extends State<CupertinoSideNav> {
                 ],
               ),
             ),
+            if (widget.leading != null) widget.leading!,
           ],
         ),
       ),

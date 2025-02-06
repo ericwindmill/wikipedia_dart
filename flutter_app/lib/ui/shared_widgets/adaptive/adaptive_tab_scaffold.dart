@@ -6,9 +6,9 @@ import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/cupertino_side_nav.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
-class AdaptiveScaffold extends StatefulWidget {
-  const AdaptiveScaffold({
-    required this.body,
+class AdaptiveTabScaffold extends StatefulWidget {
+  const AdaptiveTabScaffold({
+    required this.tabs,
     this.title,
     this.navigationItems,
     this.actions = const [],
@@ -20,7 +20,7 @@ class AdaptiveScaffold extends StatefulWidget {
   });
 
   final Widget? title;
-  final Widget body;
+  final List<Widget> tabs;
   final Map<String, IconData>? navigationItems;
   final List<Widget> actions;
   final ValueChanged<int>? onSelectIndex;
@@ -29,10 +29,10 @@ class AdaptiveScaffold extends StatefulWidget {
   final bool automaticallyImplyLeading;
 
   @override
-  State<AdaptiveScaffold> createState() => _AdaptiveScaffoldState();
+  State<AdaptiveTabScaffold> createState() => _AdaptiveTabScaffoldState();
 }
 
-class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
+class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold> {
   @override
   void initState() {
     _selectedIndex = widget.initialSelectedIndex;
@@ -60,23 +60,50 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
             ? CupertinoTheme.of(context).scaffoldBackgroundColor
             : Theme.of(context).scaffoldBackgroundColor);
 
-    if (context.isCupertino) {
+    if (context.isCupertino && breakpoint.width == BreakpointWidth.small) {
+      return CupertinoTabScaffold(
+        backgroundColor: scaffoldColor,
+        tabBar: CupertinoTabBar(
+          currentIndex: _selectedIndex,
+          onTap: onSelectIndex,
+          items:
+              widget.navigationItems!.entries
+                  .map<BottomNavigationBarItem>(
+                    (entry) => BottomNavigationBarItem(
+                      icon: Icon(entry.value),
+                      label: entry.key,
+                    ),
+                  )
+                  .toList(),
+        ),
+        tabBuilder:
+            (context, index) => SafeArea(
+              child: Column(
+                children: [
+                  CupertinoNavigationBar(
+                    leading:
+                        !widget.automaticallyImplyLeading
+                            ? Align(
+                              alignment: Alignment.centerLeft,
+                              child: widget.title ?? Container(),
+                            )
+                            : null,
+                    automaticallyImplyLeading: widget.automaticallyImplyLeading,
+                    trailing: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: widget.actions,
+                    ),
+                  ),
+
+                  Expanded(child: widget.tabs[_selectedIndex]),
+                ],
+              ),
+            ),
+      );
+    } else if (context.isCupertino &&
+        breakpoint.width != BreakpointWidth.small) {
       return CupertinoPageScaffold(
         backgroundColor: scaffoldColor,
-        navigationBar: CupertinoNavigationBar(
-          leading:
-              !widget.automaticallyImplyLeading
-                  ? Align(
-                    alignment: Alignment.centerLeft,
-                    child: widget.title ?? Container(),
-                  )
-                  : null,
-          automaticallyImplyLeading: widget.automaticallyImplyLeading,
-          trailing: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: widget.actions,
-          ),
-        ),
         child: SafeArea(
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -96,7 +123,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
               Flexible(
                 child: Column(
                   children: [
-                    Flexible(child: widget.body),
+                    Flexible(child: widget.tabs[_selectedIndex]),
                     if (breakpoint.width == BreakpointWidth.small &&
                         widget.navigationItems != null)
                       CupertinoTabBar(
@@ -147,7 +174,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                 indicatorColor: Colors.white,
                 onDestinationSelected: onSelectIndex,
               ),
-            Expanded(child: widget.body),
+            Expanded(child: widget.tabs[_selectedIndex]),
           ],
         ),
       ),

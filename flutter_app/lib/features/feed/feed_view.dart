@@ -6,6 +6,7 @@ import 'package:flutter_app/features/feed/widgets/most_read_preview.dart';
 import 'package:flutter_app/features/feed/widgets/timeline_preview.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
+import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
 
 class FeedView extends StatelessWidget {
@@ -29,6 +30,8 @@ class FeedView extends StatelessWidget {
             );
           }
 
+          final breakpoint = BreakpointProvider.of(context);
+
           return Container(
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.symmetric(
@@ -47,7 +50,11 @@ class FeedView extends StatelessWidget {
                 ),
                 Wrap(
                   spacing: BreakpointProvider.of(context).spacing,
-                  runSpacing: BreakpointProvider.of(context).spacing,
+                  runSpacing: switch (BreakpointProvider.of(context).width) {
+                    BreakpointWidth.small => breakpoint.spacing * 6,
+                    BreakpointWidth.medium => breakpoint.spacing * 2,
+                    BreakpointWidth.large => breakpoint.spacing * 2,
+                  },
                   children: [
                     if (viewModel.timelinePreview.isNotEmpty)
                       TimelinePreview(

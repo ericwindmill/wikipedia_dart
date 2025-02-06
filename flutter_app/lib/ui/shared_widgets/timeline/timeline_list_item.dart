@@ -62,15 +62,20 @@ class TimelineListItem extends StatelessWidget {
             if (showPageLinks)
               SizedBox(
                 height: 65,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: event.pages.length + 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == 0) {
-                      return Container(width: sidebarWidth);
-                    }
-                    return TimelinePageLink(event.pages[index - 1]);
-                  },
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(
+                    context,
+                  ).copyWith(scrollbars: false),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: event.pages.length + 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (index == 0) {
+                        return Container(width: sidebarWidth);
+                      }
+                      return TimelinePageLink(event.pages[index - 1]);
+                    },
+                  ),
                 ),
               ),
           ],

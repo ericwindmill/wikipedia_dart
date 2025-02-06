@@ -1,10 +1,14 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
 extension Adaptive on BuildContext {
-  // TODO(ewindmill): This is currently backwards, purposefully
   bool get isCupertino => Breakpoint.isCupertino(this);
+
+  Diagnosticable get theme =>
+      isCupertino ? CupertinoTheme.of(this) : Theme.of(this);
 
   TextStyle get headlineLarge {
     if (isCupertino) return CupertinoAppTheme.largeTitle;
@@ -29,5 +33,16 @@ extension Adaptive on BuildContext {
   TextStyle get labelSmall {
     if (isCupertino) return CupertinoAppTheme.caption;
     return MaterialAppTheme.lightTextTheme.labelSmall!;
+  }
+
+  PageRoute<Object> adaptivePageRoute({
+    required WidgetBuilder builder,
+    String? title,
+  }) {
+    if (isCupertino) {
+      return CupertinoPageRoute(builder: builder, title: title);
+    } else {
+      return MaterialPageRoute(builder: builder);
+    }
   }
 }

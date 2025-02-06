@@ -3,6 +3,7 @@ import 'package:flutter_app/features/article_view/article_page_view.dart';
 import 'package:flutter_app/features/saved_articles/save_for_later_button.dart';
 import 'package:flutter_app/features/saved_articles/saved_articles_view_model.dart';
 import 'package:flutter_app/providers/repository_provider.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/page_link_extension.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -17,7 +18,8 @@ class TimelinePageLink extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute<void>(
+          context.adaptivePageRoute(
+            title: 'On this day',
             builder: (BuildContext context) {
               return ArticleView(summary: summary);
             },
@@ -33,7 +35,7 @@ class TimelinePageLink extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             color:
                 Theme.of(context).extension<PageLinkTheme>()?.backgroundColor ??
-                Colors.white70,
+                Colors.white,
           ),
           child: Row(
             children: <Widget>[

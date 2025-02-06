@@ -14,6 +14,12 @@ class SavedArticlesView extends StatelessWidget {
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, snapshot) {
+        if (viewModel.savedArticles.isEmpty) {
+          return Center(
+            child: Text('No saved articles', style: context.labelSmall),
+          );
+        }
+
         return ListView.separated(
           itemCount: viewModel.savedArticles.length,
           separatorBuilder: (context, index) {

@@ -31,7 +31,8 @@ class FeaturedArticle extends StatelessWidget {
     return FeedItem(
       onTap: () async {
         await Navigator.of(context).push(
-          MaterialPageRoute<void>(
+          context.adaptivePageRoute(
+            title: featuredArticle.titles.normalized,
             builder: (BuildContext context) {
               return ArticleView(summary: featuredArticle);
             },
@@ -57,25 +58,16 @@ class FeaturedArticle extends StatelessWidget {
               ),
             ),
           Padding(
-            padding: EdgeInsets.only(
-              top: breakpoint.padding,
-              left: breakpoint.padding,
-              right: breakpoint.padding,
-            ),
+            padding: EdgeInsets.all(breakpoint.padding),
             child: Text(
               featuredArticle.titles.normalized,
               overflow: TextOverflow.ellipsis,
-              style: context.titleMedium,
+              style: context.titleLarge,
             ),
           ),
           if (featuredArticle.description != null)
             Padding(
-              padding: EdgeInsets.only(
-                left: breakpoint.padding,
-                right: breakpoint.padding,
-                bottom: breakpoint.padding,
-                top: 4,
-              ),
+              padding: EdgeInsets.all(breakpoint.padding),
               child: Text(
                 featuredArticle.description!,
                 style: context.labelSmall,
@@ -83,13 +75,14 @@ class FeaturedArticle extends StatelessWidget {
             ),
           Padding(
             padding: EdgeInsets.only(
+              top: breakpoint.padding,
               left: breakpoint.padding,
               right: breakpoint.padding,
             ),
             child: Text(
               featuredArticle.extract,
               overflow: TextOverflow.ellipsis,
-              maxLines: 3,
+              maxLines: featuredArticle.hasImage ? 3 : 10,
             ),
           ),
           const Spacer(),

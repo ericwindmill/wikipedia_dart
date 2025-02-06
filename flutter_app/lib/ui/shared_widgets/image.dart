@@ -9,6 +9,7 @@ class RoundedImage extends StatelessWidget {
     this.width,
     BorderRadius? borderRadius,
     this.fit = BoxFit.cover,
+    this.alignment = Alignment.topCenter,
   }) : radius = borderRadius ?? BorderRadius.circular(AppDimensions.radius);
 
   final String source;
@@ -16,6 +17,7 @@ class RoundedImage extends StatelessWidget {
   final double? height;
   final double? width;
   final BorderRadius radius;
+  final Alignment alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,13 @@ class RoundedImage extends StatelessWidget {
       decoration: BoxDecoration(color: Colors.white, borderRadius: radius),
       child: ClipRRect(
         borderRadius: radius,
-        child: Image.network(source, height: height, width: width, fit: fit),
+        child: Image.network(
+          source,
+          height: height,
+          width: width,
+          fit: fit,
+          alignment: alignment,
+        ),
       ),
     );
   }

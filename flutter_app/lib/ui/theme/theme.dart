@@ -19,11 +19,10 @@ abstract final class CupertinoAppTheme {
   static const _cupertinoTextTheme = CupertinoTextThemeData();
 
   static TextStyle largeTitle = _cupertinoTextTheme.navLargeTitleTextStyle
-      .copyWith(fontSize: 32);
+      .copyWith(fontSize: 28);
 
   static TextStyle headline = _cupertinoTextTheme.textStyle.copyWith(
-    fontWeight: FontWeight.w600,
-    fontSize: 14,
+    fontSize: 18,
     color: Colors.black,
 
     fontFamily: 'Linux Libertine',
@@ -42,7 +41,7 @@ abstract final class CupertinoAppTheme {
 
   static TextStyle caption = _cupertinoTextTheme.textStyle.copyWith(
     color: CupertinoColors.secondaryLabel,
-    fontSize: 11,
+    fontSize: 12,
   );
 
   static TextStyle body = _cupertinoTextTheme.textStyle.copyWith(
@@ -69,14 +68,10 @@ abstract final class MaterialAppTheme {
   );
 
   static TextTheme lightTextTheme = const TextTheme(
-    headlineLarge: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 32,
-      color: Colors.black,
-    ),
+    headlineLarge: TextStyle(fontSize: 28, color: Colors.black),
     titleLarge: TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 18,
       color: Colors.black,
       fontFamily: 'Linux Libertine',
       fontFamilyFallback: <String>[

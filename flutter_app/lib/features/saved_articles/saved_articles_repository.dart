@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-class SavedArticlesRepository {
-  SavedArticlesRepository() {
-    /// Seed the stream with an empty map
-  }
+class SavedArticlesRepository extends ChangeNotifier {
+  SavedArticlesRepository();
 
   final Map<String, Summary> _cachedSavedArticles = {};
 
@@ -13,11 +11,13 @@ class SavedArticlesRepository {
 
   void saveArticle(Summary summary) {
     _cachedSavedArticles[summary.titles.canonical] = summary;
+    notifyListeners();
   }
 
   void removeArticle(Summary summary) {
     _cachedSavedArticles.removeWhere(
       (key, _) => key == summary.titles.canonical,
     );
+    notifyListeners();
   }
 }

@@ -17,7 +17,8 @@ class MostReadView extends StatelessWidget {
 
   Future<void> _onTap(BuildContext context, Summary summary) async {
     await Navigator.of(context).push(
-      MaterialPageRoute<void>(
+      context.adaptivePageRoute(
+        title: summary.titles.normalized,
         builder: (BuildContext context) {
           return ArticleView(summary: summary);
         },
