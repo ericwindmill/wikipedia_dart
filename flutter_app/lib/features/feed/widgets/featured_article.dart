@@ -34,7 +34,7 @@ class FeaturedArticle extends StatelessWidget {
           context.adaptivePageRoute(
             title: featuredArticle.titles.normalized,
             builder: (BuildContext context) {
-              return ArticleView(summary: featuredArticle);
+              return ArticlePageView(summary: featuredArticle);
             },
           ),
         );
@@ -58,7 +58,11 @@ class FeaturedArticle extends StatelessWidget {
               ),
             ),
           Padding(
-            padding: EdgeInsets.all(breakpoint.padding),
+            padding: EdgeInsets.only(
+              top: breakpoint.padding,
+              left: breakpoint.padding,
+              right: breakpoint.padding,
+            ),
             child: Text(
               featuredArticle.titles.normalized,
               overflow: TextOverflow.ellipsis,

@@ -4,12 +4,14 @@ import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/cupertino_side_nav.dart';
+import 'package:flutter_app/ui/shared_widgets/disappearing_navigation_bar.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
 class AdaptiveTabScaffold extends StatefulWidget {
   const AdaptiveTabScaffold({
     required this.tabs,
     this.title,
+    this.collapsedTitle,
     this.navigationItems,
     this.actions = const [],
     this.onSelectIndex,
@@ -20,6 +22,7 @@ class AdaptiveTabScaffold extends StatefulWidget {
   });
 
   final Widget? title;
+  final Widget? collapsedTitle;
   final List<Widget> tabs;
   final Map<String, IconData>? navigationItems;
   final List<Widget> actions;
@@ -32,7 +35,8 @@ class AdaptiveTabScaffold extends StatefulWidget {
   State<AdaptiveTabScaffold> createState() => _AdaptiveTabScaffoldState();
 }
 
-class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold> {
+class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     _selectedIndex = widget.initialSelectedIndex;
@@ -49,6 +53,44 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold> {
       }
       _selectedIndex = index;
     });
+  }
+
+  late final _controller = AnimationController(
+    duration: const Duration(milliseconds: 1000),
+    reverseDuration: const Duration(milliseconds: 1250),
+    value: 0,
+    vsync: this,
+  );
+  bool controllerInitialized = false;
+  late final _barAnimation = BarAnimation(parent: _controller);
+  late final _navAnimation = RailAnimation(parent: _controller);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final double width = MediaQuery.of(context).size.width;
+    final AnimationStatus status = _controller.status;
+    if (width > BreakpointWidth.small.end) {
+      if (status != AnimationStatus.forward &&
+          status != AnimationStatus.completed) {
+        _controller.forward();
+      }
+    } else {
+      if (status != AnimationStatus.reverse &&
+          status != AnimationStatus.dismissed) {
+        _controller.reverse();
+      }
+    }
+    if (!controllerInitialized) {
+      controllerInitialized = true;
+      _controller.value = width > BreakpointWidth.small.end ? 1 : 0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -112,6 +154,7 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold> {
                   widget.navigationItems != null)
                 CupertinoSideNav(
                   title: widget.title ?? Container(),
+                  collapsedTitle: widget.collapsedTitle,
                   leading: Row(children: widget.actions),
                   navigationItems: widget.navigationItems!,
                   extended: breakpoint.width == BreakpointWidth.large,
@@ -158,9 +201,10 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (breakpoint.width != BreakpointWidth.small &&
-                widget.navigationItems != null)
-              NavigationRail(
+            NavRailTransition(
+              animation: _navAnimation,
+              backgroundColor: Colors.white,
+              child: NavigationRail(
                 destinations: [
                   for (final d in widget.navigationItems!.entries)
                     NavigationRailDestination(
@@ -174,28 +218,29 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold> {
                 indicatorColor: Colors.white,
                 onDestinationSelected: onSelectIndex,
               ),
+            ),
             Expanded(child: widget.tabs[_selectedIndex]),
           ],
         ),
       ),
-      bottomNavigationBar:
-          (breakpoint.width == BreakpointWidth.small &&
-                  widget.navigationItems != null)
-              ? NavigationBar(
-                selectedIndex: _selectedIndex,
-                onDestinationSelected: onSelectIndex,
-                indicatorColor: AppColors.flutterBlue3,
-                destinations:
-                    widget.navigationItems!.entries
-                        .map<Widget>(
-                          (entry) => NavigationDestination(
-                            icon: Icon(entry.value),
-                            label: entry.key,
-                          ),
-                        )
-                        .toList(),
-              )
-              : null,
+      bottomNavigationBar: BottomBarTransition(
+        animation: _barAnimation,
+        backgroundColor: Colors.white,
+        child: NavigationBar(
+          selectedIndex: _selectedIndex,
+          onDestinationSelected: onSelectIndex,
+          indicatorColor: AppColors.flutterBlue3,
+          destinations:
+              widget.navigationItems!.entries
+                  .map<Widget>(
+                    (entry) => NavigationDestination(
+                      icon: Icon(entry.value),
+                      label: entry.key,
+                    ),
+                  )
+                  .toList(),
+        ),
+      ),
     );
   }
 }

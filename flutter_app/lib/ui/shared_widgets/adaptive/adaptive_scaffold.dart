@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
-import 'package:flutter_app/ui/shared_widgets/cupertino_side_nav.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
-class AdaptiveScaffold extends StatefulWidget {
-  const AdaptiveScaffold({
+class AdaptivePageScaffold extends StatefulWidget {
+  const AdaptivePageScaffold({
     required this.body,
     this.title,
     this.navigationItems,
@@ -16,6 +15,7 @@ class AdaptiveScaffold extends StatefulWidget {
     this.initialSelectedIndex = 0,
     this.scaffoldBackgroundColor,
     this.automaticallyImplyLeading = true,
+    this.showAppBar = false,
     super.key,
   });
 
@@ -27,12 +27,13 @@ class AdaptiveScaffold extends StatefulWidget {
   final Color? scaffoldBackgroundColor;
   final int initialSelectedIndex;
   final bool automaticallyImplyLeading;
+  final bool showAppBar;
 
   @override
-  State<AdaptiveScaffold> createState() => _AdaptiveScaffoldState();
+  State<AdaptivePageScaffold> createState() => _AdaptivePageScaffoldState();
 }
 
-class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
+class _AdaptivePageScaffoldState extends State<AdaptivePageScaffold> {
   @override
   void initState() {
     _selectedIndex = widget.initialSelectedIndex;
@@ -63,70 +64,31 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
     if (context.isCupertino) {
       return CupertinoPageScaffold(
         backgroundColor: scaffoldColor,
-        navigationBar: CupertinoNavigationBar(
-          leading:
-              !widget.automaticallyImplyLeading
-                  ? Align(
-                    alignment: Alignment.centerLeft,
-                    child: widget.title ?? Container(),
-                  )
-                  : null,
-          automaticallyImplyLeading: widget.automaticallyImplyLeading,
-          trailing: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: widget.actions,
-          ),
-        ),
-        child: SafeArea(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (breakpoint.width != BreakpointWidth.small &&
-                  widget.navigationItems != null)
-                CupertinoSideNav(
-                  title: widget.title ?? Container(),
-                  leading: Row(children: widget.actions),
-                  navigationItems: widget.navigationItems!,
-                  extended: breakpoint.width == BreakpointWidth.large,
-                  onDestinationSelected: onSelectIndex,
-                  selectedIndex: _selectedIndex,
-                  selectedIndicatorColor: AppColors.flutterBlue1,
-                  backgroundColor: Colors.white,
-                ),
-              Flexible(
-                child: Column(
-                  children: [
-                    Flexible(child: widget.body),
-                    if (breakpoint.width == BreakpointWidth.small &&
-                        widget.navigationItems != null)
-                      CupertinoTabBar(
-                        currentIndex: _selectedIndex,
-                        onTap: onSelectIndex,
-                        items:
-                            widget.navigationItems!.entries
-                                .map<BottomNavigationBarItem>(
-                                  (entry) => BottomNavigationBarItem(
-                                    icon: Icon(entry.value),
-                                    label: entry.key,
-                                  ),
-                                )
-                                .toList(),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        navigationBar:
+            widget.showAppBar
+                ? CupertinoNavigationBar(
+                  leading:
+                      !widget.automaticallyImplyLeading
+                          ? Align(
+                            alignment: Alignment.centerLeft,
+                            child: widget.title ?? Container(),
+                          )
+                          : null,
+                  automaticallyImplyLeading: widget.automaticallyImplyLeading,
+                  trailing: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: widget.actions,
+                  ),
+                )
+                : null,
+        child: SafeArea(child: widget.body),
       );
     }
 
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar:
-          breakpoint.width == BreakpointWidth.small
-              ? AppBar(title: widget.title ?? Container())
-              : null,
+          widget.showAppBar ? AppBar(title: widget.title ?? Container()) : null,
       body: SafeArea(
         child: Row(
           mainAxisSize: MainAxisSize.min,

@@ -20,7 +20,7 @@ class MostReadView extends StatelessWidget {
       context.adaptivePageRoute(
         title: summary.titles.normalized,
         builder: (BuildContext context) {
-          return ArticleView(summary: summary);
+          return ArticlePageView(summary: summary);
         },
       ),
     );

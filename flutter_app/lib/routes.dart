@@ -14,7 +14,7 @@ abstract final class Routes {
 final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   Routes.home: (BuildContext context) => const HomeView(),
   Routes.timeline:
-      (BuildContext context) => AdaptiveScaffold(
+      (BuildContext context) => AdaptivePageScaffold(
         body: TimelinePageView(
           viewModel: TimelineViewModel(
             repository: RepositoryProvider.of(context).timelineRepository,

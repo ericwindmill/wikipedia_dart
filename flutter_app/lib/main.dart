@@ -21,26 +21,13 @@ void main() async {
   );
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  late Breakpoint breakpoint;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    breakpoint = Breakpoint.currentDevice(context);
-  }
 
   @override
   Widget build(BuildContext context) {
     return BreakpointProvider(
-      breakpoint: breakpoint,
+      breakpoint: Breakpoint.currentDevice(context),
       child: Builder(
         builder: (context) {
           return context.isCupertino

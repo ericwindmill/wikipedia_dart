@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ class CupertinoSideNav extends StatefulWidget {
     required this.title,
     required this.navigationItems,
     required this.selectedIndex,
+    this.collapsedTitle,
     this.onDestinationSelected,
     this.extended = true,
     this.backgroundColor,
@@ -28,6 +31,7 @@ class CupertinoSideNav extends StatefulWidget {
        assert(elevation >= 0, 'Elevation cannot be negative');
 
   final Widget title;
+  final Widget? collapsedTitle;
   final Map<String, IconData> navigationItems;
   final int? selectedIndex;
   final ValueChanged<int>? onDestinationSelected;
@@ -43,7 +47,61 @@ class CupertinoSideNav extends StatefulWidget {
   State<CupertinoSideNav> createState() => _CupertinoSideNavState();
 }
 
-class _CupertinoSideNavState extends State<CupertinoSideNav> {
+class _CupertinoSideNavState extends State<CupertinoSideNav>
+    with TickerProviderStateMixin {
+  late AnimationController _extendedController;
+  late CurvedAnimation _extendedAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _initControllers();
+  }
+
+  @override
+  void dispose() {
+    _disposeControllers();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant CupertinoSideNav oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.extended != oldWidget.extended) {
+      if (widget.extended) {
+        _extendedController.forward();
+      } else {
+        _extendedController.reverse();
+      }
+    }
+  }
+
+  void _initControllers() {
+    _extendedController = AnimationController(
+      duration: kThemeAnimationDuration,
+      vsync: this,
+      value: widget.extended ? 1.0 : 0.0,
+    );
+    _extendedAnimation = CurvedAnimation(
+      parent: _extendedController,
+      curve: Curves.linear,
+    );
+    _extendedController.addListener(_rebuild);
+  }
+
+  void _disposeControllers() {
+    _extendedController.dispose();
+    _extendedAnimation.dispose();
+  }
+
+  void _rebuild() {
+    setState(() {
+      // Rebuilding when any of the controllers tick, i.e. when the items are
+      // animating.
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final backgroundColor =
@@ -52,7 +110,11 @@ class _CupertinoSideNavState extends State<CupertinoSideNav> {
         widget.selectedIndicatorColor ?? Theme.of(context).colorScheme.primary;
 
     return SizedBox(
-      width: widget.extended ? extendedWidth : collapsedWidth,
+      width: lerpDouble(
+        collapsedWidth,
+        extendedWidth,
+        _extendedAnimation.value,
+      ),
       child: Container(
         color: backgroundColor,
         padding: const EdgeInsets.all(8.0),
@@ -60,8 +122,15 @@ class _CupertinoSideNavState extends State<CupertinoSideNav> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
-            if (widget.extended)
+            if (widget.extended && !_extendedAnimation.isAnimating)
               Padding(padding: const EdgeInsets.all(16.0), child: widget.title),
+            if (!widget.extended || _extendedAnimation.isAnimating)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: widget.collapsedTitle ?? Container(),
+                ),
+              ),
             const SizedBox(height: 30),
             Expanded(
               child: Column(

@@ -8,12 +8,24 @@ class SavedArticlesViewModel extends ChangeNotifier {
   SavedArticlesViewModel({required SavedArticlesRepository repository})
     : _repository = repository {
     _repository.addListener(notifyListeners);
+    if (savedArticles.values.isNotEmpty && _activeArticle == null) {
+      _activeArticle = savedArticles.values.first;
+    }
   }
 
   UnmodifiableMapView<String, Summary> get savedArticles =>
       UnmodifiableMapView(_repository.savedArticles.value);
 
   final SavedArticlesRepository _repository;
+
+  Summary? _activeArticle;
+
+  Summary? get activeArticle => _activeArticle;
+
+  set activeArticle(Summary? value) {
+    _activeArticle = value;
+    notifyListeners();
+  }
 
   void saveArticle(Summary summary) {
     _repository.saveArticle(summary);

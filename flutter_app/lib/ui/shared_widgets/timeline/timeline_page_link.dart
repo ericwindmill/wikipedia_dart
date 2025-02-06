@@ -21,7 +21,7 @@ class TimelinePageLink extends StatelessWidget {
           context.adaptivePageRoute(
             title: 'On this day',
             builder: (BuildContext context) {
-              return ArticleView(summary: summary);
+              return ArticlePageView(summary: summary);
             },
           ),
         );
