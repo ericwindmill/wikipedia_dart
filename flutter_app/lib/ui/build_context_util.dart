@@ -5,7 +5,7 @@ import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
 extension Adaptive on BuildContext {
-  bool get isCupertino => Breakpoint.isCupertino(this);
+  bool get isCupertino => !Breakpoint.isCupertino(this);
 
   Diagnosticable get theme =>
       isCupertino ? CupertinoTheme.of(this) : Theme.of(this);

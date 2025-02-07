@@ -44,65 +44,77 @@ class SavedArticlesView extends StatelessWidget {
           );
         }
 
-        final mainContent = ListView.separated(
-          itemCount: viewModel.savedArticles.length,
-          separatorBuilder: (context, index) {
-            return const Divider(thickness: .1, height: .1);
-          },
-          itemBuilder: (context, index) {
-            final summary =
-                viewModel.savedArticles.entries.elementAt(index).value;
-            final trailing =
-                summary.hasImage
-                    ? RoundedImage(
-                      source: summary.preferredSource!,
-                      height: 30,
-                      width: 30,
-                    )
-                    : null;
+        final mainContent = ColoredBox(
+          color: AppColors.cupertinoScaffoldBackgroundColor,
+          child: ListView.separated(
+            itemCount: viewModel.savedArticles.length,
+            separatorBuilder: (context, index) {
+              return const Divider(thickness: .1, height: .1);
+            },
+            itemBuilder: (context, index) {
+              final summary =
+                  viewModel.savedArticles.entries.elementAt(index).value;
+              final trailing =
+                  summary.hasImage
+                      ? RoundedImage(
+                        source: summary.preferredSource!,
+                        height: 30,
+                        width: 30,
+                      )
+                      : null;
 
-            if (context.isCupertino) {
-              return Dismissible(
-                key: Key(summary.titles.canonical),
-                onDismissed: (details) {
-                  viewModel.removeArticle(summary);
-                },
-                direction: DismissDirection.endToStart,
-                background: const ColoredBox(
-                  color: AppColors.warmRed,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(CupertinoIcons.delete, color: Colors.black26),
+              if (context.isCupertino) {
+                return Dismissible(
+                  key: Key(summary.titles.canonical),
+                  onDismissed: (details) {
+                    viewModel.removeArticle(summary);
+                  },
+                  direction:
+                      breakpoint.width == BreakpointWidth.small
+                          ? DismissDirection.endToStart
+                          : DismissDirection.none,
+                  background: const ColoredBox(
+                    color: AppColors.warmRed,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          CupertinoIcons.delete,
+                          color: Colors.black26,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                child: CupertinoListTile(
-                  backgroundColor: Colors.white,
-                  trailing:
-                      BreakpointProvider.of(context).width !=
-                              BreakpointWidth.small
-                          ? IconButton(
-                            icon: const Icon(CupertinoIcons.clear_circled),
-                            onPressed: () => _onTap(summary, context),
-                          )
-                          : null,
-                  title: Text(summary.titles.normalized),
-                  subtitle: Text(summary.description ?? ''),
-                  leading: trailing,
-                  onTap: () => _onTap(summary, context),
-                ),
-              );
-            } else {
-              return ListTile(
-                title: Text(summary.titles.normalized),
-                subtitle: Text(summary.description ?? ''),
-                trailing: trailing,
-                onTap: () => _onTap(summary, context),
-              );
-            }
-          },
+                  child: CupertinoListTile(
+                    backgroundColor: Colors.white,
+                    trailing:
+                        BreakpointProvider.of(context).width !=
+                                BreakpointWidth.small
+                            ? IconButton(
+                              icon: const Icon(CupertinoIcons.clear_circled),
+                              onPressed: () => viewModel.removeArticle(summary),
+                            )
+                            : null,
+                    title: Text(summary.titles.normalized),
+                    subtitle: Text(summary.description ?? ''),
+                    leading: trailing,
+                    onTap: () => _onTap(summary, context),
+                  ),
+                );
+              } else {
+                return ColoredBox(
+                  color: Colors.white,
+                  child: ListTile(
+                    title: Text(summary.titles.normalized),
+                    subtitle: Text(summary.description ?? ''),
+                    trailing: trailing,
+                    onTap: () => _onTap(summary, context),
+                  ),
+                );
+              }
+            },
+          ),
         );
 
         final right =
@@ -121,6 +133,10 @@ class SavedArticlesView extends StatelessWidget {
                     'Saved Articles',
                     style: context.titleMedium.copyWith(fontSize: 18),
                   ),
+                ),
+                Container(
+                  height: 1,
+                  color: AppColors.cupertinoScaffoldBackgroundColor,
                 ),
                 Expanded(child: mainContent),
               ],

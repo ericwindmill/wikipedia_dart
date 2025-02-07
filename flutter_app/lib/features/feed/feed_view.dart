@@ -48,6 +48,7 @@ class FeedView extends StatelessWidget {
                   ),
                   child: Text(AppStrings.today, style: context.headlineLarge),
                 ),
+                // TODO(ewindmill): When the sidebar nav extension animation starts, the wrap jerks
                 Wrap(
                   spacing: BreakpointProvider.of(context).spacing,
                   runSpacing: switch (BreakpointProvider.of(context).width) {
