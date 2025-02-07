@@ -35,7 +35,7 @@ class TimelinePageLink extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             color:
                 Theme.of(context).extension<PageLinkTheme>()?.backgroundColor ??
-                Colors.white,
+                Colors.grey.shade200,
           ),
           child: Row(
             children: <Widget>[

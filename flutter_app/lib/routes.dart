@@ -15,6 +15,8 @@ final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   Routes.home: (BuildContext context) => const HomeView(),
   Routes.timeline:
       (BuildContext context) => AdaptivePageScaffold(
+        showAppBar: true,
+        scaffoldBackgroundColor: Colors.white,
         body: TimelinePageView(
           viewModel: TimelineViewModel(
             repository: RepositoryProvider.of(context).timelineRepository,

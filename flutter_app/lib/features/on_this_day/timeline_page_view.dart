@@ -57,72 +57,77 @@ class TimelinePageView extends StatelessWidget {
 
         const double timelineCapHeight = 30;
         const double timelineCapStart = 200;
-        return ListView(
-          children: <Widget>[
-            // Title section
-            SizedBox(
-              height: 240,
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: timelineCapStart,
-                    bottom: timelineCapStart + timelineCapHeight,
-                    left: sidebarWidth / 2,
-                    child: CustomPaint(
-                      painter: TimelineCapPainter(height: timelineCapHeight),
+        return ColoredBox(
+          color: Colors.white,
+          child: ListView(
+            children: <Widget>[
+              // Title section
+              SizedBox(
+                height: 240,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      top: timelineCapStart,
+                      bottom: timelineCapStart + timelineCapHeight,
+                      left: sidebarWidth / 2,
+                      child: CustomPaint(
+                        painter: TimelineCapPainter(height: timelineCapHeight),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    top: timelineCapStart + timelineCapHeight,
-                    bottom: 0,
-                    left: sidebarWidth / 2,
-                    child: CustomPaint(painter: TimelinePainter(dotRadius: 0)),
-                  ),
-                  Positioned(
-                    top: 20,
-                    left: sidebarWidth,
-                    right: 20,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const SizedBox(height: 20),
-                        Text(
-                          AppStrings.onThisDay,
-                          style: context.headlineLarge,
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          viewModel.readableDate,
-                          style: context.titleMedium,
-                        ),
-                        Text(
-                          AppStrings.historicEvents(
-                            viewModel.filteredEvents.length.toString(),
-                          ).toUpperCase(),
-                          style: context.titleMedium,
-                        ),
-                        if (viewModel.readableYearRange != '')
+                    Positioned(
+                      top: timelineCapStart + timelineCapHeight,
+                      bottom: 0,
+                      left: sidebarWidth / 2,
+                      child: CustomPaint(
+                        painter: TimelinePainter(dotRadius: 0),
+                      ),
+                    ),
+                    Positioned(
+                      top: 20,
+                      left: sidebarWidth,
+                      right: 20,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(height: 20),
                           Text(
-                            AppStrings.yearRange(viewModel.readableYearRange),
+                            AppStrings.onThisDay,
+                            style: context.headlineLarge,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            viewModel.readableDate,
                             style: context.titleMedium,
                           ),
-                        const SizedBox(height: 20),
-                      ],
+                          Text(
+                            AppStrings.historicEvents(
+                              viewModel.filteredEvents.length.toString(),
+                            ).toUpperCase(),
+                            style: context.titleMedium,
+                          ),
+                          if (viewModel.readableYearRange != '')
+                            Text(
+                              AppStrings.yearRange(viewModel.readableYearRange),
+                              style: context.titleMedium,
+                            ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: viewModel.filteredEvents.length,
-              itemBuilder: (BuildContext context, int index) {
-                final OnThisDayEvent event = viewModel.filteredEvents[index];
-                return TimelineListItem(event: event);
-              },
-            ),
-          ],
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: viewModel.filteredEvents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final OnThisDayEvent event = viewModel.filteredEvents[index];
+                  return TimelineListItem(event: event);
+                },
+              ),
+            ],
+          ),
         );
       },
     );

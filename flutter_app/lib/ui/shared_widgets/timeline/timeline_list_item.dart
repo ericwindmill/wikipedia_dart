@@ -47,7 +47,10 @@ class TimelineListItem extends StatelessWidget {
             Flexible(
               child: Padding(
                 padding: EdgeInsets.only(
-                  bottom: BreakpointProvider.of(context).spacing,
+                  bottom:
+                      showPageLinks
+                          ? BreakpointProvider.of(context).padding
+                          : BreakpointProvider.of(context).spacing,
                   left: sidebarWidth,
                   right: BreakpointProvider.of(context).padding,
                 ),
@@ -78,6 +81,8 @@ class TimelineListItem extends StatelessWidget {
                   ),
                 ),
               ),
+            if (showPageLinks)
+              SizedBox(height: BreakpointProvider.of(context).spacing),
           ],
         ),
       ],

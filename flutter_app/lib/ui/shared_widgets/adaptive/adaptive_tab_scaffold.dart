@@ -32,10 +32,10 @@ class AdaptiveTabScaffold extends StatefulWidget {
   final bool automaticallyImplyLeading;
 
   @override
-  State<AdaptiveTabScaffold> createState() => _AdaptiveTabScaffoldState();
+  State<AdaptiveTabScaffold> createState() => AdaptiveTabScaffoldState();
 }
 
-class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
+class AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
 
   late int _selectedIndex;
 
-  void onSelectIndex(int index) {
+  void selectIndex(int index) {
     setState(() {
       _selectedIndex = index;
       if (widget.onSelectIndex != null) {
@@ -93,6 +93,17 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
     super.dispose();
   }
 
+  static AdaptiveTabScaffoldState of(BuildContext context) {
+    final state = context.findAncestorStateOfType<AdaptiveTabScaffoldState>();
+    if (state != null) {
+      return state;
+    }
+    throw FlutterError(
+      'AdaptiveTabScaffoldState.of(context) called in a '
+      "context that doesn't include a AdaptiveTabScaffoldState.",
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final breakpoint = BreakpointProvider.of(context);
@@ -107,7 +118,7 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
         backgroundColor: scaffoldColor,
         tabBar: CupertinoTabBar(
           currentIndex: _selectedIndex,
-          onTap: onSelectIndex,
+          onTap: selectIndex,
           items:
               widget.navigationItems!.entries
                   .map<BottomNavigationBarItem>(
@@ -158,7 +169,7 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
                   leading: Row(children: widget.actions),
                   navigationItems: widget.navigationItems!,
                   extended: breakpoint.width == BreakpointWidth.large,
-                  onDestinationSelected: onSelectIndex,
+                  onDestinationSelected: selectIndex,
                   selectedIndex: _selectedIndex,
                   selectedIndicatorColor: AppColors.flutterBlue1,
                   backgroundColor: Colors.white,
@@ -171,7 +182,7 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
                         widget.navigationItems != null)
                       CupertinoTabBar(
                         currentIndex: _selectedIndex,
-                        onTap: onSelectIndex,
+                        onTap: selectIndex,
                         items:
                             widget.navigationItems!.entries
                                 .map<BottomNavigationBarItem>(
@@ -216,7 +227,7 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
                 extended: breakpoint.width == BreakpointWidth.large,
                 backgroundColor: AppColors.flutterBlue1,
                 indicatorColor: Colors.white,
-                onDestinationSelected: onSelectIndex,
+                onDestinationSelected: selectIndex,
               ),
             ),
             Expanded(child: widget.tabs[_selectedIndex]),
@@ -228,7 +239,7 @@ class _AdaptiveTabScaffoldState extends State<AdaptiveTabScaffold>
         backgroundColor: Colors.white,
         child: NavigationBar(
           selectedIndex: _selectedIndex,
-          onDestinationSelected: onSelectIndex,
+          onDestinationSelected: selectIndex,
           indicatorColor: AppColors.flutterBlue3,
           destinations:
               widget.navigationItems!.entries

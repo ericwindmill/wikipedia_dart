@@ -38,7 +38,7 @@ class HomeView extends StatelessWidget {
             icon: const Icon(CupertinoIcons.person_alt_circle),
             onPressed: () {},
           ),
-        if (!context.isCupertino) const CircleAvatar(child: Text('P')),
+        if (!context.isCupertino) const CircleAvatar(child: Text('W')),
       ],
       navigationItems: {
         for (final d in Destinations.values)
