@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum BreakpointWidth {
@@ -66,21 +65,6 @@ class Breakpoint {
   /// Padding between elements, such as two items in a column
   final double spacing;
 
-  /// A set of [TargetPlatform]s that the [Breakpoint] will be active
-  /// on desktop.
-  static const Set<TargetPlatform> desktop = <TargetPlatform>{
-    TargetPlatform.linux,
-    TargetPlatform.macOS,
-    TargetPlatform.windows,
-  };
-
-  /// A set of [TargetPlatform]s that the [Breakpoint] will be active on mobile.
-  static const Set<TargetPlatform> mobile = <TargetPlatform>{
-    TargetPlatform.android,
-    TargetPlatform.fuchsia,
-    TargetPlatform.iOS,
-  };
-
   static const Set<TargetPlatform> cupertino = {
     TargetPlatform.iOS,
     TargetPlatform.macOS,
@@ -90,18 +74,4 @@ class Breakpoint {
   static bool isCupertino(BuildContext context) {
     return cupertino.contains(Theme.of(context).platform);
   }
-
-  /// Returns true if the current platform is Desktop.
-  /// On web, returns true if the browser is running on a Desktop OS.
-  static bool isDesktop(BuildContext context) {
-    return desktop.contains(Theme.of(context).platform);
-  }
-
-  /// Returns true if the current platform is Mobile.
-  /// On web, returns true if the browser is running on a Mobile OS.
-  static bool isMobile(BuildContext context) {
-    return mobile.contains(Theme.of(context).platform);
-  }
-
-  static bool isWeb = kIsWeb || kIsWasm;
 }

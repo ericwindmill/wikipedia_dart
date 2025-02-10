@@ -6,7 +6,6 @@ import 'package:flutter_app/features/saved_articles/saved_articles_view_model.da
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
-import 'package:flutter_app/ui/shared_widgets/adaptive/split_view.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -35,118 +34,141 @@ class SavedArticlesView extends StatelessWidget {
   Widget build(BuildContext context) {
     final breakpoint = BreakpointProvider.of(context);
 
-    return ListenableBuilder(
-      listenable: viewModel,
-      builder: (context, snapshot) {
-        if (viewModel.savedArticles.isEmpty) {
-          return Center(
-            child: Text('No saved articles', style: context.labelSmall),
-          );
-        }
+    return CupertinoPageScaffold(
+      backgroundColor: Colors.white,
+      child: NestedScrollView(
+        headerSliverBuilder: (context, _) {
+          return [
+            if (context.isCupertino)
+              const CupertinoSliverNavigationBar(
+                largeTitle: Text('Saved articles'),
+              )
+            else
+              const SliverAppBar(title: Text('Saved articles')),
+          ];
+        },
+        body: ListenableBuilder(
+          listenable: viewModel,
+          builder: (context, snapshot) {
+            if (viewModel.savedArticles.isEmpty) {
+              return Center(
+                child: Text('No saved articles', style: context.labelSmall),
+              );
+            }
 
-        final mainContent = ColoredBox(
-          color: AppColors.cupertinoScaffoldBackgroundColor,
-          child: ListView.separated(
-            itemCount: viewModel.savedArticles.length,
-            separatorBuilder: (context, index) {
-              return const Divider(thickness: .1, height: .1);
-            },
-            itemBuilder: (context, index) {
-              final summary =
-                  viewModel.savedArticles.entries.elementAt(index).value;
-              final trailing =
-                  summary.hasImage
-                      ? RoundedImage(
-                        source: summary.preferredSource!,
-                        height: 30,
-                        width: 30,
-                      )
-                      : null;
+            final mainContent = ColoredBox(
+              color: AppColors.cupertinoScaffoldBackgroundColor,
+              child: ListView.separated(
+                itemCount: viewModel.savedArticles.length,
+                separatorBuilder: (context, index) {
+                  return const Divider(thickness: .1, height: .1);
+                },
+                itemBuilder: (context, index) {
+                  final summary =
+                      viewModel.savedArticles.entries.elementAt(index).value;
+                  final trailing =
+                      summary.hasImage
+                          ? RoundedImage(
+                            source: summary.preferredSource!,
+                            height: 30,
+                            width: 30,
+                          )
+                          : null;
 
-              if (context.isCupertino) {
-                return Dismissible(
-                  key: Key(summary.titles.canonical),
-                  onDismissed: (details) {
-                    viewModel.removeArticle(summary);
-                  },
-                  direction:
-                      breakpoint.width == BreakpointWidth.small
-                          ? DismissDirection.endToStart
-                          : DismissDirection.none,
-                  background: const ColoredBox(
-                    color: AppColors.warmRed,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(
-                          CupertinoIcons.delete,
-                          color: Colors.black26,
+                  if (context.isCupertino) {
+                    return Dismissible(
+                      key: Key(summary.titles.canonical),
+                      onDismissed: (details) {
+                        viewModel.removeArticle(summary);
+                      },
+                      direction:
+                          breakpoint.width == BreakpointWidth.small
+                              ? DismissDirection.endToStart
+                              : DismissDirection.none,
+                      background: const ColoredBox(
+                        color: AppColors.warmRed,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(
+                              CupertinoIcons.delete,
+                              color: Colors.black26,
+                            ),
+                          ),
                         ),
                       ),
+                      child: CupertinoListTile(
+                        backgroundColor: Colors.white,
+                        trailing:
+                            BreakpointProvider.of(context).width !=
+                                    BreakpointWidth.small
+                                ? IconButton(
+                                  icon: const Icon(
+                                    CupertinoIcons.clear_circled,
+                                  ),
+                                  onPressed:
+                                      () => viewModel.removeArticle(summary),
+                                )
+                                : null,
+                        title: Text(summary.titles.normalized),
+                        subtitle: Text(summary.description ?? ''),
+                        leading: trailing,
+                        onTap: () => _onTap(summary, context),
+                      ),
+                    );
+                  } else {
+                    return ColoredBox(
+                      color: Colors.white,
+                      child: ListTile(
+                        title: Text(summary.titles.normalized),
+                        subtitle: Text(summary.description ?? ''),
+                        trailing: trailing,
+                        onTap: () => _onTap(summary, context),
+                      ),
+                    );
+                  }
+                },
+              ),
+            );
+
+            final right =
+                viewModel.activeArticle != null
+                    ? ArticleView(summary: viewModel.activeArticle!)
+                    : const Center(child: Text('Select an article'));
+
+            if (breakpoint.width == BreakpointWidth.large) {
+              return Row(
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Saved Articles',
+                            style: context.titleMedium.copyWith(fontSize: 18),
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: AppColors.cupertinoScaffoldBackgroundColor,
+                        ),
+                        Expanded(child: mainContent),
+                      ],
                     ),
                   ),
-                  child: CupertinoListTile(
-                    backgroundColor: Colors.white,
-                    trailing:
-                        BreakpointProvider.of(context).width !=
-                                BreakpointWidth.small
-                            ? IconButton(
-                              icon: const Icon(CupertinoIcons.clear_circled),
-                              onPressed: () => viewModel.removeArticle(summary),
-                            )
-                            : null,
-                    title: Text(summary.titles.normalized),
-                    subtitle: Text(summary.description ?? ''),
-                    leading: trailing,
-                    onTap: () => _onTap(summary, context),
-                  ),
-                );
-              } else {
-                return ColoredBox(
-                  color: Colors.white,
-                  child: ListTile(
-                    title: Text(summary.titles.normalized),
-                    subtitle: Text(summary.description ?? ''),
-                    trailing: trailing,
-                    onTap: () => _onTap(summary, context),
-                  ),
-                );
-              }
-            },
-          ),
-        );
+                  Flexible(flex: 3, child: right),
+                ],
+              );
+            }
 
-        final right =
-            viewModel.activeArticle != null
-                ? ArticleView(summary: viewModel.activeArticle!)
-                : const Center(child: Text('Select an article'));
-
-        if (breakpoint.width == BreakpointWidth.large) {
-          return SplitView(
-            left: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Saved Articles',
-                    style: context.titleMedium.copyWith(fontSize: 18),
-                  ),
-                ),
-                Container(
-                  height: 1,
-                  color: AppColors.cupertinoScaffoldBackgroundColor,
-                ),
-                Expanded(child: mainContent),
-              ],
-            ),
-            right: right,
-          );
-        }
-
-        return mainContent;
-      },
+            return mainContent;
+          },
+        ),
+      ),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
 import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
-import 'package:flutter_app/ui/shared_widgets/adaptive/adaptive_tab_scaffold.dart';
+import 'package:flutter_app/ui/shared_widgets/adaptive_scaffold.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline_list_item.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline_painter.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
@@ -33,7 +33,7 @@ class TimelinePreview extends StatelessWidget {
       header: AppStrings.onThisDay,
       subhead: readableDate,
       onTap: () async {
-        AdaptiveTabScaffoldState.of(context).selectIndex(1);
+        AdaptiveNavigationState.of(context).selectIndex(1);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -8,7 +8,8 @@ const double feedItemHeaderHeight = 60;
 
 ({double feedItemHeight, double feedItemWidth}) itemSize(BuildContext context) {
   final breakpoint = BreakpointProvider.of(context);
-  final totalWidth = BreakpointProvider.appWidth(context);
+  final totalWidth =
+      MediaQuery.of(context).size.width - (breakpoint.margin * 2);
 
   return switch (breakpoint.width) {
     BreakpointWidth.small => (feedItemHeight: 400, feedItemWidth: totalWidth),
@@ -83,20 +84,14 @@ class FeedItem extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppDimensions.radius),
-                  boxShadow:
-                      context.isCupertino
-                          ? null
-                          : const [
-                            BoxShadow(
-                              offset: Offset(1, 1),
-                              blurRadius: 10,
-                              color: Colors.black12,
-                            ),
-                          ],
-                  color:
-                      context.isCupertino
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.primaryContainer,
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(1, 1),
+                      blurRadius: 10,
+                      color: Colors.black12,
+                    ),
+                  ],
                 ),
                 child: child,
               ),

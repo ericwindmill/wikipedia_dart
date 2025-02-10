@@ -16,8 +16,10 @@ class AppStrings {
     'imageOfTheDayFor': 'Image of the day for',
     'mostRead': 'Most read articles',
     'randomArticle': 'Random Article',
-    // TODO(ewindmill): this should be dynamic
     'fromLanguageWikipedia': 'from English Wikipedia',
+    'savedArticles': 'Saved articles',
+    'noSavedArticles': 'No saved articles',
+    'selectAnArticle': 'Select an article',
 
     // generic ui elements
     'saveForLater': 'Save for later',

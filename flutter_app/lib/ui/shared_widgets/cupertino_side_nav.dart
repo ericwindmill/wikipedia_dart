@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/theme/theme.dart';
 
 const double collapsedWidth = 72;
 const double extendedWidth = 256;
@@ -226,7 +225,7 @@ class _CupertinoRailOptionState extends State<CupertinoRailOption> {
   Widget build(BuildContext context) {
     _backgroundColor = _computeBackgroundColor();
     return ClipRRect(
-      borderRadius: BorderRadius.circular(AppDimensions.radius),
+      borderRadius: BorderRadius.circular(4.0),
       child: GestureDetector(
         onTap: () {
           setState(() {

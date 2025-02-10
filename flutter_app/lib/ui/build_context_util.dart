@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/breakpoint.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
 extension Adaptive on BuildContext {
-  bool get isCupertino => !Breakpoint.isCupertino(this);
-
-  Diagnosticable get theme =>
-      isCupertino ? CupertinoTheme.of(this) : Theme.of(this);
+  bool get isCupertino => Breakpoint.isCupertino(this);
 
   TextStyle get headlineLarge {
     if (isCupertino) return CupertinoAppTheme.largeTitle;

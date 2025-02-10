@@ -90,13 +90,19 @@ class FeaturedArticle extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          SaveForLaterButton(
-            label: Text(AppStrings.saveForLater),
-            viewModel: SavedArticlesViewModel(
-              repository:
-                  RepositoryProvider.of(context).savedArticlesRepository,
+          Padding(
+            padding: EdgeInsets.only(
+              left: 4.0,
+              bottom: BreakpointProvider.of(context).padding / 3,
             ),
-            summary: featuredArticle,
+            child: SaveForLaterButton(
+              label: Text(AppStrings.saveForLater),
+              viewModel: SavedArticlesViewModel(
+                repository:
+                    RepositoryProvider.of(context).savedArticlesRepository,
+              ),
+              summary: featuredArticle,
+            ),
           ),
         ],
       ),

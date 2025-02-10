@@ -28,21 +28,22 @@ class ImageModalView extends StatelessWidget {
       direction: DismissDirection.vertical,
       onDismissed: Navigator.of(context).pop,
       key: const Key('ImageModal'),
-      child: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Center(
-              child: RoundedImage(
-                borderRadius: BorderRadius.zero,
-                source: file.source,
-              ),
+      child: Stack(
+        children: <Widget>[
+          Center(
+            child: RoundedImage(
+              borderRadius: BorderRadius.zero,
+              source: file.source,
             ),
-            Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
-              child: Container(
-                margin: EdgeInsets.all(BreakpointProvider.of(context).margin),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: ColoredBox(
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.all(BreakpointProvider.of(context).padding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: BreakpointProvider.of(context).spacing,
@@ -67,8 +68,8 @@ class ImageModalView extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

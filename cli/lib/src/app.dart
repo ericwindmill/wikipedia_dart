@@ -11,7 +11,7 @@ import 'package:cli/src/model/command.dart';
 /// and enforces proper return type of [Command.run].
 ///
 /// ```dart
-/// main() {
+/// main_flow.dart() {
 ///   var app = InteractiveCommandRunner<String>()
 ///     ..addCommand(MyCommand())
 ///     ..addCommand(AnotherCommand());
@@ -34,7 +34,7 @@ class InteractiveCommandRunner<T> {
   Future<void> run() async {
     await onInput('help');
     await for (final List<int> data in stdin) {
-      // When control is released back to main input,
+      // When control is released back to main_flow.dart input,
       // toggle rawMode off
       console.rawMode = false;
       final String input = String.fromCharCodes(data).trim();

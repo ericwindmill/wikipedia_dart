@@ -5,7 +5,6 @@ import 'package:flutter_app/features/saved_articles/saved_articles_view_model.da
 import 'package:flutter_app/providers/repository_provider.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:flutter_app/ui/shared_widgets/image.dart';
-import 'package:flutter_app/ui/theme/page_link_extension.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class TimelinePageLink extends StatelessWidget {
@@ -19,7 +18,7 @@ class TimelinePageLink extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           context.adaptivePageRoute(
-            title: 'On this day',
+            title: summary.titles.normalized,
             builder: (BuildContext context) {
               return ArticlePageView(summary: summary);
             },
@@ -27,15 +26,20 @@ class TimelinePageLink extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(right: 8.0),
+        padding: const EdgeInsets.all(4.0),
         child: Container(
           width: 240,
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
-            color:
-                Theme.of(context).extension<PageLinkTheme>()?.backgroundColor ??
-                Colors.grey.shade200,
+          padding: const EdgeInsets.only(top: 5, bottom: 5, right: 8, left: 2),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(1, 1),
+                blurRadius: 2,
+                color: Colors.black12,
+              ),
+            ],
           ),
           child: Row(
             children: <Widget>[
@@ -70,8 +74,8 @@ class TimelinePageLink extends StatelessWidget {
               if (summary.thumbnail != null)
                 RoundedImage(
                   source: summary.thumbnail!.source,
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                   borderRadius: BorderRadius.circular(3),
                 ),
             ],

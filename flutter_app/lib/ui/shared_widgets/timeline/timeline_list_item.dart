@@ -64,7 +64,7 @@ class TimelineListItem extends StatelessWidget {
             ),
             if (showPageLinks)
               SizedBox(
-                height: 65,
+                height: 80,
                 child: ScrollConfiguration(
                   behavior: ScrollConfiguration.of(
                     context,

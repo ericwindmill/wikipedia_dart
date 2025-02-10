@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/theme/page_link_extension.dart';
 
 abstract final class CupertinoAppTheme {
   static CupertinoThemeData lightTheme = CupertinoThemeData(
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
-    scaffoldBackgroundColor: AppColors.cupertinoScaffoldBackgroundColor,
+    scaffoldBackgroundColor: Colors.white,
     barBackgroundColor: Colors.white,
     textTheme: lightTextTheme,
   );
@@ -62,9 +61,6 @@ abstract final class MaterialAppTheme {
       shadow: Colors.black12,
     ),
     scaffoldBackgroundColor: AppColors.materialScaffoldBackgroundColor,
-    extensions: <ThemeExtension<PageLinkTheme>>[
-      PageLinkTheme(backgroundColor: Colors.grey.shade200),
-    ],
   );
 
   static TextTheme lightTextTheme = const TextTheme(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/feed/feed_view_model.dart';
 import 'package:flutter_app/features/feed/widgets/featured_article.dart';
@@ -16,80 +17,87 @@ class FeedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ListenableBuilder(
-        listenable: viewModel,
-        builder: (BuildContext context, _) {
-          // TODO(ewindmill): handle errors
-          if (viewModel.hasError) {
-            return Center(child: Text(viewModel.error));
-          }
-          if (!viewModel.hasData && !viewModel.hasError) {
-            return const Center(
-              child: Center(child: CircularProgressIndicator.adaptive()),
-            );
-          }
+    return CupertinoPageScaffold(
+      backgroundColor: Colors.white,
+      child: NestedScrollView(
+        headerSliverBuilder: (context, _) {
+          return [
+            if (context.isCupertino)
+              const CupertinoSliverNavigationBar(largeTitle: Text('Today'))
+            else
+              const SliverAppBar(title: Text('Title')),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: ListenableBuilder(
+            listenable: viewModel,
+            builder: (BuildContext context, _) {
+              // TODO(ewindmill): handle errors
+              if (viewModel.hasError) {
+                return Center(child: Text(viewModel.error));
+              }
+              if (!viewModel.hasData && !viewModel.hasError) {
+                return const Center(
+                  child: Center(child: CircularProgressIndicator.adaptive()),
+                );
+              }
 
-          final breakpoint = BreakpointProvider.of(context);
+              final breakpoint = BreakpointProvider.of(context);
 
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(
-              horizontal: BreakpointProvider.of(context).margin,
-            ),
-            child: Column(
-              spacing: BreakpointProvider.of(context).spacing,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: BreakpointProvider.of(context).padding * 4,
-                    bottom: BreakpointProvider.of(context).padding,
-                  ),
-                  child: Text(AppStrings.today, style: context.headlineLarge),
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(
+                  horizontal: BreakpointProvider.of(context).margin,
                 ),
-                // TODO(ewindmill): When the sidebar nav extension animation starts, the wrap jerks
-                Wrap(
+                child: Column(
                   spacing: BreakpointProvider.of(context).spacing,
-                  runSpacing: switch (BreakpointProvider.of(context).width) {
-                    BreakpointWidth.small => breakpoint.spacing * 6,
-                    BreakpointWidth.medium => breakpoint.spacing * 2,
-                    BreakpointWidth.large => breakpoint.spacing * 2,
-                  },
-                  children: [
-                    if (viewModel.timelinePreview.isNotEmpty)
-                      TimelinePreview(
-                        timelinePreviewItems: viewModel.timelinePreview,
-                        readableDate: viewModel.readableDate,
-                      ),
-                    if (viewModel.todaysFeaturedArticle != null)
-                      FeaturedArticle(
-                        header: AppStrings.todaysFeaturedArticle,
-                        subhead: AppStrings.fromLanguageWikipedia,
-                        featuredArticle: viewModel.todaysFeaturedArticle!,
-                      ),
-                    if (viewModel.hasImage)
-                      FeaturedImage(
-                        image: viewModel.imageOfTheDay!,
-                        imageFile: viewModel.imageSource!,
-                        readableDate: viewModel.readableDate,
-                      ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Wrap(
+                      spacing: BreakpointProvider.of(context).spacing,
+                      runSpacing: switch (BreakpointProvider.of(
+                        context,
+                      ).width) {
+                        BreakpointWidth.small => breakpoint.spacing * 6,
+                        BreakpointWidth.medium => breakpoint.spacing * 2,
+                        BreakpointWidth.large => breakpoint.spacing * 2,
+                      },
+                      children: [
+                        if (viewModel.timelinePreview.isNotEmpty)
+                          TimelinePreview(
+                            timelinePreviewItems: viewModel.timelinePreview,
+                            readableDate: viewModel.readableDate,
+                          ),
+                        if (viewModel.todaysFeaturedArticle != null)
+                          FeaturedArticle(
+                            header: AppStrings.todaysFeaturedArticle,
+                            subhead: AppStrings.fromLanguageWikipedia,
+                            featuredArticle: viewModel.todaysFeaturedArticle!,
+                          ),
+                        if (viewModel.hasImage)
+                          FeaturedImage(
+                            image: viewModel.imageOfTheDay!,
+                            imageFile: viewModel.imageSource!,
+                            readableDate: viewModel.readableDate,
+                          ),
 
-                    if (viewModel.mostRead.isNotEmpty)
-                      MostReadView(topReadArticles: viewModel.mostRead),
-                    if (viewModel.randomArticle != null)
-                      FeaturedArticle(
-                        header: AppStrings.randomArticle,
-                        subhead: AppStrings.fromLanguageWikipedia,
-                        featuredArticle: viewModel.randomArticle!,
-                      ),
+                        if (viewModel.mostRead.isNotEmpty)
+                          MostReadView(topReadArticles: viewModel.mostRead),
+                        if (viewModel.randomArticle != null)
+                          FeaturedArticle(
+                            header: AppStrings.randomArticle,
+                            subhead: AppStrings.fromLanguageWikipedia,
+                            featuredArticle: viewModel.randomArticle!,
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 50),
                   ],
                 ),
-                const SizedBox(height: 50),
-              ],
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ),
       ),
     );
   }

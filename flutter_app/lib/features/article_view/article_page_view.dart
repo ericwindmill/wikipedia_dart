@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/article_view/article_view.dart';
-import 'package:flutter_app/ui/shared_widgets/adaptive/adaptive_scaffold.dart';
+import 'package:flutter_app/ui/build_context_util.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
 class ArticlePageView extends StatelessWidget {
@@ -10,9 +11,8 @@ class ArticlePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptivePageScaffold(
-      scaffoldBackgroundColor: Colors.white,
-      showAppBar: true,
+    return Scaffold(
+      appBar: context.isCupertino ? const CupertinoNavigationBar() : AppBar(),
       body: ArticleView(summary: summary),
     );
   }

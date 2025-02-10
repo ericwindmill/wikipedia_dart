@@ -14,32 +14,34 @@ class ArticleView extends StatelessWidget {
 
   final Summary summary;
 
+  ({double height, double width}) _imageSize(BuildContext context) {
+    final breakpoint = BreakpointProvider.of(context);
+    final appWidth =
+        MediaQuery.of(context).size.width - (breakpoint.margin * 2);
+
+    return switch (breakpoint.width) {
+      BreakpointWidth.small => (height: appWidth, width: appWidth),
+      BreakpointWidth.medium => (
+        height: BreakpointWidth.medium.begin,
+        width: BreakpointWidth.medium.begin,
+      ),
+      BreakpointWidth.large => (
+        height: BreakpointWidth.medium.begin,
+        width: BreakpointWidth.medium.begin,
+      ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final breakpoint = BreakpointProvider.of(context);
+    final imageSize = _imageSize(context);
 
     Widget addMargin(Widget child) {
       return Container(
         margin: EdgeInsets.symmetric(horizontal: breakpoint.margin),
         child: child,
       );
-    }
-
-    ({double height, double width}) _imageSize(BuildContext context) {
-      final breakpoint = BreakpointProvider.of(context);
-      final appWidth = BreakpointProvider.appWidth(context);
-
-      return switch (breakpoint.width) {
-        BreakpointWidth.small => (height: appWidth, width: appWidth),
-        BreakpointWidth.medium => (
-          height: BreakpointWidth.medium.begin,
-          width: BreakpointWidth.medium.begin,
-        ),
-        BreakpointWidth.large => (
-          height: BreakpointWidth.medium.begin,
-          width: BreakpointWidth.medium.begin,
-        ),
-      };
     }
 
     return ColoredBox(
@@ -49,8 +51,8 @@ class ArticleView extends StatelessWidget {
           if (summary.originalImage != null)
             RoundedImage(
               source: summary.originalImage!.source,
-              height: _imageSize(context).height,
-              width: _imageSize(context).width,
+              height: imageSize.height,
+              width: imageSize.width,
               borderRadius: BorderRadius.zero,
             ),
           addMargin(

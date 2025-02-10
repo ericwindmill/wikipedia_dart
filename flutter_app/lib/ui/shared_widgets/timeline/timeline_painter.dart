@@ -5,6 +5,7 @@ import 'package:flutter_app/providers/breakpoint_provider.dart';
 import 'package:flutter_app/ui/shared_widgets/timeline/timeline.dart';
 import 'package:flutter_app/ui/theme/theme.dart';
 
+/// Paints a timeline segment with a single 'dot'
 class TimelinePainter extends CustomPainter {
   TimelinePainter({this.dotRadius = 4});
   final double dotRadius;
