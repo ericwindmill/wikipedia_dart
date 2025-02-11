@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/article_view/article_page_view.dart';
-import 'package:flutter_app/features/feed/feed_view_model.dart';
 import 'package:flutter_app/features/feed/widgets/feed_item_container.dart';
 import 'package:flutter_app/features/saved_articles/save_for_later_button.dart';
 import 'package:flutter_app/features/saved_articles/saved_articles_view_model.dart';
@@ -44,12 +43,9 @@ class FeaturedArticle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (featuredArticle.originalImage != null &&
-              acceptableImageFormats.contains(
-                featuredArticle.originalImage!.extension,
-              ))
+          if (featuredArticle.hasImage)
             RoundedImage(
-              source: featuredArticle.originalImage!.source,
+              source: featuredArticle.preferredSource!,
               height: itemSize(context).feedItemHeight / 2.5,
               width: double.infinity,
               borderRadius: const BorderRadius.only(

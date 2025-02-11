@@ -5,8 +5,6 @@ import 'package:flutter_app/features/feed/feed_repository.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:wikipedia_api/wikipedia_api.dart';
 
-const acceptableImageFormats = ['png', 'jpg', 'jpeg'];
-
 class FeedViewModel extends ChangeNotifier {
   FeedViewModel({required FeedRepository repository})
     : _feedRepository = repository {
@@ -19,8 +17,6 @@ class FeedViewModel extends ChangeNotifier {
 
   bool get hasError => error != '';
 
-  final List<Summary> savedArticles = [];
-
   UnmodifiableListView<Summary> get mostRead =>
       UnmodifiableListView<Summary>(_feed?.mostRead?.take(7) ?? <Summary>[]);
 
@@ -29,7 +25,7 @@ class FeedViewModel extends ChangeNotifier {
         _feed?.onThisDayTimeline?.take(4).toList() ?? <OnThisDayEvent>[],
       );
 
-  bool get hasImage {
+  bool get hasImageOfTheDay {
     if (_feed?.imageOfTheDay?.originalImage == null &&
         _feed?.imageOfTheDay?.thumbnail == null) {
       return false;
@@ -39,8 +35,8 @@ class FeedViewModel extends ChangeNotifier {
         _acceptableImageType(_feed!.imageOfTheDay!.thumbnail!.source);
   }
 
-  ImageFile? get imageSource {
-    if (!hasImage) return null;
+  ImageFile? get imageOfTheDaySource {
+    if (!hasImageOfTheDay) return null;
     if (_acceptableImageType(imageOfTheDay?.originalImage.source)) {
       return imageOfTheDay!.originalImage;
     }
@@ -71,7 +67,9 @@ class FeedViewModel extends ChangeNotifier {
   bool _acceptableImageType(String? sourceName) {
     if (sourceName != null) {
       final ext = getFileExtension(sourceName);
-      if (acceptableImageFormats.contains(ext)) return true;
+      if (ext != null && acceptableImageFormats.contains(ext.toLowerCase())) {
+        return true;
+      }
     }
     return false;
   }

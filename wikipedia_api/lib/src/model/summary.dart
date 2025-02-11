@@ -50,8 +50,20 @@ class Summary {
   bool get hasImage => originalImage != null || thumbnail != null;
 
   String? get preferredSource {
-    if (originalImage != null) return originalImage!.source;
-    if (thumbnail != null) return thumbnail!.source;
+    ImageFile? file;
+
+    if (originalImage != null) {
+      file = originalImage;
+    } else {
+      file = thumbnail;
+    }
+
+    if (file != null) {
+      if (acceptableImageFormats.contains(file.extension.toLowerCase())) {
+        return file.source;
+      }
+    }
+
     return null;
   }
 

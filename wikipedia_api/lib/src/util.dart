@@ -69,3 +69,5 @@ String? getFileExtension(String file) {
   if (segments.isNotEmpty) return segments.last;
   return null;
 }
+
+const acceptableImageFormats = ['png', 'jpg', 'jpeg'];

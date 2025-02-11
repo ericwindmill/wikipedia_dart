@@ -140,26 +140,7 @@ class SavedArticlesView extends StatelessWidget {
             if (breakpoint.width == BreakpointWidth.large) {
               return Row(
                 children: [
-                  Flexible(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Saved Articles',
-                            style: context.titleMedium.copyWith(fontSize: 18),
-                          ),
-                        ),
-                        Container(
-                          height: 1,
-                          color: AppColors.cupertinoScaffoldBackgroundColor,
-                        ),
-                        Expanded(child: mainContent),
-                      ],
-                    ),
-                  ),
+                  Flexible(flex: 2, child: mainContent),
                   Flexible(flex: 3, child: right),
                 ],
               );

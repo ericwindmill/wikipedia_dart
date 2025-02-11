@@ -52,39 +52,6 @@ class TimelinePageView extends StatelessWidget {
               CupertinoSliverNavigationBar(
                 largeTitle: Text(AppStrings.onThisDay),
                 trailing: filterAction(context),
-                bottom: PreferredSize(
-                  preferredSize: Size(MediaQuery.of(context).size.width, 124),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          viewModel.readableDate,
-                          style: context.titleMedium.copyWith(fontSize: 24),
-                        ),
-                        SizedBox(
-                          height: BreakpointProvider.of(context).spacing,
-                        ),
-                        Text(
-                          AppStrings.historicEvents(
-                            viewModel.filteredEvents.length.toString(),
-                          ).toUpperCase(),
-                          style: context.titleMedium.copyWith(
-                            color: AppColors.labelOnLight,
-                          ),
-                        ),
-                        if (viewModel.readableYearRange != '')
-                          Text(
-                            AppStrings.yearRange(viewModel.readableYearRange),
-                            style: context.titleMedium.copyWith(
-                              color: AppColors.labelOnLight,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
               )
             else
               const SliverAppBar(title: Text('Title')),
@@ -103,9 +70,48 @@ class TimelinePageView extends StatelessWidget {
             return ColoredBox(
               color: Colors.white,
               child: ListView.builder(
-                itemCount: viewModel.filteredEvents.length,
+                itemCount: viewModel.filteredEvents.length + 1,
                 itemBuilder: (BuildContext context, int index) {
-                  final OnThisDayEvent event = viewModel.filteredEvents[index];
+                  if (index == 0) {
+                    return Padding(
+                      padding: EdgeInsets.all(
+                        BreakpointProvider.of(context).margin,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            viewModel.readableDate,
+                            style: context.titleMedium.copyWith(fontSize: 24),
+                          ),
+                          SizedBox(
+                            height: BreakpointProvider.of(context).spacing,
+                          ),
+                          Text(
+                            AppStrings.historicEvents(
+                              viewModel.filteredEvents.length.toString(),
+                            ).toUpperCase(),
+                            style: context.titleMedium.copyWith(
+                              color: AppColors.labelOnLight,
+                            ),
+                          ),
+                          if (viewModel.readableYearRange != '')
+                            Text(
+                              AppStrings.yearRange(viewModel.readableYearRange),
+                              style: context.titleMedium.copyWith(
+                                color: AppColors.labelOnLight,
+                              ),
+                            ),
+                          SizedBox(
+                            height: BreakpointProvider.of(context).spacing,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  final OnThisDayEvent event =
+                      viewModel.filteredEvents[index - 1];
                   return TimelineListItem(event: event);
                 },
               ),
