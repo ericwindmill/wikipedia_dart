@@ -44,8 +44,8 @@ class TimelinePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: NestedScrollView(
+    return Scaffold(
+      body: NestedScrollView(
         headerSliverBuilder: (context, _) {
           return [
             if (context.isCupertino)

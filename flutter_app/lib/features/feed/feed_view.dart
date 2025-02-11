@@ -17,9 +17,9 @@ class FeedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      child: NestedScrollView(
+      body: NestedScrollView(
         headerSliverBuilder: (context, _) {
           return [
             if (context.isCupertino)

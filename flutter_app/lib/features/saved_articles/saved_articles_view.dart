@@ -34,9 +34,9 @@ class SavedArticlesView extends StatelessWidget {
   Widget build(BuildContext context) {
     final breakpoint = BreakpointProvider.of(context);
 
-    return CupertinoPageScaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      child: NestedScrollView(
+      body: NestedScrollView(
         headerSliverBuilder: (context, _) {
           return [
             if (context.isCupertino)

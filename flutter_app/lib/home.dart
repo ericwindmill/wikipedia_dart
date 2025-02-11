@@ -9,7 +9,7 @@ import 'package:flutter_app/features/saved_articles/saved_articles_view_model.da
 import 'package:flutter_app/providers/repository_provider.dart';
 import 'package:flutter_app/ui/app_localization.dart';
 import 'package:flutter_app/ui/build_context_util.dart';
-import 'package:flutter_app/ui/shared_widgets/adaptive_scaffold.dart';
+import 'package:flutter_app/ui/shared_widgets/adaptive_navigation.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
